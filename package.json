@@ -1,0 +1,23 @@
+{
+  "name": "gossip-with-rails",
+  "version": "1.0.0",
+  "description": "Web Forum with basic CRUD functions",
+  "main": "babel.config.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryanL2303/gossip-with-rails.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BryanL2303/gossip-with-rails/issues"
+  },
+  "homepage": "https://github.com/BryanL2303/gossip-with-rails#readme"
+}
