@@ -1,0 +1,2 @@
+class ReplyVote < ApplicationRecord
+end

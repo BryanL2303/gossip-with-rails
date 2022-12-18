@@ -1,0 +1,2 @@
+class TopicVote < ApplicationRecord
+end

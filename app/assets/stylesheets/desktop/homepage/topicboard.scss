@@ -1,0 +1,70 @@
+@media screen and (min-width: 950px){
+	.topic__container{
+		height: 100%;
+		width: 75%;
+		margin-left: 25%;
+	}
+
+	.topic__container .topic__header{
+		height: 10%;
+		margin-top: 2%;
+		padding-left: 5px;
+		border-bottom: solid;
+		border: none;
+	}
+
+	.topic__container .topic__header .topic__show-settings--button{
+		position: absolute;
+		top: 0%;
+		right: 0px;
+		border: none;
+		height: 10%;
+		background: inherit;
+	}
+
+	.topic__container .topic__header .topic__show-settings--button img{
+		height: 100%;
+	}
+
+	.topic__container .topic__header .topic__settings{
+		visibility: hidden;
+		position:absolute;
+		top: 10%;
+		right: 0%;
+		z-index: 1000;
+		width: 10%;
+	}
+
+	.topic__container .topic__header .topic__settings button{
+		width: 100%;
+	}
+
+	.topic__container .topic__description{
+		width: 100%;
+		background-color: inherit;
+		border-style: none;
+		padding-top: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	.topic__comment-container{
+		height: 90%;
+		width: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+		border: none;
+		margin-top: 3%;
+		margin-left: 5%;
+		padding-left: 5px;
+	}
+
+	.topic__comment-container .form{
+		margin-bottom: 2%;
+	}
+
+	.topic__comment-container .form .form__name{
+		height: 20px;
+		width: 85%;
+	}
+}
