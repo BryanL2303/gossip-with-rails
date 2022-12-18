@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/BryanL2303/gossip-with-rails/issues"
   },
-  "homepage": "https://github.com/BryanL2303/gossip-with-rails#readme"
+  "homepage": "https://github.com/BryanL2303/gossip-with-rails#readme",
+  "dependencies": {
+    "webpack": "^5.75.0"
+  }
 }
