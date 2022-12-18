@@ -4,7 +4,7 @@ module Api
 
 		def createReply
 			reply = Reply.new(reply: params[:reply],
-			 upvote: 0, downvote: 0, account_id: params[:account_id],
+			 upvote: 0, downvote: 0, gossip_account_id: params[:account_id],
 			 comment_id: params[:comment_id], edited: false)
 			if reply.save
 				render json: ReplySerializer.new(reply).serialized_json
@@ -32,13 +32,13 @@ module Api
 		end
 
 		def upvoteReply
-			replyVote = ReplyVote.where(account_id: params[:account_id],
+			replyVote = ReplyVote.where(gossip_account_id: params[:account_id],
 				reply_id: params[:reply_id])[0]
 			reply = Reply.find_by(id: params[:id])
 			if replyVote == nil
 				reply.upvote = reply.upvote + 1
 				reply.save
-				newReplyVote = ReplyVote.new(account_id: params[:account_id],
+				newReplyVote = ReplyVote.new(gossip_account_id: params[:account_id],
 					reply_id: params[:reply_id], upvote: true)
 				newReplyVote.save
 			else
@@ -59,13 +59,13 @@ module Api
 		end
 
 		def downvoteReply
-			replyVote = ReplyVote.where(account_id: params[:account_id],
+			replyVote = ReplyVote.where(gossip_account_id: params[:account_id],
 				reply_id: params[:reply_id])[0]
 			reply = Reply.find_by(id: params[:id])
 			if replyVote == nil
 				reply.downvote = reply.downvote + 1
 				reply.save
-				newReplyVote = ReplyVote.new(account_id: params[:account_id],
+				newReplyVote = ReplyVote.new(gossip_account_id: params[:account_id],
 					reply_id: params[:reply_id], upvote: false)
 				newReplyVote.save
 			else

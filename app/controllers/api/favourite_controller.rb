@@ -3,7 +3,7 @@ module Api
 		protect_from_forgery with: :null_session
 
 		def checkSave
-			saved = Favourite.where(account_id: params[:id],
+			saved = Favourite.where(gossip_account_id: params[:id],
 				topic_id: params[:topic_id])[0]
 			if saved == nil
 				render json: false
@@ -13,22 +13,22 @@ module Api
 		end
 
 		def saveTopic
-			vote = Favourite.where(account_id: params[:id],
+			vote = Favourite.where(gossip_account_id: params[:id],
 				topic_id: params[:topic_id])[0]
 			if vote == nil
-				topic = Favourite.new(account_id: params[:id],
+				topic = Favourite.new(gossip_account_id: params[:id],
 					topic_id: params[:topic_id])
 				topic.save
 			else
 				vote.destroy
 			end
 
-			topics = Favourite.where(account_id: params[:id]).order('updated_at')
+			topics = Favourite.where(gossip_account_id: params[:id]).order('updated_at')
 			render json: FavouriteSerializer.new(topics).serialized_json
 		end
 
 		def fetchTopics
-			topics = Favourite.where(account_id: params[:id]).order('updated_at')
+			topics = Favourite.where(gossip_account_id: params[:id]).order('updated_at')
 			render json: FavouriteSerializer.new(topics).serialized_json
 		end
 	end

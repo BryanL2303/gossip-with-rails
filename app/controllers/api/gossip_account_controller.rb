@@ -1,10 +1,10 @@
 module Api
-	class AccountController < ApplicationController
+	class GossipAccountController < ApplicationController
 		protect_from_forgery with: :null_session
 
 		def createAccount
-			account = Account.new(account_name: params[:name], password: params[:password])
-			findAccount = Account.find_by(account_name: params[:name])
+			account = GossipAccount.new(account_name: params[:name], password: params[:password])
+			findAccount = GossipAccount.find_by(account_name: params[:name])
 
 			if findAccount == nil
 				if account.save
@@ -19,7 +19,7 @@ module Api
 		end
 
 		def authenticateAccount
-			account = Account.find_by(account_name: params[:name])
+			account = GossipAccount.find_by(account_name: params[:name])
 			if account == nil
 				render json: false
 			else
@@ -32,7 +32,7 @@ module Api
 		end
 
 		def destroy
-			account = Account.find_by(id: params[:account_id])
+			account = GossipAccount.find_by(id: params[:account_id])
 			#Need to loop through all replies, comments and topics related to this account
 			#and delete them all
 
@@ -44,9 +44,9 @@ module Api
 		end
 
 		def show
-			account = Account.find_by(id: params[:account_id])
+			account = GossipAccount.find_by(id: params[:account_id])
 
-			render json: AccountSerializer.new(account).serialized_json
+			render json: GossipAccountSerializer.new(account).serialized_json
 		end
 	end
 end

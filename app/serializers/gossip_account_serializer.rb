@@ -1,6 +1,6 @@
-class AccountSerializer
+class GossipAccountSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :name, :password
+  attributes :account_name, :password
 
   has_many :topics
   has_many :comments

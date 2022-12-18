@@ -4,7 +4,7 @@ module Api
 
 		def createCategory
 			category = Category.new(category: params[:category],
-			 description: params[:description], account_id: params[:account_id],
+			 description: params[:description], gossip_account_id: params[:account_id],
 			 private: false)
 			if category.save
 				render json: CategorySerializer.new(category).serialized_json
@@ -21,7 +21,7 @@ module Api
 
 		def createTopic
 			topic = Topic.new(topic_name: params[:topic_name],
-			 description: params[:description], account_id: params[:account_id],
+			 description: params[:description], gossip_account_id: params[:account_id],
 			 active: true, category_id: params[:id])
 			if topic.save
 				render json: TopicSerializer.new(topic).serialized_json
@@ -45,7 +45,7 @@ module Api
 		end
 
 		def destroy
-			account = Account.find_by(id: params[:account_id])
+			account = GossipAccount.find_by(id: params[:account_id])
 			comments = Comment.where(topic_id: topic.id)
 			comments.destroy_all
 			#Loop through comments to destroy all replies

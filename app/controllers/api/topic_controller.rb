@@ -4,7 +4,7 @@ module Api
 
 		def createTopic
 			topic = Topic.new(topic_name: params[:topic_name],
-			 description: params[:description], account_id: params[:account_id],
+			 description: params[:description], gossip_account_id: params[:account_id],
 			 active: true)
 			if topic.save
 				render json: TopicSerializer.new(topic).serialized_json
@@ -28,12 +28,12 @@ module Api
 		end
 
 		def upvoteTopic
-			topicVote = TopicVote.where(account_id: params[:account_id],
+			topicVote = TopicVote.where(gossip_account_id: params[:account_id],
 				topic_id: params[:id])[0]
 			topic = Topic.find_by(id: params[:id])
 			if topicVote == nil
 				topic.upvote = (topic.upvote.to_i + 1).to_s
-				newTopicVote = TopicVote.new(account_id: params[:account_id],
+				newTopicVote = TopicVote.new(gossip_account_id: params[:account_id],
 					topic_id: params[:id], upvote: true)
 				newTopicVote.save
 			else
@@ -56,13 +56,13 @@ module Api
 		end
 
 		def downvoteTopic
-			topicVote = TopicVote.where(account_id: params[:account_id],
+			topicVote = TopicVote.where(gossip_account_id: params[:account_id],
 				topic_id: params[:id])[0]
 			topic = Topic.find_by(id: params[:id])
 			if topicVote == nil
 				topic.downvote = topic.downvote + 1
 				topic.save
-				newTopicVote = TopicVote.new(account_id: params[:account_id],
+				newTopicVote = TopicVote.new(gossip_account_id: params[:account_id],
 					topic_id: params[:id], upvote: false)
 				newTopicVote.save
 			else
@@ -83,7 +83,7 @@ module Api
 		end
 
 		def destroy
-			account = Account.find_by(id: params[:account_id])
+			account = GossipAccount.find_by(id: params[:account_id])
 			comments = Comment.where(topic_id: topic.id)
 			comments.destroy_all
 			#Loop through comments to destroy all replies

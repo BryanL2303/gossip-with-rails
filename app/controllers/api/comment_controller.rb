@@ -4,7 +4,7 @@ module Api
 
 		def createComment
 			comment = Comment.new(comment: params[:comment],
-			 upvote: 0, downvote: 0, account_id: params[:account_id],
+			 upvote: 0, downvote: 0, gossip_account_id: params[:account_id],
 			 topic_id: params[:topic_id], edited: false)
 			if comment.save
 				render json: CommentSerializer.new(comment).serialized_json
@@ -32,13 +32,13 @@ module Api
 		end
 
 		def upvoteComment
-			commentVote = CommentVote.where(account_id: params[:account_id],
+			commentVote = CommentVote.where(gossip_account_id: params[:account_id],
 				comment_id: params[:comment_id])[0]
 			comment = Comment.find_by(id: params[:id])
 			if commentVote == nil
 				comment.upvote = comment.upvote + 1
 				comment.save
-				newCommentVote = CommentVote.new(account_id: params[:account_id],
+				newCommentVote = CommentVote.new(gossip_account_id: params[:account_id],
 					comment_id: params[:comment_id], upvote: true)
 				newCommentVote.save
 			else
@@ -59,13 +59,13 @@ module Api
 		end
 
 		def downvoteComment
-			commentVote = CommentVote.where(account_id: params[:account_id],
+			commentVote = CommentVote.where(gossip_account_id: params[:account_id],
 				comment_id: params[:comment_id])[0]
 			comment = Comment.find_by(id: params[:id])
 			if commentVote == nil
 				comment.downvote = comment.downvote + 1
 				comment.save
-				newCommentVote = CommentVote.new(account_id: params[:account_id],
+				newCommentVote = CommentVote.new(gossip_account_id: params[:account_id],
 					comment_id: params[:comment_id], upvote: false)
 				newCommentVote.save
 			else
