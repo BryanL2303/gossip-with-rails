@@ -2,10 +2,10 @@ Rails.application.routes.draw do
   root "pages#index"
 
   namespace :api do
-    resources :account do 
+    resources :gossip_account do 
       member do
-        post '/create_account' => 'account#createAccount'
-        post '/authenticate_account' => 'account#authenticateAccount'
+        post '/create_account' => 'gossip_account#createAccount'
+        post '/authenticate_account' => 'gossip_account#authenticateAccount'
       end
     end
 

@@ -1,4 +1,4 @@
 class Favourite < ApplicationRecord
-	belongs_to :account
+	belongs_to :gossip_account
 	has_many :topics
 end

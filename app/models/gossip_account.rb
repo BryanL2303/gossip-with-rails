@@ -1,4 +1,4 @@
-class Account < ApplicationRecord
+class GossipAccount < ApplicationRecord
 	has_many :topics
 	has_many :favourites
 	has_many :comments
