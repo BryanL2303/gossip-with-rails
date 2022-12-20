@@ -10,6 +10,7 @@ const Reply = ({reply_id, fetchComment, active}) => {
   const [displayEditor, setDisplayEditor] = useState(false)
   const [owner, setOwner] = useState(false)
   const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [ownerName, setOwnerName] = useState()
   
   useEffect(() => {
     if (sessionStorage.getItem(`reply${reply_id}`) == null) {
@@ -35,11 +36,19 @@ const Reply = ({reply_id, fetchComment, active}) => {
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
         setEdited(resp.data.data.attributes.edited)
+        checkOwner(resp.data.data.attributes.gossip_account_id)
         if (resp.data.data.attributes.account_id == accountState.id) {
           setOwner(true)
         }
-        sessionStorage.setItem(`reply${reply_id}`, JSON.stringify(resp.data.data.attributes))
       }
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function checkOwner(gossip_account_id) {
+    axios.get('/api/gossip_account/' + gossip_account_id)
+    .then(resp => {
+      setOwnerName(resp.data.data.attributes.account_name)
     })
     .catch(resp => console.log(resp))
   }
@@ -128,6 +137,8 @@ const Reply = ({reply_id, fetchComment, active}) => {
 
   return(
     <div id={`reply${reply_id}`} className='reply__container'>
+      <label>{ownerName}</label>
+      <br/>
       {displayEditor == false && <label>{reply}</label>}
       {displayEditor == true && <Editor/>}
       {edited == true && owner == true &&

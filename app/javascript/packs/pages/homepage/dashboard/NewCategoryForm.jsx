@@ -18,8 +18,8 @@ const NewCategoryForm = ({reRenderCategories}) => {
     })
     .then(resp => {
       reRenderCategories()
-      document.getElementsByClassName('form__category')[0].value = ''
-      document.getElementsByClassName('form__description')[0].value = ""
+      document.getElementsByClassName('category-form__category')[0].value = ''
+      document.getElementsByClassName('category-form__description')[0].value = ""
     })
     .catch(resp => console.log(resp))
   }

@@ -44,7 +44,7 @@ module Api
 		end
 
 		def show
-			account = GossipAccount.find_by(id: params[:account_id])
+			account = GossipAccount.find_by(id: params[:id])
 
 			render json: GossipAccountSerializer.new(account).serialized_json
 		end

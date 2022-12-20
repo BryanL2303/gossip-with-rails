@@ -18,8 +18,8 @@ const CategoryTopicForm = ({category_id, reRenderTopics}) => {
     })
     .then(resp => {
       reRenderTopics()
-      document.getElementsByClassName('form__topic')[0].value = ''
-      document.getElementsByClassName('form__description')[0].value = ""
+      document.getElementsByClassName('category-topic-form__topic')[0].value = ''
+      document.getElementsByClassName('category-topic-form__description')[0].value = ""
     })
     .catch(resp => console.log(resp))
   }

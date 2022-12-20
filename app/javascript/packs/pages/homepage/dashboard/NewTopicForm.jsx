@@ -18,8 +18,8 @@ const NewTopicForm = ({reRenderTopics}) => {
     })
     .then(resp => {
       reRenderTopics()
-      document.getElementsByClassName('form__topic')[0].value = ''
-      document.getElementsByClassName('form__description')[0].value = ""
+      document.getElementsByClassName('topic-form__topic')[0].value = ''
+      document.getElementsByClassName('topic-form__description')[0].value = ""
     })
     .catch(resp => console.log(resp))
   }

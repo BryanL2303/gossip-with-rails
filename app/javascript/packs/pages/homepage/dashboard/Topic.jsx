@@ -12,6 +12,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   const [favourites, setFavourites] = useContext(FavouriteTopicsContext)
   const [currentVote, setCurrentVote] = useState()
   const [currentSave, setCurrentSave] = useState()
+  const [ownerName, setOwnerName] = useState()
 
   useEffect(() => {
     fetchTopic()
@@ -30,7 +31,16 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         setDescription(resp.data.data.attributes.description)
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
+        checkOwner(resp.data.data.attributes.gossip_account_id)
       }
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function checkOwner(gossip_account_id) {
+    axios.get('/api/gossip_account/' + gossip_account_id)
+    .then(resp => {
+      setOwnerName(resp.data.data.attributes.account_name)
     })
     .catch(resp => console.log(resp))
   }
@@ -108,7 +118,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   return(
     <div id={topic_id} className="topic">
       <button id={topic_id} className='topic__show--button' onClick={showTopicboard}>
-        <label>{accountState.name}</label>
+        <label>{ownerName}</label>
         <br/>
         <label id={topic_id} className='topic__name'>{name}</label>
         <br/>

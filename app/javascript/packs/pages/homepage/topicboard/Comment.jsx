@@ -15,6 +15,7 @@ const Comment = ({comment_id, fetchComments, active}) => {
   const [displayEditor, setDisplayEditor] = useState(false)
   const [owner, setOwner] = useState(false)
   const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [ownerName, setOwnerName] = useState()
 
   useEffect(() => {
     if (sessionStorage.getItem(`comment${comment_id}`) == null) {
@@ -44,11 +45,19 @@ const Comment = ({comment_id, fetchComments, active}) => {
         setEdited(resp.data.data.attributes.edited)
         setReplies(resp.data.data.relationships.replys.data)
         setReplyLimit(resp.data.data.relationships.replys.data.length)
-        if (resp.data.data.attributes.account_id == accountState.id) {
+        checkOwner(resp.data.data.attributes.gossip_account_id)
+        if (resp.data.data.attributes.gossip_account_id == accountState.id) {
           setOwner(true)
         }
-        sessionStorage.setItem(`comment${comment_id}`, JSON.stringify(resp.data.data.attributes))
       }
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function checkOwner(gossip_account_id) {
+    axios.get('/api/gossip_account/' + gossip_account_id)
+    .then(resp => {
+      setOwnerName(resp.data.data.attributes.account_name)
     })
     .catch(resp => console.log(resp))
   }
@@ -148,6 +157,8 @@ const Comment = ({comment_id, fetchComments, active}) => {
 
   return(
     <div className='comment__container'>
+      <label>{ownerName}</label>
+      <br/>
       {displayEditor == false && <label>{comment}</label>}
       {displayEditor == true && <Editor/>}
       {edited == true && owner == true &&
