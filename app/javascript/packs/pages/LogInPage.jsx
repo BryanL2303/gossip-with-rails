@@ -10,7 +10,7 @@ const LogInPage = () => {
   //Handle submit form event
   function submitForm(e) {
     e.preventDefault()
-    axios.post('/api/account/0/authenticate_account', {
+    axios.post('/api/gossip_account/0/authenticate_account', {
       name: e.target[0].value,
       password: e.target[1].value,
     })
@@ -30,6 +30,7 @@ const LogInPage = () => {
   return(
     <div className='log-in-page'>
       <form className='log-in-form' onSubmit={ submitForm }>
+        <label>Gossip With Rails</label>
         <input className='log-in-form__name' placeholder='username'></input>
         <input className='log-in-form__password' type='password' placeholder='password'></input>
         <button>Log In</button>

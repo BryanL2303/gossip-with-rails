@@ -9,7 +9,7 @@ const AccountCreationPage = () => {
 
   function submitForm(e) {
     e.preventDefault()
-    axios.post('/api/account/0/create_account', {
+    axios.post('/api/gossip_account/0/create_account', {
       name: e.target[0].value,
       password: e.target[1].value,
     })
@@ -23,12 +23,13 @@ const AccountCreationPage = () => {
         alert("Username has been taken, please try another name.")
       }
     })
-    .catch(resp => console.log(resp))    
+    .catch(resp => console.log(resp))
   }
 
   return(
     <div className='create-account-page'>
       <form className='create-account-form' onSubmit={ submitForm }>
+        <label>Gossip With Rails</label>
         <input className='create-account-form__name' placeholder='username'></input>
         <input className='create-account-form__password' placeholder='password'></input>
         <button>Create Account</button>

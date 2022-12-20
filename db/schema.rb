@@ -14,13 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_151308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "gossip_accounts", force: :cascade do |t|
-    t.string "password"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "account_name"
-  end
-
   create_table "categories", force: :cascade do |t|
     t.string "category"
     t.string "description"
@@ -37,37 +30,37 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_151308) do
     t.bigint "comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["gossip_account_id"], name: "index_comment_votes_on_gossip_account_id"
     t.index ["comment_id"], name: "index_comment_votes_on_comment_id"
+    t.index ["gossip_account_id"], name: "index_comment_votes_on_gossip_account_id"
   end
 
   create_table "comments", force: :cascade do |t|
     t.string "comment"
+    t.date "dateCreated"
     t.integer "upvote"
     t.integer "downvote"
+    t.boolean "edited"
     t.bigint "gossip_account_id"
     t.bigint "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "edited"
     t.index ["gossip_account_id"], name: "index_comments_on_gossip_account_id"
     t.index ["topic_id"], name: "index_comments_on_topic_id"
   end
 
   create_table "favourites", force: :cascade do |t|
+    t.integer "topic_id"
+    t.bigint "gossip_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "gossip_account_id"
-    t.integer "topic_id"
     t.index ["gossip_account_id"], name: "index_favourites_on_gossip_account_id"
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.string "message"
-    t.bigint "gossip_account_id"
+  create_table "gossip_accounts", force: :cascade do |t|
+    t.string "account_name"
+    t.string "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["gossip_account_id"], name: "index_notifications_on_gossip_account_id"
   end
 
   create_table "pinned_categories", force: :cascade do |t|
@@ -90,15 +83,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_151308) do
 
   create_table "replys", force: :cascade do |t|
     t.string "reply"
+    t.date "dateCreated"
     t.integer "upvote"
     t.integer "downvote"
+    t.boolean "edited"
     t.bigint "gossip_account_id"
     t.bigint "comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "edited"
-    t.index ["gossip_account_id"], name: "index_replys_on_gossip_account_id"
     t.index ["comment_id"], name: "index_replys_on_comment_id"
+    t.index ["gossip_account_id"], name: "index_replys_on_gossip_account_id"
   end
 
   create_table "topic_votes", force: :cascade do |t|
@@ -114,15 +108,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_151308) do
   create_table "topics", force: :cascade do |t|
     t.string "topic_name"
     t.string "description"
-    t.bigint "gossip_account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "active"
+    t.date "dateCreated"
     t.integer "upvote"
     t.integer "downvote"
+    t.boolean "active"
+    t.bigint "gossip_account_id"
     t.bigint "category_id"
-    t.index ["gossip_account_id"], name: "index_topics_on_gossip_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_topics_on_category_id"
+    t.index ["gossip_account_id"], name: "index_topics_on_gossip_account_id"
   end
 
 end
