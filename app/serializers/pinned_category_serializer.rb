@@ -1,6 +1,6 @@
 class PinnedCategorySerializer
   include FastJsonapi::ObjectSerializer
-  attributes :account_id, :category_id
+  attributes :gossip_account_id, :category_id
   
-  belongs_to :account
+  belongs_to :gossip_account
 end

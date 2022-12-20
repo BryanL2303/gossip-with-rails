@@ -4,5 +4,5 @@ class CommentSerializer
   
   has_many :replys
   belongs_to :topic
-  belongs_to :account
+  belongs_to :gossip_account
 end
