@@ -185,7 +185,6 @@ const Comment = ({comment_id, fetchComments, active}) => {
       <div className='replies__container'>
         {replies.map((reply, count) => {
           if (count < replyCount) {
-            console.log("Displaying reply " + count + " out of " + replyCount)
             return(
               <Reply key={reply.id} reply_id={reply.id} fetchComment={fetchComment} active={active}/>
             )
