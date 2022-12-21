@@ -57,30 +57,27 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
   return(
     <div className='categoryboard-container'>
       <br/>
-      <label>{ownerName}</label>
+      <label className="static__label">{ownerName}</label>
       <br/>
-      <label>{categoryName}</label>
+      <h1 className="static__label">{categoryName}</h1>
       <br/>
-      <br/>
-      <label>{description}</label>
-      <br/>
-      <br/>
+      <label className="static__label">{description}</label>
 
       <CategoryTopicForm category_id={category.id} reRenderTopics={fetchTopics}/>
 
       <div className= 'topics-container'>
-        <label>{category.relationships.topics.data.length} Topic(s)</label>
-          <br/>
-          <br/>
-          {topicListState.map((topic, count) => {
-            if (count < topicCount) {
-              return(
-                <Topic key={topic.id} topic_id={topic.id} reRenderPage={reRenderPage} showTopicboard={showTopicboard}/>
-              )
-            }
-          })}
-          {topicLimit > 0 &&
-            <button className='show-topics--button' onClick={showTopics}>Load More Topics</button>}
+        <label className="static__label">{category.relationships.topics.data.length} Topic(s)</label>
+        <br/>
+        <br/>
+        {topicListState.map((topic, count) => {
+          if (count < topicCount) {
+            return(
+              <Topic key={topic.id} topic_id={topic.id} reRenderPage={reRenderPage} showTopicboard={showTopicboard}/>
+            )
+          }
+        })}
+        {topicLimit > 0 &&
+          <button className='show-topics--button' onClick={showTopics}>Load More Topics</button>}
       </div>
     </div>
   )

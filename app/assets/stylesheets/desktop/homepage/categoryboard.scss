@@ -9,13 +9,13 @@
 		overflow-y: auto;
 	}
 
-	.categoryboard-container label{
+	.categoryboard-container .static__label{
 		margin-left: 5%;
 	}
 
 	.categoryboard-container .topics-container{
 		position: relative;
-		height: 80%;
+		height: 65%;
 		width: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
@@ -23,7 +23,9 @@
 	}
 
 	.category-topic-form{
-		margin: 5%;
+		margin-top: 2%;
+		margin-left: 5%;
+		width: 90%;
 		text-align: center;
 	}
 
