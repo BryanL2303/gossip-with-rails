@@ -75,8 +75,8 @@ const Category = ({category_id, reRenderPage, showCategoryboard}) => {
           <label id={category_id} className='category__description'>{description}</label>
         </button>
         <button id={category_id} className='category__save--button' onClick={saveCategory}>
-          {currentSave != true && <p>pin</p>}
-          {currentSave == true && <p>pinned</p>}
+          {currentSave != true && <img id={category_id} src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
+        {currentSave == true && <img id={category_id} src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
         </button>
       </div>
     </div>

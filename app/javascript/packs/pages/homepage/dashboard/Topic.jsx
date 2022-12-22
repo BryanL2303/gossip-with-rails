@@ -126,8 +126,8 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         <label id={topic_id} className='topic__description'>{description}</label>
       </button>
       <button id={topic_id} className='topic__save--button' onClick={saveTopic}>
-        {currentSave != true && <p>pin</p>}
-        {currentSave == true && <p>pinned</p>}
+        {currentSave != true && <img id={topic_id} src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
+        {currentSave == true && <img id={topic_id} src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
       </button>
       <label>{upvote}</label>
       <button id={topic_id} className='topic__upvote--button' onClick={upvoteTopic}>
