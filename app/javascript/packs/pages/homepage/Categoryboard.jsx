@@ -17,7 +17,7 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
   useEffect(() => {
     checkOwner(category.attributes.gossip_account_id)
     fetchTopics()
-    setCategory(category.attributes.category)
+    setCategoryName(category.attributes.category)
     setDescription(category.attributes.description)
     setTopicLimit(category.relationships.topics.data.length)
     setOwner(accountState.id == category.attributes.gossip_account_id)
