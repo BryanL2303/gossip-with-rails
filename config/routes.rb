@@ -28,7 +28,6 @@ Rails.application.routes.draw do
         post '/downvote' => 'topic#downvoteTopic'
         post '/close_topic' => 'topic#closeTopic'
         post '/delete_topic' => 'topic#deleteTopic'
-        get '/reset_topic' => 'topic#resetTopic'
       end
     end
 

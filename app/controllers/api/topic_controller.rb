@@ -27,25 +27,6 @@ module Api
 			render json: TopicSerializer.new(topic).serialized_json
 		end
 
-		def resetTopic
-			topic = Topic.find_by(id: 1)
-			topic.upvote = 0
-			topic.downvote = 0
-			topic.save
-			topic = Topic.find_by(id: 2)
-			topic.upvote = 1
-			topic.downvote = 0
-			topic.save
-			topic = Topic.find_by(id: 3)
-			topic.upvote = 0
-			topic.downvote = 0
-			topic.save
-			topic = Topic.find_by(id: 4)
-			topic.upvote = 0
-			topic.downvote = 0
-			topic.save
-		end
-
 		def upvoteTopic
 			topicVote = TopicVote.where(gossip_account_id: params[:account_id],
 				topic_id: params[:id])[0]
