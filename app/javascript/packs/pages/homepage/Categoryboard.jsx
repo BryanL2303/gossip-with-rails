@@ -7,16 +7,20 @@ import { AccountStateContext } from './context/AccountStateContext'
 const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [topicListState, setTopicListState] = useState([])
-  const [categoryName, setCategoryName] = useState(category.attributes.category)
-  const [description, setDescription] = useState(category.attributes.description)
+  const [categoryName, setCategoryName] = useState()
+  const [description, setDescription] = useState()
   const [topicCount, setTopicCount] = useState(0)
-  const [topicLimit, setTopicLimit] = useState(category.relationships.topics.data.length)
-  const [owner, setOwner] = useState(accountState.id == category.attributes.gossip_account_id)
+  const [topicLimit, setTopicLimit] = useState(0)
+  const [owner, setOwner] = useState(false)
   const [ownerName, setOwnerName] = useState()
 
   useEffect(() => {
     checkOwner(category.attributes.gossip_account_id)
     fetchTopics()
+    setCategory(category.attributes.category)
+    setDescription(category.attributes.description)
+    setTopicLimit(category.relationships.topics.data.length)
+    setOwner(accountState.id == category.attributes.gossip_account_id)
   }, [category])
 
   useEffect(() => {

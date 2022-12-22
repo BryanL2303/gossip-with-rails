@@ -6,28 +6,29 @@ import {AccountStateContext} from './context/AccountStateContext'
 import {TopicListContext} from './context/TopicListContext'
 
 const Topicboard = ({topic, showDashboard, fetchTopic}) => {
-	const [description, setDescription] = useState(topic.attributes.description)
-  const [topic_id, setTopic_Id] = useState(topic.attributes.id)
+	const [description, setDescription] = useState()
+  const [topic_id, setTopic_Id] = useState()
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [comments, setComments] = useState([])
   const [commentCount, setCommentCount] = useState(0)
-  const [commentLimit, setCommentLimit] = useState(topic.relationships.comments.data.length)
-  const [active, setActive] = useState(topic.attributes.active)
-  const [owner, setOwner] = useState(accountState.id == topic.attributes.gossip_account_id)
+  const [commentLimit, setCommentLimit] = useState()
+  const [active, setActive] = useState(false)
+  const [owner, setOwner] = useState(false)
   const [ownerName, setOwnerName] = useState()
   
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
 		fetchComments()
-	}, [])
+		setDescription(topic.attributes.description)
+		setTopic_Id(topic.attributes.id)
+		setCommentLimit(topic.relationships.comments.data.length)
+		setActive(topic.attributes.active)
+		setOwner(accountState.id == topic.attributes.gossip_account_id)
+	}, [topic])
 
 	useEffect(()=> {
 		showComments()
 	}, [comments])
-
-  //Eventually when the function to jump from topic to topic use this to upload state
-	useEffect(()=> {
-	}, [topic])
 
 	function checkOwner(gossip_account_id) {
     axios.get('/api/gossip_account/' + gossip_account_id)

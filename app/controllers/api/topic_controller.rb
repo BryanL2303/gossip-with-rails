@@ -32,19 +32,19 @@ module Api
 				topic_id: params[:id])[0]
 			topic = Topic.find_by(id: params[:id])
 			if topicVote == nil
-				topic.upvote = (topic.upvote.to_i + 1).to_s
+				topic.upvote = topic.upvote + 1
 				newTopicVote = TopicVote.new(gossip_account_id: params[:account_id],
 					topic_id: params[:id], upvote: true)
 				newTopicVote.save
 			else
 				if topicVote.upvote == true
-					topic.upvote = (topic.upvote.to_i - 1).to_s
+					topic.upvote = topic.upvote - 1
 					topicVote.destroy
 				else
 					topicVote.upvote = true
 					topicVote.save
-					topic.upvote = (topic.upvote.to_i + 1).to_s
-					topic.downvote = (topic.downvote.to_i - 1).to_s
+					topic.upvote = topic.upvote + 1
+					topic.downvote = topic.downvote - 1
 				end
 			end
 
@@ -61,25 +61,26 @@ module Api
 			topic = Topic.find_by(id: params[:id])
 			if topicVote == nil
 				topic.downvote = topic.downvote + 1
-				topic.save
 				newTopicVote = TopicVote.new(gossip_account_id: params[:account_id],
 					topic_id: params[:id], upvote: false)
 				newTopicVote.save
 			else
 				if topicVote.upvote == false
 					topic.downvote = topic.downvote - 1
-					topic.save
 					topicVote.destroy
 				else
 					topicVote.upvote = false
 					topicVote.save
-					topic.downvote = topic.downvote + 1
 					topic.upvote = topic.upvote - 1
-					topic.save
+					topic.downvote = topic.downvote + 1
 				end
 			end
 
-			render json: TopicSerializer.new(topic).serialized_json
+			if topic.save
+				render json: TopicSerializer.new(topic).serialized_json
+			else
+				render json: {error: topic.errors.messages}, status: 422
+			end
 		end
 
 		def destroy

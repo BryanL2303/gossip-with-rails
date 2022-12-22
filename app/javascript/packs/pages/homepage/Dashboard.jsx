@@ -58,8 +58,6 @@ const Dashboard = ({showTopicboard, showCategoryboard}) => {
         <br/>
         <br/>
         {categoryListState.map((category, count) => {
-          console.log(count)
-          console.log(categoryCount)
           if (count < categoryCount) {
             return(
               <Category key={category.id} category_id={category.id} reRenderPage={reRenderPage} showCategoryboard={showCategoryboard}/>
