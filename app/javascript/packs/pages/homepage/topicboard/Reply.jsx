@@ -8,21 +8,14 @@ const Reply = ({reply_id, fetchComment, active}) => {
   const [downvote, setDownvote] = useState()
   const [edited, setEdited] = useState()
   const [displayEditor, setDisplayEditor] = useState(false)
+  const [currentVote, setCurrentVote] = useState()
   const [owner, setOwner] = useState(false)
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [ownerName, setOwnerName] = useState()
   
   useEffect(() => {
-    if (sessionStorage.getItem(`reply${reply_id}`) == null) {
-      fetchReply()
-    }
-    else{
-      let reply = JSON.parse(sessionStorage.getItem(`reply${reply_id}`))
-      setReply(reply.reply)
-      setUpvote(reply.upvote)
-      setDownvote(reply.downvote)
-      setEdited(reply.edited)
-    }
+    fetchReply()
+    checkVote()
   }, [])
 
   function fetchReply() {
@@ -49,6 +42,17 @@ const Reply = ({reply_id, fetchComment, active}) => {
     axios.get('/api/gossip_account/' + gossip_account_id)
     .then(resp => {
       setOwnerName(resp.data.data.attributes.account_name)
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function checkVote() {
+    axios.post('/api/reply_vote/0/check_vote', {
+      account_id: accountState.id,
+      reply_id: reply_id
+    })
+    .then(resp => {
+      setCurrentVote(resp.data)
     })
     .catch(resp => console.log(resp))
   }
@@ -121,6 +125,12 @@ const Reply = ({reply_id, fetchComment, active}) => {
     })
     .then(resp => {
       fetchReply()
+      if (currentVote == true) {
+        setCurrentVote(null)
+      }
+      else {
+        setCurrentVote(true)
+      }
     })
     .catch(resp => console.log(resp))
   }
@@ -131,6 +141,12 @@ const Reply = ({reply_id, fetchComment, active}) => {
     })
     .then(resp => {
       fetchReply()
+      if (currentVote == false) {
+        setCurrentVote(null)
+      }
+      else {
+        setCurrentVote(false)
+      }
     })
     .catch(resp => console.log(resp))
   }
@@ -154,11 +170,13 @@ const Reply = ({reply_id, fetchComment, active}) => {
 
       <label>{upvote}</label>
       <button id={reply_id} className='reply__upvote--button' onClick={upvoteReply}>
-        <p>upvote</p>
+        {currentVote != true && <img id={reply_id} src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+        {currentVote == true && <img id={reply_id} src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
       </button>
       <label>{downvote}</label>
       <button id={reply_id} className='reply__downvote--button' onClick={downvoteReply}>
-        <p>downvote</p>
+        {currentVote != false && <img id={reply_id} src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+        {currentVote == false && <img id={reply_id} src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
       </button>
       <br/>
     </div>

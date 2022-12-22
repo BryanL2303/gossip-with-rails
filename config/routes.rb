@@ -37,6 +37,18 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :comment_vote do
+      member do
+        post '/check_vote' => 'comment_vote#checkVote'
+      end
+    end
+
+    resources :reply_vote do
+      member do
+        post '/check_vote' => 'reply_vote#checkVote'
+      end
+    end
+
     resources :comment do
       member do
         get '/fetch_comments' => 'comment#fetchComments'

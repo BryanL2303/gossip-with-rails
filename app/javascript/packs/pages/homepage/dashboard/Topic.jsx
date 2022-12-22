@@ -131,13 +131,13 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
       </button>
       <label>{upvote}</label>
       <button id={topic_id} className='topic__upvote--button' onClick={upvoteTopic}>
-        {currentVote != true && <p>upvote</p>}
-        {currentVote == true && <p>upvoted</p>}
+        {currentVote != true && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+        {currentVote == true && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
       </button>
       <label>{downvote}</label>
       <button id={topic_id} className='topic__downvote--button' onClick={downvoteTopic}>
-        {currentVote != false && <p>downvote</p>}
-        {currentVote == false && <p>downvoted</p>}
+        {currentVote != false && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+        {currentVote == false && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
       </button>
     </div>
   )

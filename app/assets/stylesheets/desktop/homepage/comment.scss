@@ -5,10 +5,36 @@
 		margin-bottom: 3%;
 	}
 
+	.comment__container img{
+		width: 100%;
+	}
+
+	.comment__upvote--button{
+		text-align:center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		overflow: hidden;
+		background-color: inherit;
+	}
+
+	.comment__downvote--button{
+		text-align: center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		overflow: hidden;
+		background-color: inherit;
+	}
+
 	.replies__container{
 		margin-left: 5%;
 		margin-top: 1%;
 		margin-bottom: 1%;
+	}
+
+	.replies__container img{
+		width: 100%;
 	}
 
 	.replies__container .show-replies--button{
@@ -24,5 +50,21 @@
 	.reply__container{
 		margin: 1%;
 		box-shadow: black;
+	}
+
+	.reply__upvote--button{
+		text-align:center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.reply__downvote--button{
+		text-align: center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
 	}
 }

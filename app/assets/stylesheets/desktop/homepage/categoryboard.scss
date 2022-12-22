@@ -73,7 +73,7 @@
 	.topic__upvote--button{
 		text-align:center;
 		height: 100%;
-		width: 10%;
+		width: 5%;
 		border: none;
 		background-color: inherit;
 	}
@@ -81,9 +81,13 @@
 	.topic__downvote--button{
 		text-align: center;
 		height: 100%;
-		width: 10%;
+		width: 5%;
 		border: none;
 		background-color: inherit;
+	}
+
+	.topic img{
+		width: 100%;
 	}
 
 	.topic button:hover{

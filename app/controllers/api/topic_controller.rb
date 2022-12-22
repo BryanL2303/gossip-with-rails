@@ -5,7 +5,7 @@ module Api
 		def createTopic
 			topic = Topic.new(topic_name: params[:topic_name],
 			 description: params[:description], gossip_account_id: params[:account_id],
-			 active: true)
+			 active: true, upvote: 0, downvote: 0)
 			if topic.save
 				render json: TopicSerializer.new(topic).serialized_json
 			else
