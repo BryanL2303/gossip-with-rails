@@ -6,25 +6,34 @@ import {AccountStateContext} from './context/AccountStateContext'
 import {TopicListContext} from './context/TopicListContext'
 
 const Topicboard = ({topic, showDashboard, fetchTopic}) => {
-	const [description, setDescription] = useState()
-  const [topic_id, setTopic_Id] = useState()
+	const [description, setDescription] = useState(topic.attributes.description)
+  const [topic_id, setTopic_Id] = useState(topic.attributes.id)
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [comments, setComments] = useState([])
   const [commentCount, setCommentCount] = useState(0)
-  const [commentLimit, setCommentLimit] = useState()
-  const [active, setActive] = useState(false)
-  const [owner, setOwner] = useState(false)
+  const [commentLimit, setCommentLimit] = useState(topic.relationships.comments.data.length)
+  const [active, setActive] = useState(topic.attributes.active)
+  const [owner, setOwner] = useState(accountState.id == topic.attributes.gossip_account_id)
   const [ownerName, setOwnerName] = useState()
+
+  useEffect(()=> {
+  	checkOwner(topic.attributes.gossip_account_id)
+  }, [])
   
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
-		fetchComments()
 		setDescription(topic.attributes.description)
 		setTopic_Id(topic.attributes.id)
 		setCommentLimit(topic.relationships.comments.data.length)
 		setActive(topic.attributes.active)
 		setOwner(accountState.id == topic.attributes.gossip_account_id)
 	}, [topic])
+
+	useEffect(() =>{
+		if (commentCount == 0) {
+			fetchComments()			
+		}
+	}, [commentLimit])
 
 	useEffect(()=> {
 		showComments()
@@ -80,9 +89,9 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 	return(
 		<div className="topic__container">
 			<div className="topic__header">
-				<label>{ownerName}</label>
+				<label className="static__label">{ownerName}</label>
       	<br/>
-				<h1>{topic.attributes.topic_name}</h1>
+				<h1 className="static__label">{topic.attributes.topic_name}</h1>
 				{owner == true &&
 					<button className='topic__show-settings--button' onClick={showTopicSettings}><img src="/packs/media/packs/pages/homepage/topicboard/topic-settings-icon-888be188c27c65a4af51589ffef5291d.jpg"/></button>}
 				<div className='topic__settings'>

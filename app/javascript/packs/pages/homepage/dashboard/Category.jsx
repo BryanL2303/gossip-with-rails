@@ -69,7 +69,7 @@ const Category = ({category_id, reRenderPage, showCategoryboard}) => {
     <div id={category_id} className="category">
       <div className='category__label'>
         <button id={category_id} className='category__show--button' onClick={showCategoryboard}>
-          <label className='category__name'>{category}</label>
+          <label id={category_id} className='category__name'>{category}</label>
           <br/>
           <br/>
           <label id={category_id} className='category__description'>{description}</label>

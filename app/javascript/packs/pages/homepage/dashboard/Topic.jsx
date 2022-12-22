@@ -118,7 +118,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   return(
     <div id={topic_id} className="topic">
       <button id={topic_id} className='topic__show--button' onClick={showTopicboard}>
-        <label>{ownerName}</label>
+        <label id={topic_id}>{ownerName}</label>
         <br/>
         <label id={topic_id} className='topic__name'>{name}</label>
         <br/>
