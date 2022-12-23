@@ -31,7 +31,7 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 
 	useEffect(() =>{
 		if (commentCount == 0) {
-			fetchComments()			
+			fetchComments('updated_at')
 		}
 	}, [commentLimit])
 
@@ -57,8 +57,20 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 		}
 	}
 
-	function fetchComments() {
-    axios.get('/api/comment/' + topic_id + '/fetch_comments')
+	function openTopic() {
+		if (confirm("This will allow other users to leave comments and replies under this topic again.")) {
+			axios.post('/api/topic/' + topic_id + '/open_topic')
+		  .then(resp => {
+		  	fetchTopic(topic_id)
+		  })
+		  .catch(resp => console.log(resp))
+		}
+	}
+
+	function fetchComments(sort_by) {
+    axios.post('/api/comment/' + topic_id + '/fetch_comments', {
+    	sort_by: sort_by
+    })
     .then(resp => {
       setComments(resp.data.data)
     })
@@ -74,6 +86,20 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
       topicSettings.style['visibility'] = 'hidden'
     }
   }
+
+  function showSortOptions(e) {
+    let sortOptions = document.getElementsByClassName('sort__options')[0]
+    if (sortOptions.style['visibility'] == 'hidden') {
+      sortOptions.style['visibility'] = 'visible'
+    }
+    else {
+      sortOptions.style['visibility'] = 'hidden'
+    }
+  }
+
+  function sortComments(e) {
+		fetchComments(e.target.id)
+	}
 
   function showComments() {
     if (commentLimit >= 5) {
@@ -91,11 +117,15 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 			<div className="topic__header">
 				<label className="static__label">{ownerName}</label>
       	<br/>
-				<h1 className="static__label">{topic.attributes.topic_name}</h1>
+				<h1 className="static__label">{topic.attributes.topic_name} {active != true &&
+					<label>(CLOSED)</label>}</h1>			
 				{owner == true &&
 					<button className='topic__show-settings--button' onClick={showTopicSettings}><img src="/packs/media/packs/pages/homepage/topicboard/topic-settings-icon-888be188c27c65a4af51589ffef5291d.jpg"/></button>}
 				<div className='topic__settings'>
-					<button className="topic__close--button" onClick={closeTopic}>Close Topic</button>
+					{active == true && 
+						<button className="topic__close--button" onClick={closeTopic}>Close Topic</button>}
+					{active != true && 
+						<button className="topic__open--button" onClick={openTopic}>Open Topic</button>}
 				</div>
 			</div>
 
@@ -104,9 +134,18 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 			<div className="topic__comment-container">
 				{active == true && 
 					<CommentForm topic_id={topic_id} fetchComments={fetchComments}/>}
+				{active != true && 
+					<label>This topic has been closed by the owner, you can no longer leave any more comments on this topic.</label>}
 				
 				<div className='comments__container'>
 					<label>{topic.relationships.comments.data.length} Comment(s)</label>
+					<button className='comments__show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
+					<div className='sort__options' style={{visibility: 'hidden'}}>
+						<button id='updated_at' className="sort-option--button" onClick={sortComments}>Most Recent</button> 
+						<button id='upvote' className="sort-option--button" onClick={sortComments}>Most Upvoted</button>
+						<button id='downvote' className="sort-option--button" onClick={sortComments}>Most Downvoted</button>
+					</div>
+					
 					<br/>
 					<br/>
 	  			{comments.map((comment, count) => {

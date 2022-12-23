@@ -56,6 +56,25 @@
 		padding-right: 5px;
 	}
 
+	.topic__container .comments__show-sort--button{
+		border: none;
+		width: 8%;
+		background-color: inherit;
+	}
+
+	.topic__container .comments__show-sort--button:hover{
+		opacity: 0.5;
+	}
+
+	.topic__container .comments__show-sort--button img{
+		width: 35%;
+	}
+
+	.topic__container .sort__options{
+		margin-left: 20%;
+		margin-top: -3%;
+	}
+
 	.topic__comment-container{
 		height: 90%;
 		width: 100%;

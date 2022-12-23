@@ -12,11 +12,20 @@ Rails.application.routes.draw do
     resources :category do
       member do
         post '/create_category' => 'category#createCategory'
-        get '/fetch_categories' => 'category#fetchCategories'
-        get '/fetch_topics' => 'category#fetchTopics'
+        post '/fetch_categories' => 'category#fetchCategories'
+        post '/fetch_topics' => 'category#fetchTopics'
         post '/create_topic' => 'category#createTopic'
+        post '/upvote' => 'category#upvoteCategory'
+        post '/downvote' => 'category#downvoteCategory'
+        post '/open_category' => 'category#openCategory'
         post '/close_category' => 'category#closeCategory'
         post '/delete_category' => 'category#deleteCategory'
+      end
+    end
+
+    resources :category_vote do
+      member do
+        post '/check_vote' => 'category_vote#checkVote'
       end
     end
 
@@ -27,6 +36,7 @@ Rails.application.routes.draw do
         post '/upvote' => 'topic#upvoteTopic'
         post '/downvote' => 'topic#downvoteTopic'
         post '/close_topic' => 'topic#closeTopic'
+        post '/open_topic' => 'topic#openTopic'
         post '/delete_topic' => 'topic#deleteTopic'
       end
     end
@@ -51,7 +61,7 @@ Rails.application.routes.draw do
 
     resources :comment do
       member do
-        get '/fetch_comments' => 'comment#fetchComments'
+        post '/fetch_comments' => 'comment#fetchComments'
         post '/create_comment' => 'comment#createComment'
         post '/edit_comment' => 'comment#editComment'
         post '/upvote' => 'comment#upvoteComment'

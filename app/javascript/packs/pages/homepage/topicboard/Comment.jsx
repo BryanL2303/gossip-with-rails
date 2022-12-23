@@ -180,22 +180,23 @@ const Comment = ({comment_id, fetchComments, active}) => {
 
       <br/>
       <br/>
-      
+
+      <label>{upvote}</label>
+      <button id={comment_id} className='comment__upvote--button' onClick={upvoteComment}>
+        {currentVote != true && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+        {currentVote == true && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
+      </button>
+      <label>{downvote}</label>
+      <button id={comment_id} className='comment__downvote--button' onClick={downvoteComment}>
+        {currentVote != false && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+        {currentVote == false && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
+      </button>
+
       {active == true && owner == true &&
        <button className="show-edit__button" onClick={toggleEditor}>edit</button>}
       {owner == true &&
        <button className="delete-comment__button" onClick={deleteComment}>delete</button>}
 
-      <label>{upvote}</label>
-      <button id={comment_id} className='comment__upvote--button' onClick={upvoteComment}>
-        {currentVote != true && <img id={comment_id} src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
-        {currentVote == true && <img id={comment_id} src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
-      </button>
-      <label>{downvote}</label>
-      <button id={comment_id} className='comment__downvote--button' onClick={downvoteComment}>
-        {currentVote != false && <img id={comment_id} src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
-        {currentVote == false && <img id={comment_id} src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
-      </button>
       {active == true && <ReplyForm comment_id={comment_id} fetchComment={fetchComment}/>}
 
       <div className='replies__container'>

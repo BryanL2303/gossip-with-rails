@@ -8,6 +8,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   const [description, setDescription] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
+  const [active, setActive] = useState()
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [favourites, setFavourites] = useContext(FavouriteTopicsContext)
   const [currentVote, setCurrentVote] = useState()
@@ -31,6 +32,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         setDescription(resp.data.data.attributes.description)
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
+        setActive(resp.data.data.attributes.active)
         checkOwner(resp.data.data.attributes.gossip_account_id)
       }
     })
@@ -82,8 +84,6 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         account_id: accountState.id
     })
     .then(resp => {
-      setName(resp.data.data.attributes.topic_name)
-      setDescription(resp.data.data.attributes.description)
       setUpvote(resp.data.data.attributes.upvote)
       setDownvote(resp.data.data.attributes.downvote)
       if (currentVote == true) {
@@ -101,8 +101,6 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         account_id: accountState.id
     })
     .then(resp => {
-      setName(resp.data.data.attributes.topic_name)
-      setDescription(resp.data.data.attributes.description)
       setUpvote(resp.data.data.attributes.upvote)
       setDownvote(resp.data.data.attributes.downvote)
       if (currentVote == false) {
@@ -118,6 +116,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   return(
     <div id={topic_id} className="topic">
       <button id={topic_id} className='topic__show--button' onClick={showTopicboard}>
+        {active != true && <h4>(CLOSED)</h4>}
         <label id={topic_id}>{ownerName}</label>
         <br/>
         <label id={topic_id} className='topic__name'>{name}</label>
@@ -126,18 +125,18 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         <label id={topic_id} className='topic__description'>{description}</label>
       </button>
       <button id={topic_id} className='topic__save--button' onClick={saveTopic}>
-        {currentSave != true && <img id={topic_id} src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
-        {currentSave == true && <img id={topic_id} src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
+        {currentSave != true && <img id={topic_id} className='pin-blank--img' src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
+        {currentSave == true && <img id={topic_id} className='pin-shaded--img' src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
       </button>
       <label>{upvote}</label>
       <button id={topic_id} className='topic__upvote--button' onClick={upvoteTopic}>
-        {currentVote != true && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
-        {currentVote == true && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
+        {currentVote != true && <img id={topic_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+        {currentVote == true && <img id={topic_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
       </button>
       <label>{downvote}</label>
       <button id={topic_id} className='topic__downvote--button' onClick={downvoteTopic}>
-        {currentVote != false && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
-        {currentVote == false && <img id={topic_id} src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
+        {currentVote != false && <img id={topic_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+        {currentVote == false && <img id={topic_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
       </button>
     </div>
   )

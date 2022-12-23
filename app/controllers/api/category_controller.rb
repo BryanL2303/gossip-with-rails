@@ -5,7 +5,7 @@ module Api
 		def createCategory
 			category = Category.new(category: params[:category],
 			 description: params[:description], gossip_account_id: params[:account_id],
-			 private: false)
+			 active: true, upvote: 0, downvote: 0)
 			if category.save
 				render json: CategorySerializer.new(category).serialized_json
 			else
@@ -14,7 +14,7 @@ module Api
 		end
 
 		def fetchCategories
-			categories = Category.all.order('updated_at')
+			categories = Category.all.order(params[:sort_by])
 
 			render json: CategorySerializer.new(categories).serialized_json
 		end
@@ -22,7 +22,7 @@ module Api
 		def createTopic
 			topic = Topic.new(topic_name: params[:topic_name],
 			 description: params[:description], gossip_account_id: params[:account_id],
-			 active: true, category_id: params[:id])
+			 active: true, category_id: params[:id], upvote: 0, downvote: 0)
 			if topic.save
 				render json: TopicSerializer.new(topic).serialized_json
 			else
@@ -31,17 +31,27 @@ module Api
 		end
 
 		def fetchTopics
-			topics = Topic.where(category_id: params[:id]).order('updated_at')
+			topics = Topic.where(category_id: params[:id]).order(params[:sort_by])
 
 			render json: TopicSerializer.new(topics).serialized_json		
 		end
 
-		def closeTopic
-			topic = Topic.find_by(id: params[:id])
-			topic.active = false
-			topic.save
+		def closeCategory
+			category = Category.find_by(id: params[:id])
+			category.active = false
+			category.save
 
-			render json: TopicSerializer.new(topic).serialized_json
+			#Need to find a way to indicate to all topics that they are closed and cannot be opened
+
+			render json: CategorySerializer.new(category).serialized_json
+		end
+
+		def openCategory
+			category = Category.find_by(id: params[:id])
+			category.active = true
+			category.save
+
+			render json: CategorySerializer.new(category).serialized_json
 		end
 
 		def destroy
@@ -60,6 +70,56 @@ module Api
 
 		def show
 			category = Category.find_by(id: params[:id])
+
+			render json: CategorySerializer.new(category).serialized_json
+		end
+
+		def upvoteCategory
+			categoryVote = CategoryVote.where(gossip_account_id: params[:account_id],
+				category_id: params[:id])[0]
+			category = Category.find_by(id: params[:id])
+			if categoryVote == nil
+				category.upvote = category.upvote + 1
+				newCategoryVote = CategoryVote.new(gossip_account_id: params[:account_id],
+					category_id: params[:id], upvote: true)
+				newCategoryVote.save
+			else
+				if categoryVote.upvote == true
+					category.upvote = category.upvote - 1
+					categoryVote.destroy
+				else
+					categoryVote.upvote = true
+					categoryVote.save
+					category.upvote = category.upvote + 1
+					category.downvote = category.downvote - 1
+				end
+			end
+			category.save
+
+			render json: CategorySerializer.new(category).serialized_json
+		end
+
+		def downvoteCategory
+			categoryVote = CategoryVote.where(gossip_account_id: params[:account_id],
+				category_id: params[:id])[0]
+			category = Category.find_by(id: params[:id])
+			if categoryVote == nil
+				category.downvote = category.downvote + 1
+				newCategoryVote = CategoryVote.new(gossip_account_id: params[:account_id],
+					category_id: params[:id], upvote: false)
+				newCategoryVote.save
+			else
+				if categoryVote.upvote == false
+					category.downvote = category.downvote - 1
+					categoryVote.destroy
+				else
+					categoryVote.upvote = false
+					categoryVote.save
+					category.upvote = category.upvote - 1
+					category.downvote = category.downvote + 1
+				end
+			end
+			category.save
 
 			render json: CategorySerializer.new(category).serialized_json
 		end

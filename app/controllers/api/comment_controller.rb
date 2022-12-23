@@ -26,20 +26,20 @@ module Api
 		end
 
 		def fetchComments
-			comments = Comment.where(topic_id: params[:id]).order('updated_at')
+			comments = Comment.where(topic_id: params[:id]).order(params[:sort_by]).reverse_order()
 
 			render json: CommentSerializer.new(comments).serialized_json
 		end
 
 		def upvoteComment
 			commentVote = CommentVote.where(gossip_account_id: params[:account_id],
-				comment_id: params[:comment_id])[0]
+				comment_id: params[:id])[0]
 			comment = Comment.find_by(id: params[:id])
 			if commentVote == nil
 				comment.upvote = comment.upvote + 1
 				comment.save
 				newCommentVote = CommentVote.new(gossip_account_id: params[:account_id],
-					comment_id: params[:comment_id], upvote: true)
+					comment_id: params[:id], upvote: true)
 				newCommentVote.save
 			else
 				if commentVote.upvote == true
@@ -60,13 +60,13 @@ module Api
 
 		def downvoteComment
 			commentVote = CommentVote.where(gossip_account_id: params[:account_id],
-				comment_id: params[:comment_id])[0]
+				comment_id: params[:id])[0]
 			comment = Comment.find_by(id: params[:id])
 			if commentVote == nil
 				comment.downvote = comment.downvote + 1
 				comment.save
 				newCommentVote = CommentVote.new(gossip_account_id: params[:account_id],
-					comment_id: params[:comment_id], upvote: false)
+					comment_id: params[:id], upvote: false)
 				newCommentVote.save
 			else
 				if commentVote.upvote == false

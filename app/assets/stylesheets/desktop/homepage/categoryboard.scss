@@ -13,6 +13,32 @@
 		margin-left: 5%;
 	}
 
+	.categoryboard-container .category__show-settings--button{
+		position: absolute;
+		top: 6%;
+		right: 0px;
+		border: none;
+		height: 10%;
+		background: inherit;
+	}
+
+	.categoryboard-container .category__show-settings--button img{
+		height: 100%;
+	}
+
+	.categoryboard-container .category__settings{
+		visibility: hidden;
+		position:absolute;
+		top: 16%;
+		right: 0%;
+		z-index: 1000;
+		width: 10%;
+	}
+
+	.categoryboard-container .category__settings button{
+		width: 100%;
+	}
+
 	.categoryboard-container .topics-container{
 		position: relative;
 		height: 65%;
@@ -41,6 +67,25 @@
 
 	.category-topic-form button{
 		margin-left: 90%;
+	}
+
+	.topics__show-sort--button{
+		border: none;
+		width: 8%;
+		background-color: inherit;
+	}
+
+	.topics__show-sort--button:hover{
+		opacity: 0.5;
+	}
+
+	.topics__show-sort--button img{
+		width: 35%;
+	}
+
+	.sort__options{
+		margin-left: 20%;
+		margin-top: -3%;
 	}
 
 	.topic{
@@ -86,15 +131,27 @@
 		background-color: inherit;
 	}
 
-	.topic img{
+	.topic .thumb-blank--img{
 		width: 100%;
 	}
 
-	.topic__save--button img{
+	.topic .thumb-shaded--img{
+		width: 60%;
+	}
+
+	.topic__save--button .pin-blank--img{
+		width:25%;
+	}
+
+	.topic__save--button .pin-shaded--img{
 		width: 35%;
 	}
 
-	.topic button:hover{
+	.topic .topic__show--button:hover{
 		background-color: lightgrey;
+	}
+
+	.topic img:hover{
+		opacity: 0.5;
 	}
 }

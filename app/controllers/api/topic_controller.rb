@@ -14,7 +14,7 @@ module Api
 		end
 
 		def fetchTopics
-			topics = Topic.all.order('updated_at')
+			topics = Topic.all.order(params[:sort_by])
 
 			render json: TopicSerializer.new(topics).serialized_json
 		end
@@ -22,6 +22,14 @@ module Api
 		def closeTopic
 			topic = Topic.find_by(id: params[:id])
 			topic.active = false
+			topic.save
+
+			render json: TopicSerializer.new(topic).serialized_json
+		end
+
+		def openTopic
+			topic = Topic.find_by(id: params[:id])
+			topic.active = true
 			topic.save
 
 			render json: TopicSerializer.new(topic).serialized_json
