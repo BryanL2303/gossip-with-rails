@@ -2,6 +2,14 @@ module Api
 	class CategoryController < ApplicationController
 		protect_from_forgery with: :null_session
 
+		def activateAll
+			categories = Category.all
+			for category in categories
+				category.active = true
+				category.save
+			end
+		end
+
 		def createCategory
 			category = Category.new(category: params[:category],
 			 description: params[:description], gossip_account_id: params[:account_id],

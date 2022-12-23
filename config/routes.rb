@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         post '/open_category' => 'category#openCategory'
         post '/close_category' => 'category#closeCategory'
         post '/delete_category' => 'category#deleteCategory'
+        get '/fix' => 'category#activateAll'
       end
     end
 
