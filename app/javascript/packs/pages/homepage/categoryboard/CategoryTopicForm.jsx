@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
 
-const CategoryTopicForm = ({category_id, reRenderTopics}) => {
+const CategoryTopicForm = ({category_id, reRenderPage}) => {
   const [accountState, setAccountState] = useContext(AccountStateContext)
 
   function submitForm(e) {
@@ -17,7 +17,7 @@ const CategoryTopicForm = ({category_id, reRenderTopics}) => {
       account_id: accountState.id
     })
     .then(resp => {
-      reRenderTopics()
+      reRenderPage()
       document.getElementsByClassName('category-topic-form__topic')[0].value = ''
       document.getElementsByClassName('category-topic-form__description')[0].value = ""
     })

@@ -17,15 +17,13 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
 
   useEffect(() => {
     checkOwner(category.attributes.gossip_account_id)
-  }, [])
-
-  useEffect(() => {
-    checkOwner(category.attributes.gossip_account_id)
     setCategoryName(category.attributes.category)
     setDescription(category.attributes.description)
     setTopicLimit(category.relationships.topics.data.length)
     setActive(category.attributes.active)
     setOwner(accountState.id == category.attributes.gossip_account_id)
+    setTopicCount(0)
+    setTopicLimit(category.relationships.topics.data.length)
   }, [category])
 
   useEffect(() => {
@@ -35,7 +33,9 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
   }, [topicLimit])
 
   useEffect(() => {
-    showTopics()
+    if (topicCount == 0) {
+      showTopics()
+    }
   }, [topicListState])  
 
   function checkOwner(gossip_account_id) {
@@ -57,7 +57,9 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
   }
 
   function reRenderPage() {
-    fetchTopics()
+    setTopicCount(topicCount + 1)
+    category.relationships.topics.data.length = category.relationships.topics.data.length + 1
+    fetchTopics('updated_at')
   }
 
   function showCategorySettings(e) {
@@ -137,7 +139,7 @@ const Categoryboard = ({category, showTopicboard, showCategoryboard}) => {
 
       <label className="static__label">{description}</label>
 
-      <CategoryTopicForm category_id={category.id} reRenderTopics={fetchTopics}/>
+      <CategoryTopicForm category_id={category.id} reRenderPage={reRenderPage}/>
 
       <div className= 'topics-container'>
         <label className="static__label">{category.relationships.topics.data.length} Topic(s)</label>

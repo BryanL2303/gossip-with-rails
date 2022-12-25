@@ -2,7 +2,7 @@ import React, { useState,useEffect, useContext } from 'react'
 import axios from 'axios'
 import {AccountStateContext} from '../context/AccountStateContext'
 
-const CommentForm = ({topic_id, fetchComments}) => {
+const CommentForm = ({topic_id, reRenderComments}) => {
 	const [displayForm, setDisplayForm] = useState(false)
 	const [accountState, setAccountState] = useContext(AccountStateContext)
 
@@ -34,7 +34,7 @@ const CommentForm = ({topic_id, fetchComments}) => {
 	    	account_id: accountState.id
 	  	})
 	  	.then(resp => {
-	    	fetchComments()
+	    	reRenderComments()
 	    	document.getElementsByClassName('form__comment')[0].focus()
 	    	document.getElementsByClassName('form__comment')[0].value = ''
 	  	})

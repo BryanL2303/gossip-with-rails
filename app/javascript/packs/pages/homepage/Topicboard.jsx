@@ -18,15 +18,12 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
-  }, [])
-  
-  useEffect(()=> {
-  	checkOwner(topic.attributes.gossip_account_id)
 		setDescription(topic.attributes.description)
 		setTopic_Id(topic.attributes.id)
-		setCommentLimit(topic.relationships.comments.data.length)
 		setActive(topic.attributes.active)
 		setOwner(accountState.id == topic.attributes.gossip_account_id)
+		setCommentCount(0)
+		setCommentLimit(topic.relationships.comments.data.length)
 	}, [topic])
 
 	useEffect(() =>{
@@ -36,7 +33,9 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 	}, [commentLimit])
 
 	useEffect(()=> {
-		showComments()
+		if (commentCount == 0) {
+			showComments()
+		}
 	}, [comments])
 
 	function checkOwner(gossip_account_id) {
@@ -75,6 +74,12 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
       setComments(resp.data.data)
     })
     .catch(resp => console.log(resp))
+  }
+
+  function reRenderComments() {
+  	setCommentCount(commentCount + 1)
+  	topic.relationships.comments.data.length = topic.relationships.comments.data.length + 1
+  	fetchComments('updated_at')
   }
 
   function showTopicSettings(e) {
@@ -133,7 +138,7 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 			
 			<div className="topic__comment-container">
 				{active == true && 
-					<CommentForm topic_id={topic_id} fetchComments={fetchComments}/>}
+					<CommentForm topic_id={topic_id} reRenderComments={reRenderComments}/>}
 				{active != true && 
 					<label>This topic has been closed by the owner, you can no longer leave any more comments on this topic.</label>}
 				
