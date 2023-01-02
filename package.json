@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/BryanL2303/gossip-with-rails#readme",
   "dependencies": {
-    "@babel/core": "7.0.0",
+    "@babel/core": "^7.20.7",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
@@ -47,6 +47,6 @@
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "3"
+    "webpack-dev-server": "^4.11.1"
   }
 }
