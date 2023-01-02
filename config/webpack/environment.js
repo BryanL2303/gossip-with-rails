@@ -9,8 +9,13 @@ const customConfig = {
       tls: false,
       child_process: false
     }
+  },
+  optimization: {
+    sideEffects: false
   }
 };
+
+module.exports = environment;
 
 environment.config.delete('node.dgram')
 environment.config.delete('node.fs')
