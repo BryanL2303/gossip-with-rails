@@ -1,0 +1,96 @@
+@media screen{
+	.community-table{
+		width: 95%;
+		margin-top: 1%;
+	}
+
+	.communities-container{
+		position: relative;
+		height: 65vh;
+		width: 100%;
+		margin-top: 1%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		scroll-behavior: auto;
+	}
+
+	.community_sort__options{
+		margin-left: 20%;
+		margin-top: -3%;
+	}
+
+	.community-form input{
+		width: 100%
+	}
+
+	.community{
+		width: 90%;
+		margin-bottom: 2%;
+		border: none;
+	}
+
+	.community__show--button{
+		text-align:left;
+		height: auto;
+		width: 100%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.community .label{
+		width: 100%;
+	}
+
+	.community .category__tag{
+		margin: 1%;
+		background-color: lightblue;
+	}
+
+	.community__save--button{
+		text-align:center;
+		height: 100%;
+		width: 10%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.community__upvote--button{
+		text-align:center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.community__downvote--button{
+		text-align: center;
+		height: 100%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.thumb-blank--img{
+		width: 100%;
+	}
+
+	.thumb-shaded--img{
+		width: 60%;
+	}
+
+	.pin-blank--img{
+		width:25%;
+	}
+
+	.pin-shaded--img{
+		width: 35%;
+	}
+
+	.community .community__show--button:hover{
+		background-color: lightgrey;
+	}
+
+	.community img:hover{
+		opacity: 0.5;
+	}
+}

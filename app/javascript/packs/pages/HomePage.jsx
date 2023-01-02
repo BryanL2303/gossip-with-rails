@@ -3,14 +3,15 @@ import axios from 'axios'
 import {TopBar} from './homepage/TopBar'
 import {SideBar} from './homepage/SideBar'
 import {Dashboard} from './homepage/Dashboard'
-import {Categoryboard} from './homepage/Categoryboard'
+import {Communityboard} from './homepage/Communityboard'
 import {Topicboard} from './homepage/Topicboard'
 import {AccountStateContext} from './homepage/context/AccountStateContext'
 import {HomePageStateContext} from './homepage/context/HomePageStateContext'
 import {CurrentDisplayTopicContext} from './homepage/context/CurrentDisplayTopicContext'
-import {CurrentDisplayCategoryContext} from './homepage/context/CurrentDisplayCategoryContext'
+import {CurrentDisplayCommunityContext} from './homepage/context/CurrentDisplayCommunityContext'
 import {TopicListProvider} from './homepage/context/TopicListContext'
 import {PinnedCategoriesProvider} from './homepage/context/PinnedCategoriesContext'
+import {PinnedCommunitiesProvider} from './homepage/context/PinnedCommunitiesContext'
 import {FavouriteTopicsProvider} from './homepage/context/FavouriteTopicsContext'
 
 const HomePage = () => {
@@ -21,18 +22,23 @@ const HomePage = () => {
 
   //Both states used to render components of main block
   const [currentDisplayTopicState, setCurrentDisplayTopicState] = useContext(CurrentDisplayTopicContext)
-  const [currentDisplayCategoryState, setCurrentDisplayCategoryState] = useContext(CurrentDisplayCategoryContext)
+  const [currentDisplayCommunityState, setCurrentDisplayCommunityState] = useContext(CurrentDisplayCommunityContext)
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [homePageState, setHomePageState] = useContext(HomePageStateContext)
+  const [category_id, setCategoryID] = useState()
 
   //Renders the dashboard
   function showDashboard(e) {
     setHomePageState("dashboard")
   }
 
+  function filterCategory(e) {
+    setCategoryID(e.target.id)
+  }
+
   //Starts the process to render the category board
-  function showCategoryboard(e) {
-    fetchCategory(e.target.id)
+  function showCommunityboard(e) {
+    fetchCommunity(e.target.id)
   }
 
   //Starts the process to render the topic board
@@ -40,23 +46,23 @@ const HomePage = () => {
     fetchTopic(e.target.id)
   }
 
-  //Gets the information of the topic to be rendered
+  //Gets the information of the community to be rendered
   //from the database.
-  function fetchCategory(category_id) {
-    axios.get('/api/category/' + category_id)
+  function fetchCommunity(community_id) {
+    axios.get('/api/community/' + community_id)
     .then(resp => {
-      setCurrentDisplayCategoryState(resp.data.data)
+      setCurrentDisplayCommunityState(resp.data.data)
     })
     .catch(resp => console.log(resp))
   }
 
   //Waits for the category state to be set before rendering components
   useEffect(() => {
-    if (currentDisplayCategoryState != null &&
-     currentDisplayCategoryState != 'undefined') {
-      setHomePageState("category")
+    if (currentDisplayCommunityState != null &&
+     currentDisplayCommunityState != 'undefined') {
+      setHomePageState("community")
     }
-  }, [currentDisplayCategoryState])
+  }, [currentDisplayCommunityState])
 
   //Gets the information of the topic to be rendered
   //from the database.
@@ -79,15 +85,17 @@ const HomePage = () => {
   return(
     <TopicListProvider>
     <PinnedCategoriesProvider>
+    <PinnedCommunitiesProvider>
     <FavouriteTopicsProvider>
     <div className='homepage-container'>
       <TopBar/>
-      <SideBar showDashboard={showDashboard} showCategoryboard={showCategoryboard} showTopicboard={showTopicboard}/>
-      {homePageState=="dashboard" && <Dashboard showTopicboard={showTopicboard} showCategoryboard={showCategoryboard}/>}
-      {homePageState=="category" && <Categoryboard category={currentDisplayCategoryState} fetchTopic={fetchTopic} showCategoryboard={showCategoryboard} showTopicboard={showTopicboard}/>}
-      {homePageState=="topic" && <Topicboard topic={currentDisplayTopicState} fetchTopic={fetchTopic} showCategoryboard={showCategoryboard}/>}
+      <SideBar showDashboard={showDashboard} filterCategory={filterCategory} showCommunityboard={showCommunityboard} showTopicboard={showTopicboard}/>
+      {homePageState=="dashboard" && <Dashboard showTopicboard={showTopicboard} filterCategory={filterCategory} showCommunityboard={showCommunityboard} category_id={category_id}/>}
+      {homePageState=="community" && <Communityboard community={currentDisplayCommunityState} fetchTopic={fetchTopic} showCommunityboard={showCommunityboard} showTopicboard={showTopicboard}/>}
+      {homePageState=="topic" && <Topicboard topic={currentDisplayTopicState} fetchTopic={fetchTopic} showCommunityboard={showCommunityboard}/>}
     </div>
     </FavouriteTopicsProvider>
+    </PinnedCommunitiesProvider>
     </PinnedCategoriesProvider>
     </TopicListProvider>
   )

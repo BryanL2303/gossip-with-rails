@@ -1,8 +1,9 @@
 class TopicSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :topic_name, :description, :gossip_account_id, :id, :active, :upvote, :downvote, :category_id
+  attributes :topic_name, :topic_description, :gossip_account_id, :id, :active, :upvote, :downvote
 
   belongs_to :gossip_account
-  belongs_to :category
   has_many :comments
+  has_many :categories, join_table: 'topic_category_tags'
+  has_many :communities, join_table: 'topic_community_tags'
 end

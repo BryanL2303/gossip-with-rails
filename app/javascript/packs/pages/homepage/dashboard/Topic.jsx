@@ -14,6 +14,8 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   const [currentVote, setCurrentVote] = useState()
   const [currentSave, setCurrentSave] = useState()
   const [ownerName, setOwnerName] = useState()
+  const [categoryTag, setCategoryTag] = useState([])
+  const [communityTag, setCommunityTag] = useState([])
 
   useEffect(() => {
     fetchTopic()
@@ -33,6 +35,8 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
         setActive(resp.data.data.attributes.active)
+        setCategoryTag(resp.data.data.relationships.categories.data)
+        setCommunityTag(resp.data.data.relationships.communities.data)
         checkOwner(resp.data.data.attributes.gossip_account_id)
       }
     })
@@ -59,7 +63,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   }
 
   function checkSave() {
-    axios.post('/api/favourite/' + accountState.id + '/check_save', {
+    axios.post('/api/pinned_topic/' + accountState.id + '/check_save', {
       topic_id: topic_id
     })
     .then(resp => {
@@ -69,7 +73,7 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   }
 
   function saveTopic(e) {
-    axios.post('/api/favourite/' + accountState.id + '/save_topic', {
+    axios.post('/api/pinned_topic/' + accountState.id + '/save_topic', {
         topic_id: topic_id
     })
     .then(resp => {
@@ -113,6 +117,30 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
     .catch(resp => console.log(resp))
   }
 
+  const CategoryTag = ({category_id}) => {
+    const [category, setCategory] = useState()
+    axios.get('/api/category/' + category_id)
+    .then(resp => {
+      setCategory(resp.data.data.attributes.category_name)
+    })
+    .catch(resp => console.log(resp))
+    return (
+      <label className="category__tag">{category}</label>
+    )
+  }
+
+  const CommunityTag = ({community_id}) => {
+    const [community, setCommunity] = useState()
+    axios.get('/api/community/' + community_id)
+    .then(resp => {
+      setCommunity(resp.data.data.attributes.community_name)
+    })
+    .catch(resp => console.log(resp))
+    return (
+      <label className="community__tag">{community}</label>
+    )
+  }
+
   return(
     <div id={topic_id} className="topic">
       <button id={topic_id} className='topic__show--button' onClick={showTopicboard}>
@@ -120,6 +148,16 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
         <label id={topic_id}>{ownerName}</label>
         <br/>
         <label id={topic_id} className='topic__name'>{name}</label>
+        {categoryTag.map((category) => {
+          return(
+            <CategoryTag key={"category" + category.id}  category_id={category.id}/>
+          )
+        })}
+        {communityTag.map((community) => {
+          return(
+            <CommunityTag key={"community" + community.id}  community_id={community.id}/>
+          )
+        })}
         <br/>
         <br/>
         <label id={topic_id} className='topic__description'>{description}</label>

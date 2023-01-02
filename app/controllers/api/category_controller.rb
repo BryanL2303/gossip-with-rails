@@ -3,9 +3,9 @@ module Api
 		protect_from_forgery with: :null_session
 
 		def createCategory
-			category = Category.new(category: params[:category],
-			 description: params[:description], gossip_account_id: params[:account_id],
-			 active: true, upvote: 0, downvote: 0)
+			category = Category.new(category_name: params[:category_name],
+			 category_description: params[:category_description],
+			 upvote: 0, downvote: 0)
 			if category.save
 				render json: CategorySerializer.new(category).serialized_json
 			else
@@ -21,7 +21,8 @@ module Api
 
 		def createTopic
 			topic = Topic.new(topic_name: params[:topic_name],
-			 description: params[:description], gossip_account_id: params[:account_id],
+			 topic_description: params[:topic_description],
+			 gossip_account_id: params[:account_id],
 			 active: true, category_id: params[:id], upvote: 0, downvote: 0)
 			if topic.save
 				render json: TopicSerializer.new(topic).serialized_json
@@ -129,7 +130,7 @@ module Api
 			@options ||= { include: %i{topics}}
 		end
 		def category_param
-			params.require(:category).permit(:id, :category, :description)
+			params.require(:category).permit(:id, :category_name, :category_description)
 		end
 	end
 end

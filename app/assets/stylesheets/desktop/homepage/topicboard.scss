@@ -1,16 +1,8 @@
-@media screen and (min-width: 950px){
+@media screen{
 	.topic__container{
 		height: 100%;
 		width: 75%;
 		margin-left: 25%;
-	}
-
-	.topic__container .static__label{
-		margin-left: 5%;
-	}
-
-	.topic__container .topic__description{
-		margin-left: 5%;
 	}
 
 	.topic__container .topic__header{
@@ -82,7 +74,6 @@
 		overflow-y: auto;
 		border: none;
 		margin-top: 3%;
-		margin-left: 5%;
 		padding-left: 5px;
 	}
 

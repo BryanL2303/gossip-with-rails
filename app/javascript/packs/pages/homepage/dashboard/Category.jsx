@@ -3,17 +3,15 @@ import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
 import { PinnedCategoriesContext } from '../context/PinnedCategoriesContext'
 
-const Category = ({category_id, reRenderPage, showCategoryboard}) => {
+const Category = ({category_id, reRenderPage, filterCategory}) => {
   const [category, setCategory] = useState()
   const [description, setDescription] = useState()
   const [currentVote, setCurrentVote] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
-  const [active, setActive] = useState()
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [pinnedCategories, setPinnedCategories] = useContext(PinnedCategoriesContext)
   const [currentSave, setCurrentSave] = useState()
-  const [ownerName, setOwnerName] = useState()
   
   useEffect(() => {
     fetchCategory()
@@ -28,21 +26,11 @@ const Category = ({category_id, reRenderPage, showCategoryboard}) => {
         reRenderPage()
       }
       else {
-        setCategory(resp.data.data.attributes.category)
-        setDescription(resp.data.data.attributes.description)
+        setCategory(resp.data.data.attributes.category_name)
+        setDescription(resp.data.data.attributes.category_description)
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
-        setActive(resp.data.data.attributes.active)
-        checkOwner(resp.data.data.attributes.gossip_account_id)
       }
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkOwner(gossip_account_id) {
-    axios.get('/api/gossip_account/' + gossip_account_id)
-    .then(resp => {
-      setOwnerName(resp.data.data.attributes.account_name)
     })
     .catch(resp => console.log(resp))
   }
@@ -115,20 +103,20 @@ const Category = ({category_id, reRenderPage, showCategoryboard}) => {
 
   return(
     <div id={category_id} className="category">
-      <button id={category_id} className='category__show--button' onClick={showCategoryboard}>
-        {active != true && <h4>(CLOSED)</h4>}
-        <label id={category_id}>{ownerName}</label>
-        <br/>
+      <button id={category_id} className='category__show--button' onClick={filterCategory}>
         <label id={category_id} className='category__name'>{category}</label>
-        <br/>
-        <br/>
-        <label id={category_id} className='category__description'>{description}</label>
       </button>
-      <button id={category_id} className='category__save--button' onClick={saveCategory}>
+    </div>
+  )
+  /*
+  Pin button for categories
+    <button id={category_id} className='category__save--button' onClick={saveCategory}>
         {currentSave != true && <img id={category_id} className='pin-blank--img' src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
         {currentSave == true && <img id={category_id} className='pin-shaded--img' src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
       </button>
-      <label>{upvote}</label>
+
+  Upvote and downvote button for Categories, temporarily removed  
+    <label>{upvote}</label>
       <button id={category_id} className='category__upvote--button' onClick={upvoteCategory}>
         {currentVote != true && <img id={category_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
         {currentVote == true && <img id={category_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
@@ -138,8 +126,7 @@ const Category = ({category_id, reRenderPage, showCategoryboard}) => {
         {currentVote != false && <img id={category_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
         {currentVote == false && <img id={category_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
       </button>
-    </div>
-  )
+  */
 }
 
   export {Category}

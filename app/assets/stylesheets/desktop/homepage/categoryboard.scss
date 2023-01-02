@@ -1,5 +1,5 @@
-@media screen and (min-width: 950px){
-	.categoryboard-container{
+@media screen{
+	.communityboard-container{
 		height: 95%;
 		width: 75%;
 		position: absolute;
@@ -9,11 +9,7 @@
 		overflow-y: auto;
 	}
 
-	.categoryboard-container .static__label{
-		margin-left: 5%;
-	}
-
-	.categoryboard-container .category__show-settings--button{
+	.communityboard-container .community__show-settings--button{
 		position: absolute;
 		top: 6%;
 		right: 0px;
@@ -22,11 +18,11 @@
 		background: inherit;
 	}
 
-	.categoryboard-container .category__show-settings--button img{
+	.communityboard-container .community__show-settings--button img{
 		height: 100%;
 	}
 
-	.categoryboard-container .category__settings{
+	.communityboard-container .community__settings{
 		visibility: hidden;
 		position:absolute;
 		top: 16%;
@@ -35,123 +31,16 @@
 		width: 10%;
 	}
 
-	.categoryboard-container .category__settings button{
+	.communityboard-container .community__settings button{
 		width: 100%;
 	}
 
-	.categoryboard-container .topics-container{
+	.communityboard-container .topics-container{
 		position: relative;
 		height: 65%;
 		width: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
 		scroll-behavior: auto;
-	}
-
-	.category-topic-form{
-		margin-top: 2%;
-		margin-left: 5%;
-		width: 90%;
-		text-align: center;
-	}
-
-	.category-topic-form .category-topic-form__topic{
-		height: 20px;
-		width: 100%;
-	}
-
-	.category-topic-form .category-topic-form__description{
-		height: 20px;
-		width: 100%;
-	}
-
-	.category-topic-form button{
-		margin-left: 90%;
-	}
-
-	.topics__show-sort--button{
-		border: none;
-		width: 8%;
-		background-color: inherit;
-	}
-
-	.topics__show-sort--button:hover{
-		opacity: 0.5;
-	}
-
-	.topics__show-sort--button img{
-		width: 35%;
-	}
-
-	.sort__options{
-		margin-left: 20%;
-		margin-top: -3%;
-	}
-
-	.topic{
-		width: 90%;
-		margin-bottom: 2%;
-		margin-left: 5%;
-		border: none;
-	}
-
-	.topic__show--button{
-		text-align:left;
-		height: auto;
-		width: 100%;
-		border: none;
-		background-color: inherit;
-	}
-
-	.topic .label{
-		width: 100%;
-	}
-
-	.topic__save--button{
-		text-align:center;
-		height: 100%;
-		width: 10%;
-		border: none;
-		background-color: inherit;
-	}
-
-	.topic__upvote--button{
-		text-align:center;
-		height: 100%;
-		width: 5%;
-		border: none;
-		background-color: inherit;
-	}
-
-	.topic__downvote--button{
-		text-align: center;
-		height: 100%;
-		width: 5%;
-		border: none;
-		background-color: inherit;
-	}
-
-	.topic .thumb-blank--img{
-		width: 100%;
-	}
-
-	.topic .thumb-shaded--img{
-		width: 60%;
-	}
-
-	.topic__save--button .pin-blank--img{
-		width:25%;
-	}
-
-	.topic__save--button .pin-shaded--img{
-		width: 35%;
-	}
-
-	.topic .topic__show--button:hover{
-		background-color: lightgrey;
-	}
-
-	.topic img:hover{
-		opacity: 0.5;
 	}
 }

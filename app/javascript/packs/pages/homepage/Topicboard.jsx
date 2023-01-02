@@ -6,7 +6,7 @@ import {AccountStateContext} from './context/AccountStateContext'
 import {TopicListContext} from './context/TopicListContext'
 
 const Topicboard = ({topic, showDashboard, fetchTopic}) => {
-	const [description, setDescription] = useState(topic.attributes.description)
+	const [description, setDescription] = useState(topic.attributes.topic_description)
   const [topic_id, setTopic_Id] = useState(topic.attributes.id)
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [comments, setComments] = useState([])
@@ -18,7 +18,7 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
-		setDescription(topic.attributes.description)
+		setDescription(topic.attributes.topic_description)
 		setTopic_Id(topic.attributes.id)
 		setActive(topic.attributes.active)
 		setOwner(accountState.id == topic.attributes.gossip_account_id)

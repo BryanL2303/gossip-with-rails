@@ -17,8 +17,7 @@ const CategoryButton = ({category_id, showCategoryboard}) => {
         console.log("This category was deleted, add function to remove from pinned")
       }
       else {
-        setCategory(resp.data.data.attributes.category)
-        sessionStorage.setItem(`category${category_id}`, JSON.stringify(resp.data.data.attributes))
+        setCategory(resp.data.data.attributes.category_name)
       }
     })
     .catch(resp => console.log(resp))

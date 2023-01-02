@@ -1,32 +1,32 @@
 import React, { useState, useEffect, useContext } from 'react'
+import Select from 'react-select'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
 
-const NewCategoryForm = ({reRenderCategories}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
-
+const NewCategoryForm = () => {
   function submitForm(e) {
     e.preventDefault()
     postCreateCategory(e.target)
   }
 
+  function updateTags(e) {
+    setTags(e)
+  }
+
   function postCreateCategory(form) {
     axios.post('/api/category/0/create_category', {
-      category: form[0].value,
-      description: form[1].value,
-      account_id: accountState.id
+      category_name: form[0].value,
+      category_description: form[1].value
     })
     .then(resp => {
-      reRenderCategories()
       document.getElementsByClassName('category-form__category')[0].value = ''
-      document.getElementsByClassName('category-form__description')[0].value = ""
     })
     .catch(resp => console.log(resp))
   }
 
   return(
     <form className='category-form' onSubmit={submitForm}>
-      <label>Create Your Own Category Here!</label>
+      <label>Create New Category</label>
+      <br/>
       <input className='category-form__category' placeholder='Add a new category...'></input>
       <input className='category-form__description' placeholder='Add a short description...'></input>
       <button>Create New Category</button>

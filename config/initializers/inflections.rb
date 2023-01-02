@@ -16,6 +16,4 @@
 # end
 
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.irregular 'reply', 'replys'
-  inflect.irregular 'category', 'categories'
 end
