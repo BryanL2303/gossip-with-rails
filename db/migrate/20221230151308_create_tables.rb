@@ -1,17 +1,5 @@
 class CreateTables < ActiveRecord::Migration[7.0]
   def change
-    drop_table :gossip_accounts
-    drop_table :categories
-    drop_table :topics
-    drop_table :comments
-    drop_table :replys
-    drop_table :favourites
-    drop_table :pinned_categories
-    drop_table :topic_votes
-    drop_table :comment_votes
-    drop_table :reply_votes
-    drop_table :category_votes
-
     create_table :gossip_accounts do |t|
       t.string :account_name
       t.string :password

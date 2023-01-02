@@ -10,13 +10,13 @@ module Api
 			community.save
 			if params[:categories] != []
 				begin
-					category_tag = TopicCategoryTag.new(category_id: params[:categories]['value'],
-						topic_id: topic.id)
+					category_tag = CategoryTag.new(category_id: params[:categories]['value'],
+						community_id: community.id)
 					category_tag.save
 				rescue
 					for category in params[:categories]
-						category_tag = TopicCategoryTag.new(category_id: category['value'],
-						 topic_id: topic.id)
+						category_tag = CategoryTag.new(category_id: category['value'],
+						 community_id: community.id)
 						category_tag.save
 					end					
 				end
