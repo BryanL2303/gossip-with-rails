@@ -51,14 +51,52 @@ module Api
 			render json: TopicSerializer.new(topics).serialized_json		
 		end
 
-		def destroy
-			account = GossipAccount.find_by(id: params[:account_id])
-			comments = Comment.where(topic_id: topic.id)
-			comments.destroy_all
-			#Loop through comments to destroy all replies
-			topic = Topic.find_by(id: params[:topic_id])
+		def editCommunity
+			community = Community.find_by(id: params[:id])
+			community.community_name = params[:community_name]
+			community.community_description = params[:community_description]
+			community.save
 
-			if topic.destroy
+			category_tags = CategoryTag.where(community_id: params[:id])
+			category_tags.destroy_all
+			if params[:categories] != []
+				begin
+					category_tag = CategoryTag.new(category_id: params[:categories]['value'],
+						community_id: community.id)
+					category_tag.save
+				rescue
+					for category in params[:categories]
+						category_tag = CategoryTag.new(category_id: category['value'],
+						 community_id: community.id)
+						category_tag.save
+					end					
+				end
+			end
+		end
+
+		def deleteCommunity
+			topics = Topic.belongs_to_community(params[:id])
+			for topic in topics
+				comments = Comment.where(topic_id: topic.id)
+				for comment in comments
+					replies = Reply.where(comment_id: comment.id)
+					replies.destroy_all
+				end
+				comments.destroy_all
+
+				category_tags = TopicCategoryTag.where(topic_id: topic.id)
+				category_tags.destroy_all
+				community_tags = TopicCommunityTag.where(topic_id: topic.id)
+				community_tags.destroy_all
+				topic.destroy
+			end
+
+			category_tags = CategoryTag.where(community_id: params[:id])
+			category_tags.destroy_all
+
+			community = Community.find_by(id: params[:id])
+
+			if community.destroy
 				head :no_content
 			else
 				render json: {error: account.errors.messages}, status: 422

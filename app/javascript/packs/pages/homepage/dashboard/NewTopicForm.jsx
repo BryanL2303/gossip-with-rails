@@ -5,14 +5,15 @@ import { AccountStateContext } from '../context/AccountStateContext'
 
 const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
   const [accountState, setAccountState] = useContext(AccountStateContext)
-  const [communities, setCommunities] = useState([])
+  const [community_name, setCommunityName] = useState()
   const [categories, setCategories] = useState([])
   const [categoryTags, setCategoryTags] = useState([])
-  const [communityTags, setCommunityTags] = useState([])
 
   useEffect(() =>{
     fetchCategories('updated_at')
-    fetchCommunities('updated_at')
+    if (community_id != null) {
+      fetchCommunity()
+    }
   }, [])
 
   function fetchCategories(sort_by) {
@@ -29,16 +30,10 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
     .catch(resp => console.log(resp))
   }
 
-  function fetchCommunities(sort_by) {
-    axios.post('/api/community/0/fetch_communities', {
-      sort_by: sort_by
-    })
+  function fetchCommunity() {
+    axios.get('/api/community/' + community_id)
     .then(resp => {
-      let data = []
-      resp.data.data.map((community) => {
-        data.push({value: community.attributes.id, label: community.attributes.community_name})
-      })
-      setCommunities(data)
+      setCommunityName(resp.data.data.attributes.community_name)
     })
     .catch(resp => console.log(resp))
   }
@@ -52,17 +47,13 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
     setCategoryTags(e)
   }
 
-  function updateCommunityTags(e) {
-    setCommunityTags(e)
-  }
-
   function postCreateTopic(form) {
     axios.post('/api/topic/0/create_topic', {
       topic_name: form[0].value,
       topic_description: form[1].value,
       account_id: accountState.id,
       categories: categoryTags,
-      communities: communityTags
+      communities: community_id
     })
     .then(resp => {
       reRenderTopics()
@@ -80,7 +71,7 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
       <br/>
       <input className='topic-form__description' placeholder='topic_description'></input>
       <br/>
-      {community_id == null && <label>Related Categories(This community will be classified under these categories):</label>}
+      {community_id == null && <label>Related Categories(This topic will be classified under these categories):</label>}
       {community_id == null && <Select
         defaultValue={[categories[0]]}
         isMulti
@@ -89,14 +80,8 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
         onChange={updateCategoryTags}
         className="topic-form__categories"
       />}
-      {community_id != null && <label>Community:</label>}
-      {community_id != null && <Select
-        defaultValue={[communities[0]]}
-        name="colors"
-        options={communities}
-        onChange={updateCommunityTags}
-        className="topic-form__communities"
-      />}
+      {community_id != null && <label>Community: {community_name}</label>}
+      {community_id != null && <br/>}
       <button>Create New Topic</button>
     </form>
   )

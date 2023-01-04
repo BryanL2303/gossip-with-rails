@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post '/create_topic' => 'community#createTopic'
         post '/upvote' => 'community#upvoteCommunity'
         post '/downvote' => 'community#downvoteCommunity'
+        post '/edit_community' => 'community#editCommunity'
         post '/delete_community' => 'community#deleteCommunity'
       end
     end
@@ -41,8 +42,7 @@ Rails.application.routes.draw do
         post '/fetch_topics' => 'topic#fetchTopics'
         post '/upvote' => 'topic#upvoteTopic'
         post '/downvote' => 'topic#downvoteTopic'
-        post '/close_topic' => 'topic#closeTopic'
-        post '/open_topic' => 'topic#openTopic'
+        post '/edit_topic' => 'topic#editTopic'
         post '/delete_topic' => 'topic#deleteTopic'
       end
     end

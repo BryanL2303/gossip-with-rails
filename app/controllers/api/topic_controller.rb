@@ -43,22 +43,6 @@ module Api
 			render json: TopicSerializer.new(topics).serialized_json
 		end
 
-		def closeTopic
-			topic = Topic.find_by(id: params[:id])
-			topic.active = false
-			topic.save
-
-			render json: TopicSerializer.new(topic).serialized_json
-		end
-
-		def openTopic
-			topic = Topic.find_by(id: params[:id])
-			topic.active = true
-			topic.save
-
-			render json: TopicSerializer.new(topic).serialized_json
-		end
-
 		def upvoteTopic
 			topicVote = TopicVote.where(gossip_account_id: params[:account_id],
 				topic_id: params[:id])[0]
@@ -114,13 +98,44 @@ module Api
 				render json: {error: topic.errors.messages}, status: 422
 			end
 		end
+		
+		def editTopic
+			topic = Topic.find_by(id: params[:id])
+			topic.topic_name = params[:topic_name]
+			topic.topic_description = params[:topic_description]
+			topic.save
 
-		def destroy
-			account = GossipAccount.find_by(id: params[:account_id])
-			comments = Comment.where(topic_id: topic.id)
+			category_tags = TopicCategoryTag.where(topic_id: params[:id])
+			category_tags.destroy_all
+			if params[:categories] != []
+				begin
+					category_tag = TopicCategoryTag.new(category_id: params[:categories]['value'],
+						topic_id: topic.id)
+					category_tag.save
+				rescue
+					for category in params[:categories]
+						category_tag = TopicCategoryTag.new(category_id: category['value'],
+						 topic_id: topic.id)
+						category_tag.save
+					end					
+				end
+			end
+		end
+
+		def deleteTopic
+			comments = Comment.where(topic_id: params[:id])
+			for comment in comments
+				replies = Reply.where(comment_id: comment.id)
+				replies.destroy_all
+			end
 			comments.destroy_all
-			#Loop through comments to destroy all replies
-			topic = Topic.find_by(id: params[:topic_id])
+
+			category_tags = TopicCategoryTag.where(topic_id: params[:id])
+			category_tags.destroy_all
+			community_tags = TopicCommunityTag.where(topic_id: params[:id])
+			community_tags.destroy_all
+
+			topic = Topic.find_by(id: params[:id])
 
 			if topic.destroy
 				head :no_content

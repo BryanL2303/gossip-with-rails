@@ -8,7 +8,6 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   const [description, setDescription] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
-  const [active, setActive] = useState()
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [favourites, setFavourites] = useContext(FavouriteTopicsContext)
   const [currentVote, setCurrentVote] = useState()
@@ -31,10 +30,9 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
       }
       else {
         setName(resp.data.data.attributes.topic_name)
-        setDescription(resp.data.data.attributes.description)
+        setDescription(resp.data.data.attributes.topic_description)
         setUpvote(resp.data.data.attributes.upvote)
         setDownvote(resp.data.data.attributes.downvote)
-        setActive(resp.data.data.attributes.active)
         setCategoryTag(resp.data.data.relationships.categories.data)
         setCommunityTag(resp.data.data.relationships.communities.data)
         checkOwner(resp.data.data.attributes.gossip_account_id)
@@ -144,7 +142,6 @@ const Topic = ({topic_id, reRenderPage, showTopicboard}) => {
   return(
     <div id={topic_id} className="topic">
       <button id={topic_id} className='topic__show--button' onClick={showTopicboard}>
-        {active != true && <h4>(CLOSED)</h4>}
         <label id={topic_id}>{ownerName}</label>
         <br/>
         <label id={topic_id} className='topic__name'>{name}</label>

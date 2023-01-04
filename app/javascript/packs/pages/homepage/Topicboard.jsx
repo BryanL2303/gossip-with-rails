@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
+import Select from 'react-select'
 import axios from 'axios'
+import {TopicEditor} from './topicboard/TopicEditor'
 import {Comment} from './topicboard/Comment'
 import {CommentForm} from './topicboard/CommentForm'
 import {AccountStateContext} from './context/AccountStateContext'
@@ -12,18 +14,25 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
   const [comments, setComments] = useState([])
   const [commentCount, setCommentCount] = useState(0)
   const [commentLimit, setCommentLimit] = useState(topic.relationships.comments.data.length)
-  const [active, setActive] = useState(topic.attributes.active)
   const [owner, setOwner] = useState(accountState.id == topic.attributes.gossip_account_id)
   const [ownerName, setOwnerName] = useState()
+  const [displayEditor, setDisplayEditor] = useState(false)
+  const [categoryTag, setCategoryTag] = useState([])
+  const [communityTag, setCommunityTag] = useState([])
+
+  useEffect(() => {
+    fetchTopic(topic.attributes.id)
+  }, [])
 
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
 		setDescription(topic.attributes.topic_description)
 		setTopic_Id(topic.attributes.id)
-		setActive(topic.attributes.active)
 		setOwner(accountState.id == topic.attributes.gossip_account_id)
 		setCommentCount(0)
 		setCommentLimit(topic.relationships.comments.data.length)
+		setCategoryTag(topic.relationships.categories.data)
+    setCommunityTag(topic.relationships.communities.data)
 	}, [topic])
 
 	useEffect(() =>{
@@ -46,21 +55,20 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
     .catch(resp => console.log(resp))
   }
 
-	function closeTopic() {
-		if (confirm("This will prevent anyone else from leaving any more comments or replies under this topic, but users will still be able to read existing comments.")) {
-			axios.post('/api/topic/' + topic_id + '/close_topic')
-		  .then(resp => {
-		  	fetchTopic(topic_id)
-		  })
-		  .catch(resp => console.log(resp))
-		}
-	}
+	function toggleEditor(e) {
+    if (displayEditor == true) {
+      setDisplayEditor(false)
+    }
+    else {
+      setDisplayEditor(true)
+    }
+  }
 
-	function openTopic() {
-		if (confirm("This will allow other users to leave comments and replies under this topic again.")) {
-			axios.post('/api/topic/' + topic_id + '/open_topic')
+	function deleteTopic() {
+		if (confirm("This will permanently delete the topic as well as all the comments within it from the website.")) {
+			axios.post('/api/topic/' + topic_id + '/delete_topic')
 		  .then(resp => {
-		  	fetchTopic(topic_id)
+		  	showDashboard()
 		  })
 		  .catch(resp => console.log(resp))
 		}
@@ -117,30 +125,62 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
     }
   }
 
+  const CategoryTag = ({category_id}) => {
+    const [category, setCategory] = useState()
+    axios.get('/api/category/' + category_id)
+    .then(resp => {
+      setCategory(resp.data.data.attributes.category_name)
+    })
+    .catch(resp => console.log(resp))
+    return (
+      <label className="category__tag">{category}</label>
+    )
+  }
+
+  const CommunityTag = ({community_id}) => {
+    const [community, setCommunity] = useState()
+    axios.get('/api/community/' + community_id)
+    .then(resp => {
+      setCommunity(resp.data.data.attributes.community_name)
+    })
+    .catch(resp => console.log(resp))
+    return (
+      <label className="community__tag">{community}</label>
+    )
+  }
+
 	return(
 		<div className="topic__container">
 			<div className="topic__header">
-				<label className="static__label">{ownerName}</label>
-      	<br/>
-				<h1 className="static__label">{topic.attributes.topic_name} {active != true &&
-					<label>(CLOSED)</label>}</h1>			
+				{displayEditor == false &&
+        <div>
+          <label className="static__label">{ownerName}</label>
+          <br/>
+          <h1 className="static__label">{topic.attributes.topic_name}</h1>
+          {categoryTag.map((category) => {
+          	return(
+            	<CategoryTag key={"category" + category.id}  category_id={category.id}/>
+          	)
+        	})}
+        	{communityTag.map((community) => {
+         	 	return(
+            	<CommunityTag key={"community" + community.id} community_id={community.id}/>
+          	)
+        	})}
+        	<br/>
+        	<label className="topic__description">{description}</label>
+        </div>}
+      	{displayEditor == true && <TopicEditor topic={topic} communityTag={communityTag} toggleEditor={toggleEditor} fetchTopic={fetchTopic}/>}
 				{owner == true &&
 					<button className='topic__show-settings--button' onClick={showTopicSettings}><img src="/packs/media/packs/pages/homepage/topicboard/topic-settings-icon-888be188c27c65a4af51589ffef5291d.jpg"/></button>}
 				<div className='topic__settings'>
-					{active == true && 
-						<button className="topic__close--button" onClick={closeTopic}>Close Topic</button>}
-					{active != true && 
-						<button className="topic__open--button" onClick={openTopic}>Open Topic</button>}
+					<button className="topic__edit--button" onClick={toggleEditor}>Edit Topic</button>
+					<button className="topic__delete--button" onClick={deleteTopic}>Delete Topic</button>
 				</div>
 			</div>
-
-			<label className="topic__description">{description}</label>
 			
 			<div className="topic__comment-container">
-				{active == true && 
-					<CommentForm topic_id={topic_id} reRenderComments={reRenderComments}/>}
-				{active != true && 
-					<label>This topic has been closed by the owner, you can no longer leave any more comments on this topic.</label>}
+				<CommentForm topic_id={topic_id} reRenderComments={reRenderComments}/>
 				
 				<div className='comments__container'>
 					<label>{topic.relationships.comments.data.length} Comment(s)</label>
