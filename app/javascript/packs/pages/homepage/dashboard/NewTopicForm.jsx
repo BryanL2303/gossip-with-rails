@@ -53,7 +53,7 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
       topic_description: form[1].value,
       account_id: accountState.id,
       categories: categoryTags,
-      communities: community_id
+      community_id: community_id
     })
     .then(resp => {
       reRenderTopics()

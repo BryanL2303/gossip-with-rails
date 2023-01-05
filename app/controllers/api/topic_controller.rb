@@ -21,8 +21,8 @@ module Api
 					end					
 				end
 			end
-			if params[:communities] != []
-				community_tag = TopicCommunityTag.new(community_id: params[:communities]['value'],
+			if params[:community_id] != nil
+				community_tag = TopicCommunityTag.new(community_id: params[:community_id],
 				topic_id: topic.id)
 				community_tag.save
 			end
@@ -31,12 +31,12 @@ module Api
 
 		def fetchTopics
 			if params[:category_id] != nil and params[:category_id] != ''
-				topics = Topic.belongs_to_category(params[:category_id]).order(params[:sort_by]).limit(params[:count])
+				topics = Topic.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
 			else
 				if params[:community_id] != nil and params[:community_id] != ''
-					topics = Topic.belongs_to_community(params[:community_id]).order(params[:sort_by]).limit(params[:count])
+					topics = Topic.belongs_to_community(params[:community_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
 				else
-					topics = Topic.all.order(params[:sort_by]).limit(params[:count])
+					topics = Topic.all.order(params[:sort_by]).reverse_order().limit(params[:count])
 				end
 			end
 

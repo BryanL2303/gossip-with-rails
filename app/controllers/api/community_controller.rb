@@ -26,9 +26,9 @@ module Api
 
 		def fetchCommunities
 			if params[:category_id] != nil and params[:category_id] != ''
-				communities = Community.belongs_to_category(params[:category_id]).order(params[:sort_by]).limit(params[:count])
+				communities = Community.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
 			else
-				communities = Community.all.order(params[:sort_by]).limit(params[:count])
+				communities = Community.all.order(params[:sort_by]).reverse_order().limit(params[:count])
 			end
 
 			render json: CommunitySerializer.new(communities).serialized_json
