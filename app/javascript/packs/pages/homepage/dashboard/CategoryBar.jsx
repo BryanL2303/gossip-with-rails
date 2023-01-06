@@ -16,7 +16,7 @@ const CategoryBar = ({filterCategory, category_id}) => {
   useEffect(() => {
     setCategoryLimit(categoriesState.length)
     categoriesState.map((category) => {
-      sessionStorage.setItem(`category${category.attributes.id}`, category)
+      sessionStorage.setItem(`category${category.attributes.id}`, JSON.stringify(category))
     })
   }, [categoriesState])
 
