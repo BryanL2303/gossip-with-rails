@@ -9,10 +9,9 @@ import {AccountStateContext} from './homepage/context/AccountStateContext'
 import {HomePageStateContext} from './homepage/context/HomePageStateContext'
 import {CurrentDisplayTopicContext} from './homepage/context/CurrentDisplayTopicContext'
 import {CurrentDisplayCommunityContext} from './homepage/context/CurrentDisplayCommunityContext'
-import {TopicListProvider} from './homepage/context/TopicListContext'
 import {PinnedCategoriesProvider} from './homepage/context/PinnedCategoriesContext'
 import {PinnedCommunitiesProvider} from './homepage/context/PinnedCommunitiesContext'
-import {FavouriteTopicsProvider} from './homepage/context/FavouriteTopicsContext'
+import {PinnedTopicsProvider} from './homepage/context/PinnedTopicsContext'
 
 const HomePage = () => {
   //If there is no ongoing session go to login page
@@ -83,10 +82,9 @@ const HomePage = () => {
   }, [currentDisplayTopicState])
 
   return(
-    <TopicListProvider>
     <PinnedCategoriesProvider>
     <PinnedCommunitiesProvider>
-    <FavouriteTopicsProvider>
+    <PinnedTopicsProvider>
     <div className='homepage-container'>
       <TopBar/>
       <SideBar showDashboard={showDashboard} filterCategory={filterCategory} showCommunityboard={showCommunityboard} showTopicboard={showTopicboard}/>
@@ -94,10 +92,9 @@ const HomePage = () => {
       {homePageState=="community" && <Communityboard community={currentDisplayCommunityState} showDashboard={showDashboard} showTopicboard={showTopicboard} fetchCommunity={fetchCommunity}/>}
       {homePageState=="topic" && <Topicboard topic={currentDisplayTopicState} fetchTopic={fetchTopic} showCommunityboard={showCommunityboard}/>}
     </div>
-    </FavouriteTopicsProvider>
+    </PinnedTopicsProvider>
     </PinnedCommunitiesProvider>
     </PinnedCategoriesProvider>
-    </TopicListProvider>
   )
 }
 

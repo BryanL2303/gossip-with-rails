@@ -4,7 +4,7 @@ import {Reply} from './Reply'
 import {ReplyForm} from './ReplyForm'
 import { AccountStateContext } from '../context/AccountStateContext'
 
-const Comment = ({comment_id, fetchComments, active}) => {
+const Comment = ({comment_id, fetchComments}) => {
   const [comment, setComment] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
@@ -192,12 +192,11 @@ const Comment = ({comment_id, fetchComments, active}) => {
         {currentVote == false && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
       </button>
 
-      {active == true && owner == true &&
-       <button className="show-edit__button" onClick={toggleEditor}>edit</button>}
+      <button className="show-edit__button" onClick={toggleEditor}>edit</button>
       {owner == true &&
        <button className="delete-comment__button" onClick={deleteComment}>delete</button>}
 
-      {active == true && <ReplyForm comment_id={comment_id} fetchComment={fetchComment}/>}
+      <ReplyForm comment_id={comment_id} fetchComment={fetchComment}/>
 
       <div className='replies__container'>
         {replies.map((reply, count) => {

@@ -139,8 +139,8 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
         <label id={community_id} className='community__description'>{description}</label>
       </button>
       <button id={community_id} className='community__save--button' onClick={pinCommunity}>
-        {currentSave != true && <img id={community_id} className='pin-blank--img' src="/packs/media/packs/pages/homepage/pin_blank-7afa001d80f1a72e309b9e85e64b9d65.png"/>}
-        {currentSave == true && <img id={community_id} className='pin-shaded--img' src="/packs/media/packs/pages/homepage/pin_shaded-36106135ca2b44d70ec97d1574b53da2.jpg"/>}
+        {currentSave != true && <img id={community_id} className='pin-blank--img' src="/packs/media/packs/pages/homepage/blank-pin-bd3f3a74667f30e91af391147cc3a4d3.png"/>}
+        {currentSave == true && <img id={community_id} className='pin-shaded--img' src="/packs/media/packs/pages/homepage/shaded-pin-e1f0e749cdfdc1e190e0f23dbf1ed3c3.png"/>}
       </button>
       <label>{upvote}</label>
       <button id={community_id} className='community__upvote--button' onClick={upvoteCommunity}>

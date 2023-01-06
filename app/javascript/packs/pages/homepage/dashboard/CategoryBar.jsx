@@ -15,6 +15,9 @@ const CategoryBar = ({filterCategory, category_id}) => {
 
   useEffect(() => {
     setCategoryLimit(categoriesState.length)
+    categoriesState.map((category) => {
+      sessionStorage.setItem(`category${category.attributes.id}`, category)
+    })
   }, [categoriesState])
 
   useEffect(() => {
@@ -63,21 +66,22 @@ const CategoryBar = ({filterCategory, category_id}) => {
       <br/>
       <label className="category-count">{categoriesState.length} Categories</label>
       <div className= 'categories-container'>
-        <div id={null} className="category">
-          <button id={null} className='category__show--button' onClick={filterCategory}>
-            <label id={null} className='category__name'>All</label>
-          </button>
-        </div>
+        {category_id != null && <div id={null} className="category">
+          <button id={null} className='category__show--button' onClick={filterCategory}>All</button>
+        </div>}
+        {category_id == null && <div id={null} className="category">
+          <label id={null} className='category__name'>All</label>
+        </div>}
 
         {categoriesState.map((category, count) => {
           if (count < categoryCount) {
-            if (category.id == category_id) {
+            if (category.attributes.id == category_id) {
               return(
-                <label key={"categoryfilter" + category.id}>{category.category_name}</label>
+                <label key={"categoryfilter" + category.id}>{category.attributes.category_name}</label>
               )
             } else {
               return(
-                <Category key={"categoryfilter" + category.id} category_id={category.id} filterCategory={filterCategory}/>
+                <Category key={"categoryfilter" + category.id} category_id={category.attributes.id} filterCategory={filterCategory}/>
               )
             }
           }

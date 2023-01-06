@@ -24,11 +24,21 @@ module Api
 			render json: CommunitySerializer.new(community).serialized_json			
 		end
 
+		def checkCommunityLimit
+			if params[:category_id] != nil and params[:category_id] != ''
+				communities = Community.belongs_to_category(params[:category_id])
+			else
+				communities = Community.all
+			end
+
+			render json: communities.length
+		end
+
 		def fetchCommunities
 			if params[:category_id] != nil and params[:category_id] != ''
-				communities = Community.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
+				communities = Community.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count]).offset(params[:offset])
 			else
-				communities = Community.all.order(params[:sort_by]).reverse_order().limit(params[:count])
+				communities = Community.all.order(params[:sort_by]).reverse_order().limit(params[:count]).offset(params[:offset])
 			end
 
 			render json: CommunitySerializer.new(communities).serialized_json

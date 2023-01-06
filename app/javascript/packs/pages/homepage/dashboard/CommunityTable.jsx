@@ -7,16 +7,26 @@ import {AccountStateContext} from '../context/AccountStateContext'
 const CommunityTable = ({showCommunityboard, category_id}) => {
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [communitiesState, setCommunitiesState] = useState([])
+  const [sortBy, setSortBy] = useState('updated_at')
   const [communityCount, setCommunityCount] = useState(0)
+  const [offset, setOffset] = useState(0)
   const [communityLimit, setCommunityLimit] = useState(0)
 
   useEffect(() => {
-    fetchCommunities('updated_at')
+    setCommunityCount(0)
+    setOffset(0)
+    setCommunitiesState([])
+    checkCommunityLimit()
   }, [category_id])
 
   useEffect(() => {
-    setCommunityLimit(communitiesState.length)
-  }, [communitiesState])
+    if (communityCount != 0) {
+      fetchCommunities()
+    }
+    else {
+      showCommunities()
+    }
+  }, [communityCount])
 
   useEffect(() => {
     if (communityCount == 0) {
@@ -24,20 +34,37 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
     }
   }, [communityLimit])
 
-  function fetchCommunities(sort_by) {
-    axios.post('/api/community/0/fetch_communities', {
-      sort_by: sort_by,
+  function checkCommunityLimit() {
+    axios.post('/api/community/0/check_community_limit', {
       category_id: category_id
     })
     .then( resp => {
-      setCommunitiesState(resp.data.data)
+      setCommunityLimit(resp.data)
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function fetchCommunities() {
+    axios.post('/api/community/0/fetch_communities', {
+      sort_by: sortBy,
+      category_id: category_id,
+      offset: offset,
+      count: (communityCount - offset)
+    })
+    .then( resp => {
+      let data = communitiesState.slice()
+      resp.data.data.map((community) => {
+        data.push(community)
+      })
+      setCommunitiesState(data)
     })
     .catch(resp => console.log(resp))
   }
 
   function reRenderCommunities() {
     setCommunityCount(0)
-    fetchCommunities('updated_at')
+    setCommunitiesState([])
+    checkCommunityLimit()
   }
 
   function showSortOptions(e) {
@@ -51,17 +78,19 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
   }
 
   function sortCommunities(e) {
-    fetchCommunities(e.target.id)
+    setSortBy(e.target.id)
+    setCommunitiesState([])
+    setOffset(0)
+    setCommunityCount(0)
   }
 
   function showCommunities() {
-    if (communityLimit >= 5) {
-      setCommunityLimit(communityLimit - 5)
+    setOffset(communityCount)
+    if ((communityLimit - communityCount) >= 5) {
       setCommunityCount(communityCount + 5)
     }
     else {
-      setCommunityCount(communityCount + communityLimit)
-      setCommunityLimit(0)
+      setCommunityCount(communityLimit)
     }
   }
 
@@ -71,7 +100,7 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
 
       <NewCommunityForm reRenderCommunities={reRenderCommunities}/>
 
-      <label className="community-count">{communitiesState.length} Community(ies)</label>
+      <label className="community-count">{communityLimit} Community(ies)</label>
       <button className='show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
       <div className='community_sort__options' style={{visibility: 'hidden'}}>
         <button id='updated_at' className="sort-option--button" onClick={sortCommunities}>Most Recent</button> 
@@ -81,14 +110,12 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
       <br/>
   
       <div className= 'communities-container'>
-        {communitiesState.map((community, count) => {
-          if (count < communityCount) {
-            return(
-              <Community key={community.id} community_id={community.id} showCommunityboard={showCommunityboard}/>
-            )
-          }
+        {communitiesState.map((community) => {
+          return(
+            <Community key={community.id} community_id={community.id} showCommunityboard={showCommunityboard}/>
+          )
         })}
-        {communityLimit > 0 &&
+        {communityLimit != communityCount &&
           <button className='show-communities--button' onClick={showCommunities}>Load More Communities</button>}
       </div>
     </div>

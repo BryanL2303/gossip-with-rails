@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :community do
       member do
         post '/create_community' => 'community#createCommunity'
+        post '/check_community_limit' => 'community#checkCommunityLimit'
         post '/fetch_communities' => 'community#fetchCommunities'
         post '/fetch_topics' => 'community#fetchTopics'
         post '/create_topic' => 'community#createTopic'
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
     resources :topic do
       member do
         post '/create_topic' => 'topic#createTopic'
+        post '/check_topic_limit' => 'topic#checkTopicLimit'
         post '/fetch_topics' => 'topic#fetchTopics'
         post '/upvote' => 'topic#upvoteTopic'
         post '/downvote' => 'topic#downvoteTopic'

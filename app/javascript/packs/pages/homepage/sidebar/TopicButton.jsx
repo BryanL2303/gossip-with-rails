@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
-import { FavouriteTopicsContext } from '../context/FavouriteTopicsContext'
+import { PinnedTopicsContext } from '../context/PinnedTopicsContext'
 
 const TopicButton = ({topic_id, showTopicboard}) => {
   const [topic, setTopic] = useState()
   const [accountState, setAccountState] = useContext(AccountStateContext)
-  const [favourites, setFavourites] = useContext(FavouriteTopicsContext)
+  const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
 
   useEffect(() => {
     fetchTopic()
@@ -20,7 +20,6 @@ const TopicButton = ({topic_id, showTopicboard}) => {
       }
       else {
         setTopic(resp.data.data.attributes.topic_name)
-        sessionStorage.setItem(`topic${topic_id}`, JSON.stringify(resp.data.data.attributes))
       }
     })
     .catch(resp => console.log(resp))

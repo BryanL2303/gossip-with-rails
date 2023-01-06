@@ -196,7 +196,7 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 	  			{comments.map((comment, count) => {
           	if (count < commentCount) {
             	return(
-              	<Comment key={`comment${comment.id}`} comment_id={comment.id} fetchComments={fetchComments} active={active}/>
+              	<Comment key={`comment${comment.id}`} comment_id={comment.id} fetchComments={fetchComments}/>
             	)
           	}
         	})}

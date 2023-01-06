@@ -29,14 +29,28 @@ module Api
 			render json: TopicSerializer.new(topic).serialized_json	
 		end
 
-		def fetchTopics
+		def checkTopicLimit
 			if params[:category_id] != nil and params[:category_id] != ''
-				topics = Topic.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
+				topics = Topic.belongs_to_category(params[:category_id])
 			else
 				if params[:community_id] != nil and params[:community_id] != ''
-					topics = Topic.belongs_to_community(params[:community_id]).order(params[:sort_by]).reverse_order().limit(params[:count])
+					topics = Topic.belongs_to_community(params[:community_id])
 				else
-					topics = Topic.all.order(params[:sort_by]).reverse_order().limit(params[:count])
+					topics = Topic.all
+				end
+			end
+
+			render json: topics.length
+		end
+
+		def fetchTopics
+			if params[:category_id] != nil and params[:category_id] != ''
+				topics = Topic.belongs_to_category(params[:category_id]).order(params[:sort_by]).reverse_order().limit(params[:count]).offset(params[:offset])
+			else
+				if params[:community_id] != nil and params[:community_id] != ''
+					topics = Topic.belongs_to_community(params[:community_id]).order(params[:sort_by]).reverse_order().limit(params[:count]).offset(params[:offset])
+				else
+					topics = Topic.all.order(params[:sort_by]).reverse_order().limit(params[:count]).offset(params[:offset])
 				end
 			end
 

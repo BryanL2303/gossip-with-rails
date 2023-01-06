@@ -3,7 +3,7 @@ import axios from 'axios'
 import {AccountStateContext} from './context/AccountStateContext'
 import {PinnedCategoriesContext} from './context/PinnedCategoriesContext'
 import {PinnedCommunitiesContext} from './context/PinnedCommunitiesContext'
-import {FavouriteTopicsContext} from './context/FavouriteTopicsContext'
+import {PinnedTopicsContext} from './context/PinnedTopicsContext'
 import {CategoryButton} from './sidebar/CategoryButton'
 import {CommunityButton} from './sidebar/CommunityButton'
 import {TopicButton} from './sidebar/TopicButton'
@@ -12,12 +12,12 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
   const [accountState, setAccountState] = useContext(AccountStateContext)
   const [pinnedCategories, setPinnedCategories] = useContext(PinnedCategoriesContext)
   const [pinnedCommunities, setPinnedCommunities] = useContext(PinnedCommunitiesContext)
-  const [favouriteTopics, setFavouriteTopics] = useContext(FavouriteTopicsContext)
+  const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
 
   useEffect(() => {
     fetchPinnedCategories()
     fetchPinnedCommunities()
-    fetchFavouriteTopics()
+    fetchPinnedTopics()
   }, [])
 
   function fetchPinnedCategories() {
@@ -36,10 +36,10 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
     .catch(resp => console.log(resp))
   }
 
-  function fetchFavouriteTopics() {
+  function fetchPinnedTopics() {
     axios.post('/api/pinned_topic/' + accountState.id + '/fetch_topics')
     .then(resp => {
-      setFavouriteTopics(resp.data.data)
+      setPinnedTopics(resp.data.data)
     })
     .catch(resp => console.log(resp))
   }
@@ -60,7 +60,7 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
         <br/>
 
         <label>Pinned Topics</label>
-        {favouriteTopics.map((topic) => {
+        {pinnedTopics.map((topic) => {
           return(
             <TopicButton key={topic.id} topic_id={topic.attributes.topic_id} showTopicboard={showTopicboard}/>
           )
