@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import Popup from 'reactjs-popup';
 import Select from 'react-select'
 import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
@@ -64,26 +65,26 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
   }
 
   return(
-    <form className='topic-form' onSubmit={submitForm}>
-      <label>Create Your Own Topic Here!</label>
-      <br/>
-      <input className='topic-form__topic' placeholder='topic_name'></input>
-      <br/>
-      <input className='topic-form__description' placeholder='topic_description'></input>
-      <br/>
-      {community_id == null && <label>Related Categories(This topic will be classified under these categories):</label>}
-      {community_id == null && <Select
-        defaultValue={[categories[0]]}
-        isMulti
-        name="colors"
-        options={categories}
-        onChange={updateCategoryTags}
-        className="topic-form__categories"
-      />}
-      {community_id != null && <label>Community: {community_name}</label>}
-      {community_id != null && <br/>}
-      <button>Create New Topic</button>
-    </form>
+    <Popup trigger={<button> Create Your Own Topic Here!</button>} position="right center">
+      <form className='topic-form' onSubmit={submitForm}>
+        <input className='topic-form__topic' placeholder='topic_name'></input>
+        <br/>
+        <input className='topic-form__description' placeholder='topic_description'></input>
+        <br/>
+        {community_id == null && <label>Related Categories(This topic will be classified under these categories):</label>}
+        {community_id == null && <Select
+          defaultValue={[categories[0]]}
+          isMulti
+          name="colors"
+          options={categories}
+          onChange={updateCategoryTags}
+          className="topic-form__categories"
+        />}
+        {community_id != null && <label>Community: {community_name}</label>}
+        {community_id != null && <br/>}
+          <button>Create New Topic</button>
+      </form>
+    </Popup>
   )
 }
 

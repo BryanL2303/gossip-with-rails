@@ -24,6 +24,13 @@ module Api
 			if params[:community_id] != nil
 				community_tag = TopicCommunityTag.new(community_id: params[:community_id],
 				topic_id: topic.id)
+				community = Community.find_by(id: params[:community_id])
+				replier = GossipAccount.find_by(id: params[:account_id])
+				message = replier.account_name + " has created a new topic in the community " + community.community_name + "!"
+				notification = Notification.new(message: message,
+					gossip_account_id: community.gossip_account_id,
+					tag: 'topic', topic_id: topic.id)
+				notification.save
 				community_tag.save
 			end
 			render json: TopicSerializer.new(topic).serialized_json	

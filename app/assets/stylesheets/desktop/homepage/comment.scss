@@ -47,7 +47,7 @@
 		opacity: 0.5;
 	}
 
-	.replies__container .show-replies--button{
+	.replies__container .replies__container .show-replies--button{
 		background: none;
 		border: none;
 		color: blue;
@@ -57,7 +57,7 @@
 		opacity: 0.8;
 	}
 
-	.reply__container{
+	.replies__container .reply__container{
 		margin: 1%;
 		box-shadow: black;
 	}

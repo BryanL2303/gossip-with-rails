@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext} from 'react'
 import Select from 'react-select'
 import axios from 'axios'
 import {AccountStateContext} from '../context/AccountStateContext'
-import {TopicListContext} from '../context/TopicListContext'
 
 const TopicEditor = ({topic, communityTag, toggleEditor, fetchTopic}) => {
   const [categories, setCategories] = useState([])

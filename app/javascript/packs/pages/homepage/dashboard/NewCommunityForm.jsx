@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
+import Popup from 'reactjs-popup';
 import Select from 'react-select'
 import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
@@ -51,23 +52,23 @@ const NewCommunityForm = ({reRenderCommunities}) => {
   }
 
   return(
-    <form className='community-form' onSubmit={submitForm}>
-      <label>Create Your Own Community Here!</label>
-      <br/>
-      <input className='community-form__community' placeholder='Add a new community...'></input>
-      <br/>
-      <input className='community-form__description' placeholder='Add a short description...'></input>
-      <label>Related Categories(This community will be classified under these categories):</label>
-      <Select
-        defaultValue={[categories[0]]}
-        isMulti
-        name="colors"
-        options={categories}
-        onChange={updateTags}
-        className="community-form__categories"
-      />
-      <button>Create New Community</button>
-    </form>
+    <Popup trigger={<button>Create Your Own Community Here!</button>} position="right center">
+      <form className='community-form' onSubmit={submitForm}>
+        <input className='community-form__community' placeholder='Add a new community...'></input>
+        <br/>
+        <input className='community-form__description' placeholder='Add a short description...'></input>
+        <label>Related Categories(This community will be classified under these categories):</label>
+        <Select
+          defaultValue={[categories[0]]}
+          isMulti
+          name="colors"
+          options={categories}
+          onChange={updateTags}
+          className="community-form__categories"
+        />
+        <button>Create New Community</button>
+      </form>
+    </Popup>
   )
 }
 

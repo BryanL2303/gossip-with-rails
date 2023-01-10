@@ -4,7 +4,7 @@ import {Reply} from './Reply'
 import {ReplyForm} from './ReplyForm'
 import { AccountStateContext } from '../context/AccountStateContext'
 
-const Comment = ({comment_id, fetchComments}) => {
+const Comment = ({comment_id, fetchComments, notification}) => {
   const [comment, setComment] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
@@ -174,42 +174,46 @@ const Comment = ({comment_id, fetchComments}) => {
       <label>{ownerName}</label>
       <br/>
       {displayEditor == false && <label>{comment}</label>}
-      {displayEditor == true && <Editor/>}
-      {edited == true && owner == true &&
+      
+      {notification == null && <div>
+        {displayEditor == true && <Editor/>}
+        {edited == true && owner == true &&
           <label className='edited__tag'>(edited)</label>}
 
-      <br/>
-      <br/>
+        <br/>
+        <br/>
 
-      <label>{upvote}</label>
-      <button id={comment_id} className='comment__upvote--button' onClick={upvoteComment}>
-        {currentVote != true && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
-        {currentVote == true && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
-      </button>
-      <label>{downvote}</label>
-      <button id={comment_id} className='comment__downvote--button' onClick={downvoteComment}>
-        {currentVote != false && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
-        {currentVote == false && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
-      </button>
+        <label>{upvote}</label>
+        <button id={comment_id} className='comment__upvote--button' onClick={upvoteComment}>
+          {currentVote != true && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+          {currentVote == true && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
+        </button>
+        <label>{downvote}</label>
+        <button id={comment_id} className='comment__downvote--button' onClick={downvoteComment}>
+          {currentVote != false && <img id={comment_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+          {currentVote == false && <img id={comment_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
+        </button>
 
-      <button className="show-edit__button" onClick={toggleEditor}>edit</button>
-      {owner == true &&
-       <button className="delete-comment__button" onClick={deleteComment}>delete</button>}
+        {owner == true &&
+          <button className="show-edit__button" onClick={toggleEditor}>edit</button>}
+        {owner == true &&
+          <button className="delete-comment__button" onClick={deleteComment}>delete</button>}
 
-      <ReplyForm comment_id={comment_id} fetchComment={fetchComment}/>
+        <ReplyForm comment_id={comment_id} fetchComment={fetchComment}/>
 
-      <div className='replies__container'>
-        {replies.map((reply, count) => {
-          if (count < replyCount) {
-            return(
-              <Reply key={reply.id} reply_id={reply.id} fetchComment={fetchComment} active={active}/>
-            )
-          }
-        })}
-        {replyLimit > 0 &&
-          <button className='show-replies--button' onClick={showReplies}>Show {replyLimit} Replies</button>}
-      </div>
-      <br/>
+        <div className='replies__container'>
+          {replies.map((reply, count) => {
+            if (count < replyCount) {
+              return(
+                <Reply key={reply.id} reply_id={reply.id} fetchComment={fetchComment}/>
+              )
+            }
+          })}
+          {replyLimit > 0 &&
+            <button className='show-replies--button' onClick={showReplies}>Show {replyLimit} Replies</button>}
+        </div>
+        <br/>
+      </div>}
     </div>
   )
 }

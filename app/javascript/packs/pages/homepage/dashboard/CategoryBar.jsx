@@ -31,6 +31,7 @@ const CategoryBar = ({filterCategory, category_id}) => {
       sort_by: sort_by
     })
     .then( resp => {
+      sessionStorage.setItem('categoriesState', JSON.stringify(resp.data.data))
       setCategoriesState(resp.data.data)
     })
     .catch(resp => console.log(resp))
@@ -69,15 +70,14 @@ const CategoryBar = ({filterCategory, category_id}) => {
         {category_id != null && <div id={null} className="category">
           <button id={null} className='category__show--button' onClick={filterCategory}>All</button>
         </div>}
-        {category_id == null && <div id={null} className="category">
-          <label id={null} className='category__name'>All</label>
-        </div>}
+        {category_id == null &&
+          <label id={null} className='current-selected-category'>All</label>}
 
         {categoriesState.map((category, count) => {
           if (count < categoryCount) {
             if (category.attributes.id == category_id) {
               return(
-                <label key={"categoryfilter" + category.id}>{category.attributes.category_name}</label>
+                <label key={"categoryfilter" + category.id} className='current-selected-category'>{category.attributes.category_name}</label>
               )
             } else {
               return(

@@ -5,12 +5,15 @@ import {TopicEditor} from './topicboard/TopicEditor'
 import {Comment} from './topicboard/Comment'
 import {CommentForm} from './topicboard/CommentForm'
 import {AccountStateContext} from './context/AccountStateContext'
-import {TopicListContext} from './context/TopicListContext'
+import {PinnedTopicsContext} from './context/PinnedTopicsContext'
 
 const Topicboard = ({topic, showDashboard, fetchTopic}) => {
 	const [description, setDescription] = useState(topic.attributes.topic_description)
+  const [upvote, setUpvote] = useState(topic.attributes.upvote)
+  const [downvote, setDownvote] = useState(topic.attributes.downvote)
   const [topic_id, setTopic_Id] = useState(topic.attributes.id)
   const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
   const [comments, setComments] = useState([])
   const [commentCount, setCommentCount] = useState(0)
   const [commentLimit, setCommentLimit] = useState(topic.relationships.comments.data.length)
@@ -19,20 +22,27 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
   const [displayEditor, setDisplayEditor] = useState(false)
   const [categoryTag, setCategoryTag] = useState([])
   const [communityTag, setCommunityTag] = useState([])
+  const [currentVote, setCurrentVote] = useState()
+  const [currentSave, setCurrentSave] = useState()
 
   useEffect(() => {
     fetchTopic(topic.attributes.id)
+    checkVote()
+    checkSave()
   }, [])
 
   useEffect(()=> {
   	checkOwner(topic.attributes.gossip_account_id)
 		setDescription(topic.attributes.topic_description)
+    setUpvote(topic.attributes.upvote)
+    setDownvote(topic.attributes.downvote)
 		setTopic_Id(topic.attributes.id)
 		setOwner(accountState.id == topic.attributes.gossip_account_id)
 		setCommentCount(0)
 		setCommentLimit(topic.relationships.comments.data.length)
 		setCategoryTag(topic.relationships.categories.data)
     setCommunityTag(topic.relationships.communities.data)
+    checkOwner(topic.attributes.gossip_account_id)
 	}, [topic])
 
 	useEffect(() =>{
@@ -149,30 +159,110 @@ const Topicboard = ({topic, showDashboard, fetchTopic}) => {
     )
   }
 
+  function checkVote() {
+    axios.post('/api/topic_vote/0/check_vote', {
+      account_id: accountState.id,
+      topic_id: topic.attributes.id
+    })
+    .then(resp => {
+      setCurrentVote(resp.data)
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function checkSave() {
+    axios.post('/api/pinned_topic/' + accountState.id + '/check_save', {
+      topic_id: topic.attributes.id
+    })
+    .then(resp => {
+      setCurrentSave(resp.data)
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function saveTopic(e) {
+    axios.post('/api/pinned_topic/' + accountState.id + '/save_topic', {
+        topic_id: topic.attributes.id
+    })
+    .then(resp => {
+      setPinnedTopics(resp.data.data)
+      checkSave()
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function upvoteTopic(e) {
+    axios.post('/api/topic/' + topic.attributes.id + '/upvote', {
+        account_id: accountState.id
+    })
+    .then(resp => {
+      setUpvote(resp.data.data.attributes.upvote)
+      setDownvote(resp.data.data.attributes.downvote)
+      if (currentVote == true) {
+        setCurrentVote(null)
+      }
+      else {
+        setCurrentVote(true)
+      }
+    })
+    .catch(resp => console.log(resp))
+  }
+
+  function downvoteTopic(e) {
+    axios.post('/api/topic/' + topic.attributes.id + '/downvote', {
+        account_id: accountState.id
+    })
+    .then(resp => {
+      setUpvote(resp.data.data.attributes.upvote)
+      setDownvote(resp.data.data.attributes.downvote)
+      if (currentVote == false) {
+        setCurrentVote(null)
+      }
+      else {
+        setCurrentVote(false)
+      }
+    })
+    .catch(resp => console.log(resp))
+  }
+
 	return(
 		<div className="topic__container">
 			<div className="topic__header">
 				{displayEditor == false &&
-        <div>
-          <label className="static__label">{ownerName}</label>
-          <br/>
-          <h1 className="static__label">{topic.attributes.topic_name}</h1>
-          {categoryTag.map((category) => {
-          	return(
+          <div>
+            <label className="static__label">{ownerName}</label>
+            <br/>
+            <h1 className="static__label">{topic.attributes.topic_name}</h1>
+            {categoryTag.map((category) => {
+          	 return(
             	<CategoryTag key={"category" + category.id}  category_id={category.id}/>
-          	)
-        	})}
-        	{communityTag.map((community) => {
-         	 	return(
-            	<CommunityTag key={"community" + community.id} community_id={community.id}/>
-          	)
-        	})}
-        	<br/>
-        	<label className="topic__description">{description}</label>
-        </div>}
+          	 )
+        	 })}
+        	 {communityTag.map((community) => {
+         	 	  return(
+            	 <CommunityTag key={"community" + community.id} community_id={community.id}/>
+          	 )
+        	 })}
+        	 <br/>
+        	 <label className="topic__description">{description}</label>
+          </div>}
       	{displayEditor == true && <TopicEditor topic={topic} communityTag={communityTag} toggleEditor={toggleEditor} fetchTopic={fetchTopic}/>}
-				{owner == true &&
-					<button className='topic__show-settings--button' onClick={showTopicSettings}><img src="/packs/media/packs/pages/homepage/topicboard/topic-settings-icon-888be188c27c65a4af51589ffef5291d.jpg"/></button>}
+				<button id={topic.attributes.id} className='topic__save--button' onClick={saveTopic}>
+          {currentSave != true && <img id={topic.attributes.id} className='pin-blank--img' src="/packs/media/packs/pages/homepage/blank-pin-bd3f3a74667f30e91af391147cc3a4d3.png"/>}
+          {currentSave == true && <img id={topic.attributes.id} className='pin-shaded--img' src="/packs/media/packs/pages/homepage/shaded-pin-e1f0e749cdfdc1e190e0f23dbf1ed3c3.png"/>}
+        </button>
+        <label>{upvote}</label>
+        <button id={topic.attributes.id} className='topic__upvote--button' onClick={upvoteTopic}>
+          {currentVote != true && <img id={topic.attributes.id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+          {currentVote == true && <img id={topic.attributes.id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
+        </button>
+        <label>{downvote}</label>
+        <button id={topic.attributes.id} className='topic__downvote--button' onClick={downvoteTopic}>
+          {currentVote != false && <img id={topic.attributes.id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+          {currentVote == false && <img id={topic.attributes.id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
+        </button>
+        {owner == true &&
+				  <button className='topic__show-settings--button' onClick={showTopicSettings}><img src="/packs/media/packs/pages/homepage/topicboard/topic-settings-icon-888be188c27c65a4af51589ffef5291d.jpg"/></button>}
 				<div className='topic__settings'>
 					<button className="topic__edit--button" onClick={toggleEditor}>Edit Topic</button>
 					<button className="topic__delete--button" onClick={deleteTopic}>Delete Topic</button>

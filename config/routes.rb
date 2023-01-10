@@ -125,7 +125,6 @@ Rails.application.routes.draw do
 
     resources :notification do 
       member do
-        post '/create_notification' => 'notification#createNotification'
         post '/fetch_notifications' => 'notification#fetchNotifications'
         post '/delete_notification' => 'notification#deleteNotification'
       end

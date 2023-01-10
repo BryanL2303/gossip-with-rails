@@ -14,7 +14,6 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
 
   useEffect(() => {
     setCommunityCount(0)
-    setOffset(0)
     setCommunitiesState([])
     checkCommunityLimit()
   }, [category_id])
@@ -22,9 +21,6 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
   useEffect(() => {
     if (communityCount != 0) {
       fetchCommunities()
-    }
-    else {
-      showCommunities()
     }
   }, [communityCount])
 
@@ -80,7 +76,6 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
   function sortCommunities(e) {
     setSortBy(e.target.id)
     setCommunitiesState([])
-    setOffset(0)
     setCommunityCount(0)
   }
 
@@ -99,7 +94,7 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
       <h1>COMMUNITIES</h1>
 
       <NewCommunityForm reRenderCommunities={reRenderCommunities}/>
-
+      <br/>
       <label className="community-count">{communityLimit} Community(ies)</label>
       <button className='show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
       <div className='community_sort__options' style={{visibility: 'hidden'}}>

@@ -21,6 +21,30 @@
 		border-radius: 10%;
 	}
 
+	.communityboard-container .community__save--button{
+		text-align:center;
+		height: 10%;
+		width: 10%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.communityboard-container .community__upvote--button{
+		text-align:center;
+		height: 10%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.communityboard-container .community__downvote--button{
+		text-align: center;
+		height: 10%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
 	.communityboard-container .community__show-settings--button{
 		position: absolute;
 		top: 6%;

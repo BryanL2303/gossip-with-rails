@@ -6,7 +6,6 @@
 	}
 
 	.topic__container .topic__header{
-		height: 10%;
 		margin-top: 2%;
 		padding-left: 5px;
 		border-bottom: solid;
@@ -23,6 +22,30 @@
 		margin: 1%;
 		background-color: pink;
 		border-radius: 10%;
+	}
+
+	.topic__container .topic__save--button{
+		text-align:center;
+		height: 10%;
+		width: 10%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.topic__container .topic__upvote--button{
+		text-align:center;
+		height: 10%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
+	}
+
+	.topic__container .topic__downvote--button{
+		text-align: center;
+		height: 10%;
+		width: 5%;
+		border: none;
+		background-color: inherit;
 	}
 
 	.topic__container .topic__header .topic__show-settings--button{

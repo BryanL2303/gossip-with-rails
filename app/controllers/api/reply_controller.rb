@@ -6,7 +6,15 @@ module Api
 			reply = Reply.new(reply: params[:reply],
 			 upvote: 0, downvote: 0, gossip_account_id: params[:account_id],
 			 comment_id: params[:comment_id], edited: false)
-			if reply.save
+			comment = Comment.find_by(id: params[:comment_id])
+			topic = Topic.find_by(id: comment.topic_id)
+			replier = GossipAccount.find_by(id: params[:account_id])
+			message = replier.account_name + " has replied to your comment on " + topic.topic_name + "!"
+			reply.save
+			notification = Notification.new(message: message,
+				gossip_account_id: comment.gossip_account_id,
+				tag: 'reply', topic_id: topic.id, reply_id: reply.id)
+			if notification.save
 				render json: ReplySerializer.new(reply).serialized_json
 			else
 				render json: {error: reply.errors.messages}, status: 422

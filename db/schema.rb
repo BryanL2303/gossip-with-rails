@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_01_103739) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_08_104703) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -98,7 +98,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_01_103739) do
     t.bigint "gossip_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "topic_id"
+    t.bigint "comment_id"
+    t.bigint "reply_id"
+    t.string "tag"
+    t.index ["comment_id"], name: "index_notifications_on_comment_id"
     t.index ["gossip_account_id"], name: "index_notifications_on_gossip_account_id"
+    t.index ["reply_id"], name: "index_notifications_on_reply_id"
+    t.index ["topic_id"], name: "index_notifications_on_topic_id"
   end
 
   create_table "pinned_categories", force: :cascade do |t|

@@ -6,7 +6,14 @@ module Api
 			comment = Comment.new(comment: params[:comment],
 			 upvote: 0, downvote: 0, gossip_account_id: params[:account_id],
 			 topic_id: params[:topic_id], edited: false)
-			if comment.save
+			topic = Topic.find_by(id: params[:topic_id])
+			replier = GossipAccount.find_by(id: params[:account_id])
+			message = replier.account_name + " has commented on your topic " + topic.topic_name + "!"
+			comment.save
+			notification = Notification.new(message: message,
+				gossip_account_id: topic.gossip_account_id,
+				tag: 'comment', topic_id: topic.id, comment_id: comment.id)
+			if notification.save
 				render json: CommentSerializer.new(comment).serialized_json
 			else
 				render json: {error: comment.errors.messages}, status: 422

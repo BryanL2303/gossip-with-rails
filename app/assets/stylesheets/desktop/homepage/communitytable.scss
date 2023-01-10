@@ -6,7 +6,7 @@
 
 	.communities-container{
 		position: relative;
-		height: 65vh;
+		max-height: 65vh;
 		width: 100%;
 		margin-top: 1%;
 		overflow-y: auto;
@@ -15,12 +15,22 @@
 	}
 
 	.community_sort__options{
-		margin-left: 20%;
+		margin-left: 25%;
 		margin-top: -3%;
+	}
+
+	.community-form{
+		width: 90%;
+		height: 100%;
+		background-color: white;
 	}
 
 	.community-form input{
 		width: 100%
+	}
+
+	.community-form button{
+		width: 100%;
 	}
 
 	.community{

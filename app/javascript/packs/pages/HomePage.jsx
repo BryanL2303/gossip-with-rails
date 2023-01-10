@@ -90,7 +90,7 @@ const HomePage = () => {
       <SideBar showDashboard={showDashboard} filterCategory={filterCategory} showCommunityboard={showCommunityboard} showTopicboard={showTopicboard}/>
       {homePageState=="dashboard" && <Dashboard showTopicboard={showTopicboard} filterCategory={filterCategory} showCommunityboard={showCommunityboard} category_id={category_id}/>}
       {homePageState=="community" && <Communityboard community={currentDisplayCommunityState} showDashboard={showDashboard} showTopicboard={showTopicboard} fetchCommunity={fetchCommunity}/>}
-      {homePageState=="topic" && <Topicboard topic={currentDisplayTopicState} fetchTopic={fetchTopic} showCommunityboard={showCommunityboard}/>}
+      {homePageState=="topic" && <Topicboard topic={currentDisplayTopicState} showDashboard={showDashboard} fetchTopic={fetchTopic} showCommunityboard={showCommunityboard}/>}
     </div>
     </PinnedTopicsProvider>
     </PinnedCommunitiesProvider>

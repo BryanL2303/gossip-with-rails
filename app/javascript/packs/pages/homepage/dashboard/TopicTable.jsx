@@ -14,14 +14,12 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
 
   useEffect(() => {
     setTopicCount(0)
-    setOffset(0)
     setTopicsState([])
     checkTopicLimit()
   }, [category_id])
 
   useEffect(() => {
     setTopicCount(0)
-    setOffset(0)
     setTopicsState([])
     checkTopicLimit()
   }, [community_id])
@@ -29,9 +27,6 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
   useEffect(() => {
     if (topicCount != 0) {
       fetchTopics()
-    }
-    else {
-      showTopics()
     }
   }, [topicCount])
 
@@ -89,7 +84,6 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
   function sortTopics(e) {
     setSortBy(e.target.id)
     setTopicsState([])
-    setOffset(0)
     setTopicCount(0)
   }
 
@@ -108,7 +102,7 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
       <h1>TOPICS</h1>
 
       <NewTopicForm reRenderTopics={reRenderTopics} category_id={category_id} community_id={community_id}/>
-
+      <br/>
       <label className="topic-count">{topicLimit} Topic(s)</label>
       <button className='show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
       <div className='topic_sort__options' style={{visibility: 'hidden'}}>

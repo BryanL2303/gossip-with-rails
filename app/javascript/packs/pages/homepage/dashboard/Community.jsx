@@ -128,6 +128,8 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
   return(
     <div id={community_id} className="community">
       <button id={community_id} className='community__show--button' onClick={showCommunityboard}>
+        <label id={community_id}>{ownerName}</label>
+        <br/>
         <label id={community_id} className='community__name'>{community}</label>
         {tag.map((category) => {
           return(

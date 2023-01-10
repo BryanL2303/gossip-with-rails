@@ -6,6 +6,74 @@
 		top: 5%;
 		border-right: solid;
 		border: none;
+		background-color: ghostwhite;
+	}
+
+	.home--button{
+		width: 100%;
+		height: 6%;
+		font-size: 15px;
+		background-color: inherit;
+		border: none;
+	}
+
+	.home--button:hover{
+		background-color: lightgrey;
+	}
+
+	.sidebar-container h4{
+		width: 100%;
+		text-align: center;
+	}
+
+	.notification{
+		border-bottom: solid;
+		display: flex;
+		width: 100%;
+		flex-direction: row;
+    	flex-wrap: wrap;
+	}
+
+	.notification__delete--button{
+		flex-grow: 100%;
+		font-size: 15px;
+		background-color: inherit;
+		border: none;
+	}
+
+	.notification__delete--button:hover{
+		background-color: lightgrey;
+	}
+
+	.notification label{
+		width: 90%;
+	}
+
+	.popup--button{
+		width: 100%;
+		height: 6%;
+		font-size: 15px;
+		font-style: italic;
+		background-color: inherit;
+		border: none;
+	}
+
+	.popup--button:hover{
+		background-color: lightgrey;
+	}
+
+	.popup{
+		background-color: lightgrey;
+		max-width: 20vw;
+	}
+
+	.popup button{
+		text-align: center;
+		font-style: italic;
+	}
+
+	.popup button:hover{
+		background-color: grey;
 	}
 
 	.sidebar-container .saved-container{

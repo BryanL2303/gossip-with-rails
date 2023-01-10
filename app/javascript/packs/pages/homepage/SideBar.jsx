@@ -4,21 +4,32 @@ import {AccountStateContext} from './context/AccountStateContext'
 import {PinnedCategoriesContext} from './context/PinnedCategoriesContext'
 import {PinnedCommunitiesContext} from './context/PinnedCommunitiesContext'
 import {PinnedTopicsContext} from './context/PinnedTopicsContext'
+import {Notification} from './sidebar/Notification'
 import {CategoryButton} from './sidebar/CategoryButton'
 import {CommunityButton} from './sidebar/CommunityButton'
 import {TopicButton} from './sidebar/TopicButton'
 
 const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicboard}) => {
   const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [notifications, setNotifications] = useState([])
   const [pinnedCategories, setPinnedCategories] = useContext(PinnedCategoriesContext)
   const [pinnedCommunities, setPinnedCommunities] = useContext(PinnedCommunitiesContext)
   const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
 
   useEffect(() => {
+    fetchNotifications()
     fetchPinnedCategories()
     fetchPinnedCommunities()
     fetchPinnedTopics()
   }, [])
+
+  function fetchNotifications() {
+    axios.post('/api/notification/' + accountState.id + '/fetch_notifications')
+    .then(resp => {
+      setNotifications(resp.data.data)
+    })
+    .catch(resp => console.log(resp))
+  }
 
   function fetchPinnedCategories() {
     axios.post('/api/pinned_category/' + accountState.id + '/fetch_categories')
@@ -46,10 +57,22 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
 
   return(
     <div className='sidebar-container'>
-      <div className='saved-container'>
-        <button onClick={showDashboard}>Home</button>
+        <button className='home--button' onClick={showDashboard}>Home</button>
 
-        <label>Pinned Communities</label>
+        <h4>Notifications</h4>
+        {notifications.length == 0 &&
+          <p>No new notifications</p>}
+        {notifications.map((notification) => {
+          return(
+            <Notification key={"notification" + notification.attributes.id} notification={notification} showTopicboard={showTopicboard}/>
+          )
+        })}
+
+        <br/>
+      <div className='saved-container'>
+        <h4>Pinned Communities</h4>
+        {pinnedCommunities.length == 0 &&
+          <p>There Are No Pinned Communities</p>}
         {pinnedCommunities.map((community) => {
           return(
             <CommunityButton key={community.id} community_id={community.attributes.community_id} showCommunityboard={showCommunityboard}/>
@@ -59,7 +82,9 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
         <br/>
         <br/>
 
-        <label>Pinned Topics</label>
+        <h4>Pinned Topics</h4>
+        {pinnedTopics.length == 0 &&
+          <p>There Are No Pinned Topics</p>}
         {pinnedTopics.map((topic) => {
           return(
             <TopicButton key={topic.id} topic_id={topic.attributes.topic_id} showTopicboard={showTopicboard}/>

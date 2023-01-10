@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { AccountStateContext } from '../context/AccountStateContext'
 
-const Reply = ({reply_id, fetchComment, active}) => {
+const Reply = ({reply_id, fetchComment, notification}) => {
   const [reply, setReply] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
@@ -160,25 +160,26 @@ const Reply = ({reply_id, fetchComment, active}) => {
       {edited == true && owner == true &&
           <label className='edited__tag'>(edited)</label>}
 
-      <br/>
-      <br/>
+      {notification == null && <div>
+        <br/>
+        <br/>
+        <label>{upvote}</label>
+        <button id={reply_id} className='reply__upvote--button' onClick={upvoteReply}>
+          {currentVote != true && <img id={reply_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
+          {currentVote == true && <img id={reply_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
+        </button>
+        <label>{downvote}</label>
+        <button id={reply_id} className='reply__downvote--button' onClick={downvoteReply}>
+          {currentVote != false && <img id={reply_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
+          {currentVote == false && <img id={reply_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
+        </button>
 
-      <label>{upvote}</label>
-      <button id={reply_id} className='reply__upvote--button' onClick={upvoteReply}>
-        {currentVote != true && <img id={reply_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsup_blank-c78b476cd029c4245b8a33f0aa940f58.png"/>}
-        {currentVote == true && <img id={reply_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsup_shaded-d399f9eef4c8b50e9c3638fc638f8285.png"/>}
-      </button>
-      <label>{downvote}</label>
-      <button id={reply_id} className='reply__downvote--button' onClick={downvoteReply}>
-        {currentVote != false && <img id={reply_id} className='thumb-blank--img' src="/packs/media/packs/pages/homepage/thumbsdown_blank-f7cd73be40b3007a5820448ea653998e.png"/>}
-        {currentVote == false && <img id={reply_id} className='thumb-shaded--img' src="/packs/media/packs/pages/homepage/thumbsdown_shaded-326c2afa75456f7a113e8d9ed52954bb.png"/>}
-      </button>
-
-      {active == true && owner == true &&
-       <button className="show-edit__button" onClick={toggleEditor}>edit</button>}
-      {owner == true &&
-       <button className="delete-reply__button" onClick={deleteReply}>delete</button>}
-      <br/>
+        {owner == true &&
+          <button className="show-edit__button" onClick={toggleEditor}>edit</button>}
+        {owner == true &&
+          <button className="delete-reply__button" onClick={deleteReply}>delete</button>}
+        <br/>
+      </div>}
     </div>
   )
 }
