@@ -1,42 +1,34 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Popup from 'reactjs-popup';
 import Select from 'react-select'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
+import {CategoryDictionaryContext} from '../context/CategoryDictionaryContext'
 
+/*Form to create a new topic
+  Used in topictable as well as the communityboard
+*/
 const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [cookies, useCookie] = useCookies(['user'])
   const [community_name, setCommunityName] = useState()
-  const [categories, setCategories] = useState([])
-  const [categoryTags, setCategoryTags] = useState([])
+  const [categories, setCategories] = useContext(CategoryDictionaryContext)
+  const [categoryTags, setCategoryTags] = useState([{'value': 1}])
 
   useEffect(() =>{
-    fetchCategories('updated_at')
     if (community_id != null) {
       fetchCommunity()
     }
   }, [])
 
-  function fetchCategories(sort_by) {
-    axios.post('/api/category/0/fetch_categories', {
-      sort_by: sort_by
-    })
-    .then(resp => {
-      let data = []
-      resp.data.data.map((category) => {
-        data.push({value: category.attributes.id, label: category.attributes.category_name})
-      })
-      setCategories(data)
-    })
-    .catch(resp => console.log(resp))
-  }
-
   function fetchCommunity() {
-    axios.get('/api/community/' + community_id)
-    .then(resp => {
-      setCommunityName(resp.data.data.attributes.community_name)
+    axios.get('/api/community/' + community_id, {
+      headers: {token: cookies.Token}
     })
-    .catch(resp => console.log(resp))
+    .then(resp => {
+      setCommunityName(resp.data.data.data.attributes.community_name)
+    })
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function submitForm(e) {
@@ -52,7 +44,7 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
     axios.post('/api/topic/0/create_topic', {
       topic_name: form[0].value,
       topic_description: form[1].value,
-      account_id: accountState.id,
+      token: cookies.Token,
       categories: categoryTags,
       community_id: community_id
     })
@@ -61,7 +53,7 @@ const NewTopicForm = ({reRenderTopics, category_id, community_id}) => {
       document.getElementsByClassName('topic-form__topic')[0].value = ''
       document.getElementsByClassName('topic-form__description')[0].value = ""
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

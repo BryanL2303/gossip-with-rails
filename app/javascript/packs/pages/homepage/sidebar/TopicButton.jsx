@@ -1,28 +1,29 @@
-import React, { useRef, useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
-import { PinnedTopicsContext } from '../context/PinnedTopicsContext'
+import { errorMessage } from '../functions/functions'
 
 const TopicButton = ({topic_id, showTopicboard}) => {
+  const [cookies, setCookie] = useCookies(['user'])
   const [topic, setTopic] = useState()
-  const [accountState, setAccountState] = useContext(AccountStateContext)
-  const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
 
   useEffect(() => {
     fetchTopic()
   }, [])
 
   function fetchTopic() {
-    axios.get('/api/topic/' + topic_id)
+    axios.get('/api/topic/' + topic_id, {
+      headers: {token: cookies.Token}
+    })
     .then( resp => {
       if (resp.data.data == null) {
         console.log("This topic was deleted, add function to remove from favourites")
       }
       else {
-        setTopic(resp.data.data.attributes.topic_name)
+        setTopic(resp.data.data.data.attributes.topic_name)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

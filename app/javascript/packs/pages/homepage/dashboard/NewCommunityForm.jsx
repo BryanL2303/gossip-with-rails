@@ -1,31 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Popup from 'reactjs-popup';
 import Select from 'react-select'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
+import {CategoryDictionaryContext} from '../context/CategoryDictionaryContext'
 
+/*Form to create a new community
+  Used in communitytable
+*/
 const NewCommunityForm = ({reRenderCommunities}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
-  const [categories, setCategories] = useState([])
-  const [tags, setTags] = useState([])
-
-  useEffect(() =>{
-    fetchCategories('updated_at')
-  }, [])
-
-  function fetchCategories(sort_by) {
-    axios.post('/api/category/0/fetch_categories', {
-      sort_by: sort_by
-    })
-    .then(resp => {
-      let data = []
-      resp.data.data.map((category) => {
-        data.push({value: category.attributes.id, label: category.attributes.category_name})
-      })
-      setCategories(data)
-    })
-    .catch(resp => console.log(resp))
-  }
+  const [cookies, setCookie] = useCookies(['user'])
+  const [categories, setCategories] = useContext(CategoryDictionaryContext)
+  const [tags, setTags] = useState([{'value': 1}])
 
   function submitForm(e) {
     e.preventDefault()
@@ -41,14 +28,15 @@ const NewCommunityForm = ({reRenderCommunities}) => {
       community_name: form[0].value,
       community_description: form[1].value,
       categories: tags,
-      gossip_account_id: accountState.id
+      gossip_account_id: accountState.id,
+      token: cookies.Token
     })
     .then(resp => {
       reRenderCommunities()
       document.getElementsByClassName('community-form__community')[0].value = ''
       document.getElementsByClassName('community-form__description')[0].value = ""
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

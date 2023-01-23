@@ -1,26 +1,29 @@
-import React, { useRef, useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import {AccountStateContext} from '../context/AccountStateContext'
+import { errorMessage } from '../functions/functions'
 
 const CommunityButton = ({community_id, showCommunityboard, fetchCommunity}) => {
+  const [cookies, setCookie] = useCookies(['user'])
   const [community, setCommunity] = useState()
-  const [accountState, setAccountState] = useContext(AccountStateContext)
 
   useEffect(() => {
     fetchCommunity()
   }, [])
 
   function fetchCommunity() {
-    axios.get('/api/community/' + community_id)
+    axios.get('/api/community/' + community_id,{
+      headers: {token: cookies.Token}
+    })
     .then( resp => {
       if (resp.data.data == null) {
-        console.log("This community was deleted, add function to remove from pinned")
+        errorMessage("")
       }
       else {
-        setCommunity(resp.data.data.attributes.community_name)
+        setCommunity(resp.data.data.data.attributes.community_name)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

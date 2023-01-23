@@ -2,34 +2,34 @@ module Api
 	class PinnedCommunityController < ApplicationController
 		protect_from_forgery with: :null_session
 
-		def checkSave
-			saved = PinnedCommunity.where(gossip_account_id: params[:id],
-				community_id: params[:community_id])[0]
-			if saved == nil
-				render json: false
-			else
-				render json: true
-			end
-		end
-
 		def saveCommunity
-			vote = PinnedCommunity.where(gossip_account_id: params[:id],
-				community_id: params[:community_id])[0]
-			if vote == nil
-				community = PinnedCommunity.new(gossip_account_id: params[:id],
-					community_id: params[:community_id])
-				community.save
-			else
-				vote.destroy
-			end
+			user = authorised_user(params[:token])
+			if user != nil
+				vote = PinnedCommunity.where(gossip_account_id: user.id,
+					community_id: params[:community_id])[0]
+				if vote == nil
+					community = PinnedCommunity.new(gossip_account_id: user.id,
+						community_id: params[:community_id])
+					community.save
+				else
+					vote.destroy
+				end
 
-			communities = PinnedCommunity.where(gossip_account_id: params[:id]).order('updated_at')
-			render json: PinnedCommunitySerializer.new(communities).serialized_json
+				communities = PinnedCommunity.where(gossip_account_id: user.id).order('updated_at')
+				render json: PinnedCommunitySerializer.new(communities).serialized_json
+			else
+				render json: {error: "Unable to identify user, please try logging out and logging in again"}, status: :unauthorized
+			end
 		end
 
 		def fetchCommunities
-			communities = PinnedCommunity.where(gossip_account_id: params[:id]).order('updated_at')
-			render json: PinnedCommunitySerializer.new(communities).serialized_json
+			user = authorised_user(params[:token])
+			if user != nil
+				communities = PinnedCommunity.where(gossip_account_id: user.id).order('updated_at')
+				render json: PinnedCommunitySerializer.new(communities).serialized_json
+			else
+				render json: {error: "Unable to identify user, please try logging out and logging in again"}, status: :unauthorized
+			end
 		end
 	end
 end

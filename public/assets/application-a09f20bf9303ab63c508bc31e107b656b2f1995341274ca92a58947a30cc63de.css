@@ -1,0 +1,975 @@
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-page {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    text-align: center;
+  }
+  /* line 10, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-form {
+    height: 50%;
+    width: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    border: solid;
+    border-radius: 3%;
+  }
+  /* line 20, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-form label {
+    font-size: 30px;
+  }
+  /* line 24, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-form__name {
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 32, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-form__password {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 40, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-form button {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 48, app/assets/stylesheets/desktop/accountCreationPage.scss */
+  .create-account-page a {
+    position: absolute;
+    top: 55%;
+    left: 39%;
+    width: 22%;
+    font-size: 20px;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/adminPage.scss */
+  .adminpage-container .category-form {
+    margin-left: 25%;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homePage.scss */
+  .homepage-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .dashboard-container .categories-container {
+    position: relative;
+    margin-top: 1%;
+    height: 10%;
+    width: 95%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    scroll-behavior: auto;
+    display: flex;
+  }
+  /* line 13, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .current-selected-category {
+    border: solid;
+    border-radius: 10%;
+    background-color: black;
+    color: white;
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-bottom: 2%;
+    margin-right: 1%;
+    border-width: 2px;
+    text-align: center;
+  }
+  /* line 26, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .show-sort--button {
+    border: none;
+    width: 8%;
+    margin-top: 1%;
+    background-color: inherit;
+  }
+  /* line 33, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .show-sort--button:hover {
+    opacity: 0.5;
+  }
+  /* line 37, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .show-sort--button img {
+    width: 35%;
+  }
+  /* line 41, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category_sort__options {
+    margin-left: 25%;
+  }
+  /* line 45, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category {
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-bottom: 2%;
+    margin-right: 1%;
+    border: solid;
+    border-width: 2px;
+    border-radius: 10%;
+    background-color: lightgrey;
+  }
+  /* line 56, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category__show--button {
+    text-align: center;
+    height: auto;
+    width: 100%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 64, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .pin-blank--img {
+    width: 25%;
+    margin-left: 50%;
+  }
+  /* line 69, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .pin-shaded--img {
+    width: 35%;
+    margin-left: 50%;
+  }
+  /* line 74, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category__upvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 82, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category__downvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 90, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .thumb-blank--img {
+    width: 100%;
+  }
+  /* line 94, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .thumb-shaded--img {
+    width: 60%;
+  }
+  /* line 98, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category img:hover {
+    opacity: 0.5;
+  }
+  /* line 102, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .label {
+    width: 10%;
+  }
+  /* line 106, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category__save--button {
+    text-align: center;
+    height: 100%;
+    width: 50%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 114, app/assets/stylesheets/desktop/homepage/categorybar.scss */
+  .category .category__show--button:hover {
+    opacity: 0.5;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .comment__container .thumb-blank--img {
+    width: 100%;
+  }
+  /* line 6, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .comment__container .thumb-shaded--img {
+    width: 60%;
+  }
+  /* line 10, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .comment__container img:hover {
+    opacity: 0.5;
+  }
+  /* line 14, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .comment__upvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    overflow: hidden;
+    background-color: inherit;
+  }
+  /* line 23, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .comment__downvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    overflow: hidden;
+    background-color: inherit;
+  }
+  /* line 32, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container {
+    margin-left: 5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+  /* line 38, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container .thumb-blank--img {
+    width: 100%;
+  }
+  /* line 42, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container .thumb-shaded--img {
+    width: 60%;
+  }
+  /* line 46, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container img:hover {
+    opacity: 0.5;
+  }
+  /* line 50, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container .replies__container .show-replies--button {
+    background: none;
+    border: none;
+    color: blue;
+  }
+  /* line 56, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container .show-replies--button:hover {
+    opacity: 0.8;
+  }
+  /* line 60, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .replies__container .reply__container {
+    margin: 1%;
+    box-shadow: black;
+  }
+  /* line 65, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .reply__upvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 73, app/assets/stylesheets/desktop/homepage/comment.scss */
+  .reply__downvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container {
+    height: 95%;
+    width: 75%;
+    position: absolute;
+    top: 5%;
+    left: 25%;
+    padding-left: 5px;
+    overflow-y: auto;
+  }
+  /* line 12, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .category__tag {
+    margin: 1%;
+    background-color: lightblue;
+    border-radius: 10%;
+  }
+  /* line 18, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__tag {
+    margin: 1%;
+    background-color: pink;
+    border-radius: 10%;
+  }
+  /* line 24, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__save--button {
+    text-align: center;
+    height: 10%;
+    width: 10%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 32, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__upvote--button {
+    text-align: center;
+    height: 10%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 40, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__downvote--button {
+    text-align: center;
+    height: 10%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 48, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__show-settings--button {
+    position: absolute;
+    top: 6%;
+    right: 0px;
+    border: none;
+    height: 10%;
+    background: inherit;
+  }
+  /* line 57, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__show-settings--button img {
+    height: 100%;
+  }
+  /* line 61, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__settings {
+    visibility: hidden;
+    position: absolute;
+    top: 16%;
+    right: 0%;
+    z-index: 1000;
+    width: 10%;
+  }
+  /* line 70, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .community__settings button {
+    width: 100%;
+  }
+  /* line 74, app/assets/stylesheets/desktop/homepage/communityboard.scss */
+  .communityboard-container .topics-container {
+    position: relative;
+    height: 65%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community-table {
+    width: 95%;
+    margin-top: 1%;
+  }
+  /* line 7, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .communities-container {
+    position: relative;
+    max-height: 65vh;
+    width: 100%;
+    margin-top: 1%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+  }
+  /* line 17, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community_sort__options {
+    margin-left: 25%;
+    margin-top: -3%;
+  }
+  /* line 22, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community-form {
+    width: 90%;
+    height: 100%;
+    background-color: white;
+  }
+  /* line 28, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community-form input {
+    width: 100%;
+  }
+  /* line 32, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community-form button {
+    width: 100%;
+  }
+  /* line 36, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community {
+    width: 90%;
+    margin-bottom: 2%;
+    border: none;
+  }
+  /* line 42, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community__show--button {
+    text-align: left;
+    height: auto;
+    width: 100%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 50, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community .label {
+    width: 100%;
+  }
+  /* line 54, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community .category__tag {
+    margin: 1%;
+    background-color: lightblue;
+    border-radius: 10%;
+  }
+  /* line 60, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community__save--button {
+    text-align: center;
+    height: 100%;
+    width: 10%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 68, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community__upvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 76, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community__downvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 84, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .thumb-blank--img {
+    width: 100%;
+  }
+  /* line 88, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .thumb-shaded--img {
+    width: 60%;
+  }
+  /* line 92, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .pin-blank--img {
+    width: 25%;
+  }
+  /* line 96, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .pin-shaded--img {
+    width: 35%;
+  }
+  /* line 100, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community .community__show--button:hover {
+    background-color: lightgrey;
+  }
+  /* line 104, app/assets/stylesheets/desktop/homepage/communitytable.scss */
+  .community img:hover {
+    opacity: 0.5;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/dashboard.scss */
+  .dashboard-container {
+    height: 95%;
+    width: 75%;
+    position: absolute;
+    top: 5%;
+    left: 25%;
+    padding-left: 5px;
+    overflow-y: auto;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/editor.scss */
+  .editor__field {
+    width: 90%;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .sidebar-container {
+    height: 95%;
+    width: 25%;
+    position: absolute;
+    top: 5%;
+    border-right: solid;
+    border: none;
+    background-color: ghostwhite;
+  }
+  /* line 12, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .home--button {
+    width: 100%;
+    height: 6%;
+    font-size: 15px;
+    background-color: inherit;
+    border: none;
+  }
+  /* line 20, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .home--button:hover {
+    background-color: lightgrey;
+  }
+  /* line 24, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .sidebar-container h4 {
+    width: 100%;
+    text-align: center;
+  }
+  /* line 29, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .notification {
+    border-bottom: solid;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  /* line 37, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .notification__delete--button {
+    flex-grow: 100%;
+    font-size: 15px;
+    background-color: inherit;
+    border: none;
+  }
+  /* line 44, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .notification__delete--button:hover {
+    background-color: lightgrey;
+  }
+  /* line 48, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .notification label {
+    width: 90%;
+  }
+  /* line 52, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .popup--button {
+    width: 100%;
+    height: 6%;
+    font-size: 15px;
+    font-style: italic;
+    background-color: inherit;
+    border: none;
+  }
+  /* line 61, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .popup--button:hover {
+    background-color: lightgrey;
+  }
+  /* line 65, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .popup {
+    background-color: lightgrey;
+    max-width: 20vw;
+  }
+  /* line 70, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .popup button {
+    text-align: center;
+    font-style: italic;
+  }
+  /* line 75, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .popup button:hover {
+    background-color: grey;
+  }
+  /* line 79, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .sidebar-container .saved-container {
+    height: 80%;
+    width: 100%;
+    text-align: center;
+  }
+  /* line 85, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .sidebar-container .saved-container button {
+    height: 6%;
+    width: 100%;
+    font-size: 15px;
+    background-color: inherit;
+    border: none;
+  }
+  /* line 93, app/assets/stylesheets/desktop/homepage/sidebar.scss */
+  .sidebar-container .saved-container button:hover {
+    background-color: lightgrey;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container {
+    position: relative;
+    height: 4.8%;
+    width: 100%;
+    border-bottom: solid;
+    background-color: black;
+  }
+  /* line 10, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container label {
+    color: white;
+  }
+  /* line 14, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container button {
+    height: 100%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 20, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container button img {
+    height: 100%;
+  }
+  /* line 24, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .user-component {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    height: 100%;
+    display: flex;
+  }
+  /* line 32, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .tutorial--button {
+    margin-top: 2.5%;
+    position: relative;
+    height: 30px;
+    width: 30px;
+    border: solid;
+    border-radius: 15px;
+    font-size: 20px;
+  }
+  /* line 42, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .account-name__label {
+    position: relative;
+    margin: 5px;
+  }
+  /* line 47, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .show-menu--button {
+    border: none;
+    padding: 10px;
+    background-color: inherit;
+  }
+  /* line 53, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .show-menu--button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  /* line 58, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .show-menu--button img {
+    height: 100%;
+  }
+  /* line 62, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .user-menu {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    z-index: 1000;
+    width: 100%;
+  }
+  /* line 71, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .user-menu button {
+    width: 100%;
+  }
+  /* line 75, app/assets/stylesheets/desktop/homepage/topbar.scss */
+  .topbar-container .user-menu button:hover {
+    opacity: 0.8;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container {
+    height: 100%;
+    width: 75%;
+    margin-left: 25%;
+  }
+  /* line 8, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__header {
+    margin-top: 2%;
+    padding-left: 5px;
+    border-bottom: solid;
+    border: none;
+  }
+  /* line 15, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .category__tag {
+    margin: 1%;
+    background-color: lightblue;
+    border-radius: 10%;
+  }
+  /* line 21, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .community__tag {
+    margin: 1%;
+    background-color: pink;
+    border-radius: 10%;
+  }
+  /* line 27, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__save--button {
+    text-align: center;
+    height: 10%;
+    width: 10%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 35, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__upvote--button {
+    text-align: center;
+    height: 10%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 43, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__downvote--button {
+    text-align: center;
+    height: 10%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 51, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__header .topic__show-settings--button {
+    position: absolute;
+    top: 6%;
+    right: 0px;
+    border: none;
+    height: 10%;
+    background: inherit;
+  }
+  /* line 60, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__header .topic__show-settings--button img {
+    height: 100%;
+  }
+  /* line 64, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__header .topic__settings {
+    visibility: hidden;
+    position: absolute;
+    top: 16%;
+    right: 0%;
+    z-index: 1000;
+    width: 10%;
+  }
+  /* line 73, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__header .topic__settings button {
+    width: 100%;
+  }
+  /* line 77, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .topic__description {
+    width: 100%;
+    background-color: inherit;
+    border-style: none;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  /* line 86, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .comments__show-sort--button {
+    border: none;
+    width: 8%;
+    background-color: inherit;
+  }
+  /* line 92, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .comments__show-sort--button:hover {
+    opacity: 0.5;
+  }
+  /* line 96, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .comments__show-sort--button img {
+    width: 35%;
+  }
+  /* line 100, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__container .sort__options {
+    margin-left: 20%;
+    margin-top: -3%;
+  }
+  /* line 105, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__comment-container {
+    height: 90%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: none;
+    margin-top: 3%;
+    padding-left: 5px;
+  }
+  /* line 115, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__comment-container .form {
+    margin-bottom: 2%;
+  }
+  /* line 119, app/assets/stylesheets/desktop/homepage/topicboard.scss */
+  .topic__comment-container .form .form__name {
+    height: 20px;
+    width: 85%;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic-table {
+    width: 95%;
+    margin-top: 1%;
+  }
+  /* line 7, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topics-container {
+    position: relative;
+    max-height: 65vh;
+    width: 100%;
+    margin-top: 1%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+  }
+  /* line 17, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic-form {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+  }
+  /* line 23, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic-form input {
+    width: 100%;
+  }
+  /* line 27, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic-form button {
+    width: 100%;
+  }
+  /* line 31, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic_sort__options {
+    margin-left: 20%;
+    margin-top: -3%;
+  }
+  /* line 36, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic {
+    width: 90%;
+    margin-bottom: 2%;
+    border: none;
+  }
+  /* line 42, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic .category__tag {
+    margin: 1%;
+    background-color: lightblue;
+    border-radius: 10%;
+  }
+  /* line 48, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic .community__tag {
+    margin: 1%;
+    background-color: pink;
+    border-radius: 10%;
+  }
+  /* line 54, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic__show--button {
+    text-align: left;
+    height: auto;
+    width: 100%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 62, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic .label {
+    width: 100%;
+  }
+  /* line 66, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic__save--button {
+    text-align: center;
+    height: 100%;
+    width: 10%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 74, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic__upvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 82, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic__downvote--button {
+    text-align: center;
+    height: 100%;
+    width: 5%;
+    border: none;
+    background-color: inherit;
+  }
+  /* line 90, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .thumb-blank--img {
+    width: 100%;
+  }
+  /* line 94, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .thumb-shaded--img {
+    width: 60%;
+  }
+  /* line 98, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .pin-blank--img {
+    width: 35%;
+  }
+  /* line 102, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .pin-shaded--img {
+    width: 30%;
+  }
+  /* line 106, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic .topic__show--button:hover {
+    background-color: lightgrey;
+  }
+  /* line 110, app/assets/stylesheets/desktop/homepage/topictable.scss */
+  .topic img:hover {
+    opacity: 0.5;
+  }
+}
+@media screen {
+  /* line 2, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-page {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    text-align: center;
+  }
+  /* line 10, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-form {
+    height: 50%;
+    width: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    border: solid;
+    border-radius: 3%;
+  }
+  /* line 20, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-form {
+    font-size: 30px;
+  }
+  /* line 24, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-form__name {
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 32, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-form__password {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 40, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-form button {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    font-size: 20px;
+  }
+  /* line 48, app/assets/stylesheets/desktop/loginPage.scss */
+  .log-in-page a {
+    position: absolute;
+    top: 55%;
+    left: 39%;
+    width: 22%;
+    font-size: 20px;
+  }
+}
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+
+
+ */
+
+*{
+    margin: 0px;
+    padding: 0px;
+    user-select: none;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+}

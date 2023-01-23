@@ -1,6 +1,6 @@
 class NotificationSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :gossip_account_id, :message, :topic_id, :comment_id, :reply_id, :tag
+  attributes :message, :topic_id, :comment_id, :reply_id, :tag
 
   belongs_to :gossip_account
   belongs_to :topic

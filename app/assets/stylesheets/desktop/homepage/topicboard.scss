@@ -1,8 +1,12 @@
 @media screen{
 	.topic__container{
-		height: 100%;
+		height: 95%;
 		width: 75%;
-		margin-left: 25%;
+		position: absolute;
+		top: 5%;
+		left: 25%;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.topic__container .topic__header{
@@ -103,7 +107,7 @@
 	}
 
 	.topic__comment-container{
-		height: 90%;
+		flex: 0 1 auto;
 		width: 100%;
 		overflow-x: hidden;
 		overflow-y: auto;

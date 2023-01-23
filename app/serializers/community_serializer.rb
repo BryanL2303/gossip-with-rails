@@ -1,6 +1,6 @@
 class CommunitySerializer
   include FastJsonapi::ObjectSerializer
-  attributes :community_name, :community_description, :id, :upvote, :downvote, :gossip_account_id
+  attributes :community_name, :community_description, :id, :upvote, :downvote
 
   belongs_to :gossip_account
   has_many :topics

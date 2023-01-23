@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
-import Select from 'react-select'
+import React from 'react'
 import axios from 'axios'
 
+/*Form for Administrator to create new categories on the Admin page
+*/
 const NewCategoryForm = () => {
   function submitForm(e) {
     e.preventDefault()
     postCreateCategory(e.target)
-  }
-
-  function updateTags(e) {
-    setTags(e)
   }
 
   function postCreateCategory(form) {

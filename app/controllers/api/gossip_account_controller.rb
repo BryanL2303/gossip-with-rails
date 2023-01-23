@@ -8,7 +8,8 @@ module Api
 
 			if findAccount == nil
 				if account.save
-					render json: {'id': account.id, "name": account.account_name}
+					token = encode_token({user_id: account.id})
+					render json: {name: account.account_name, token: token}
 				else
 					render json: {error: account.errors.messages}, status: 422
 				end
@@ -24,11 +25,18 @@ module Api
 				render json: false
 			else
 				if account.password == params[:password]
-					render json: {'id': account.id, "name": account.account_name}
+					token = encode_token({user_id: account.id})
+					render json: {"name": account.account_name, token: token}
 				else
 					render json: false
 				end
 			end
+		end
+
+		def show
+			user = authorised_user(request.headers[:token])
+			account = GossipAccount.find_by(id: user.id)
+			render json: {name: account.account_name}
 		end
 
 		def destroy
@@ -41,12 +49,6 @@ module Api
 			else
 				render json: {error: account.errors.messages}, status: 422
 			end
-		end
-
-		def show
-			account = GossipAccount.find_by(id: params[:id])
-
-			render json: GossipAccountSerializer.new(account).serialized_json
 		end
 	end
 end

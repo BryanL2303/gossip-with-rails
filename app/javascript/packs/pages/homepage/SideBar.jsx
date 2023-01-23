@@ -1,58 +1,59 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import {AccountStateContext} from './context/AccountStateContext'
-import {PinnedCategoriesContext} from './context/PinnedCategoriesContext'
-import {PinnedCommunitiesContext} from './context/PinnedCommunitiesContext'
-import {PinnedTopicsContext} from './context/PinnedTopicsContext'
-import {Notification} from './sidebar/Notification'
-import {CategoryButton} from './sidebar/CategoryButton'
-import {CommunityButton} from './sidebar/CommunityButton'
-import {TopicButton} from './sidebar/TopicButton'
+import { errorMessage } from './functions/functions'
+import { PinnedCommunitiesContext } from './context/PinnedCommunitiesContext'
+import { PinnedTopicsContext } from './context/PinnedTopicsContext'
+import { Notification } from './sidebar/Notification'
+import { CommunityButton } from './sidebar/CommunityButton'
+import { TopicButton } from './sidebar/TopicButton'
 
+/*Sidebar which is visible on the HomePage at all times
+  Contains notifications for the user
+  Contains the communities pinned by the user
+  Contains the topics pinned by the user
+*/
 const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicboard}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [notifications, setNotifications] = useState([])
-  const [pinnedCategories, setPinnedCategories] = useContext(PinnedCategoriesContext)
+  const [cookies, setCookie] = useCookies(["user"])
   const [pinnedCommunities, setPinnedCommunities] = useContext(PinnedCommunitiesContext)
   const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
 
+  //On render fetch the notifications and pinned items
   useEffect(() => {
     fetchNotifications()
-    fetchPinnedCategories()
     fetchPinnedCommunities()
     fetchPinnedTopics()
   }, [])
 
   function fetchNotifications() {
-    axios.post('/api/notification/' + accountState.id + '/fetch_notifications')
+    axios.post('/api/notification/0/fetch_notifications', {
+      token: cookies.Token
+    })
     .then(resp => {
       setNotifications(resp.data.data)
     })
-    .catch(resp => console.log(resp))
-  }
-
-  function fetchPinnedCategories() {
-    axios.post('/api/pinned_category/' + accountState.id + '/fetch_categories')
-    .then(resp => {
-      setPinnedCategories(resp.data.data)
-    })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function fetchPinnedCommunities() {
-    axios.post('/api/pinned_community/' + accountState.id + '/fetch_communities')
+    axios.post('/api/pinned_community/0/fetch_communities', {
+      token: cookies.Token
+    })
     .then(resp => {
       setPinnedCommunities(resp.data.data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function fetchPinnedTopics() {
-    axios.post('/api/pinned_topic/' + accountState.id + '/fetch_topics')
+    axios.post('/api/pinned_topic/0/fetch_topics', {
+      token: cookies.Token
+    })
     .then(resp => {
       setPinnedTopics(resp.data.data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(
@@ -64,7 +65,7 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
           <p>No new notifications</p>}
         {notifications.map((notification) => {
           return(
-            <Notification key={"notification" + notification.attributes.id} notification={notification} showTopicboard={showTopicboard}/>
+            <Notification key={"notification" + notification.id} notification={notification} showTopicboard={showTopicboard} fetchNotifications={fetchNotifications}/>
           )
         })}
 
@@ -94,18 +95,5 @@ const SideBar = ({showDashboard, filterCategory, showCommunityboard, showTopicbo
     </div>
   )
 }
-
-/*
-  Pinning of categories are disabled, when enabled add this chunk back
-      <label>Pinned Categories</label>
-        {pinnedCategories.map((category) => {
-          return(
-            <CategoryButton key={category.id} category_id={category.attributes.category_id} filterCategory={filterCategory}/>
-          )
-        })}
-
-        <br/>
-        <br/>
-*/
 
 export { SideBar }

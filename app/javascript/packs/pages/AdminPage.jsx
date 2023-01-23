@@ -1,13 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
-import {TopBar} from './homepage/TopBar'
-import {SideBar} from './homepage/SideBar'
-import {NewCategoryForm} from './adminpage/NewCategoryForm'
-import {AccountStateContext} from './homepage/context/AccountStateContext'
+import React from 'react'
+import { useCookies } from 'react-cookie'
+import { TopBar } from './homepage/TopBar'
+import { SideBar } from './homepage/SideBar'
+import { NewCategoryForm } from './adminpage/NewCategoryForm'
 
+/*Only accessable by the Administrator
+  Currently only allows the Administrator to create categories
+
+  Functions can be added here to allow Administrator to delete categories
+    or access information from the database
+*/
 const AdminPage = () => {
-  //If there is no ongoing session go to login page
-  if (sessionStorage.getItem('id') == null) {
+  const [cookies, setCookie] = useCookies(['user'])
+
+  //If the user is not the Administrator go to login page
+  if (cookies.Name != "Administrator") {
     window.location.href = '/'
   }
 

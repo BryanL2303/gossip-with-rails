@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import {Reply} from './Reply'
 import {ReplyForm} from './ReplyForm'
-import { AccountStateContext } from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
 const Comment = ({comment_id, fetchComments, notification}) => {
+  const [cookies, setCookie] = useCookies(['user'])
   const [comment, setComment] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
@@ -15,53 +17,28 @@ const Comment = ({comment_id, fetchComments, notification}) => {
   const [currentVote, setCurrentVote] = useState()
   const [displayEditor, setDisplayEditor] = useState(false)
   const [owner, setOwner] = useState(false)
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [ownerName, setOwnerName] = useState()
 
   useEffect(() => {
     fetchComment()
-    checkVote()
   }, [])
 
   function fetchComment() {
-    axios.get('/api/comment/' + comment_id)
+    axios.get('/api/comment/' + comment_id, {
+      headers: {token: cookies.Token}
+    })
     .then( resp => {
-      if (resp.data.data == null) {
-        fetchComments()
-      }
-      else {
-        setComment(resp.data.data.attributes.comment)
-        setUpvote(resp.data.data.attributes.upvote)
-        setDownvote(resp.data.data.attributes.downvote)
-        setEdited(resp.data.data.attributes.edited)
-        setReplies(resp.data.data.relationships.replys.data)
-        setReplyLimit(resp.data.data.relationships.replys.data.length)
-        checkOwner(resp.data.data.attributes.gossip_account_id)
-        if (resp.data.data.attributes.gossip_account_id == accountState.id) {
-          setOwner(true)
-        }
-      }
+      setComment(resp.data.data.data.attributes.comment)
+      setUpvote(resp.data.data.data.attributes.upvote)
+      setDownvote(resp.data.data.data.attributes.downvote)
+      setEdited(resp.data.data.data.attributes.edited)
+      setReplies(resp.data.data.data.relationships.replys.data)
+      setReplyLimit(resp.data.data.data.relationships.replys.data.length)
+      setOwner(resp.data.isOwner)
+      setOwnerName(resp.data.ownerName)
+      setCurrentVote(resp.data.vote)
     })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkOwner(gossip_account_id) {
-    axios.get('/api/gossip_account/' + gossip_account_id)
-    .then(resp => {
-      setOwnerName(resp.data.data.attributes.account_name)
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkVote() {
-    axios.post('/api/comment_vote/0/check_vote', {
-      account_id: accountState.id,
-      comment_id: comment_id
-    })
-    .then(resp => {
-      setCurrentVote(resp.data)
-    })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   //Change this to update comment only if comment belongs to user
@@ -73,7 +50,7 @@ const Comment = ({comment_id, fetchComments, notification}) => {
       .then(resp => {
         fetchTask()
       })
-      .catch(resp => console.log(resp))
+      .catch(resp => errorMessage(resp.response.statusText))
     }
   }
 
@@ -83,7 +60,7 @@ const Comment = ({comment_id, fetchComments, notification}) => {
       sessionStorage.removeItem(`comment${comment_id}`)
       fetchComments()
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function toggleEditor(e) {
@@ -109,13 +86,14 @@ const Comment = ({comment_id, fetchComments, notification}) => {
 
     function submitEditComment(newComment) {
       axios.post('/api/comment/' + comment_id + '/edit_comment', {
+        token: cookies.Token,
         comment: newComment
       })
       .then(resp => {
         toggleEditor()
         fetchComment()
       })
-      .catch(resp => console.log(resp))
+      .catch(resp => errorMessage(resp.response.statusText))
     }
 
     return(
@@ -128,7 +106,7 @@ const Comment = ({comment_id, fetchComments, notification}) => {
 
   function upvoteComment(e) {
     axios.post('/api/comment/' + comment_id + '/upvote', {
-        account_id: accountState.id
+      token: cookies.Token
     })
     .then(resp => {
       fetchComment()
@@ -139,12 +117,12 @@ const Comment = ({comment_id, fetchComments, notification}) => {
         setCurrentVote(true)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function downvoteComment(e) {
     axios.post('/api/comment/' + comment_id + '/downvote', {
-        account_id: accountState.id
+      token: cookies.Token
     })
     .then(resp => {
       fetchComment()
@@ -155,7 +133,7 @@ const Comment = ({comment_id, fetchComments, notification}) => {
         setCurrentVote(false)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function showReplies() {

@@ -2,12 +2,15 @@ import React, {useState, useEffect, useContext} from 'react'
 import axios from 'axios'
 import {NewTopicForm} from './NewTopicForm'
 import {Topic} from './Topic'
-import {AccountStateContext} from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
+/*Table which contains list of topics
+  Topics are listed in groups of 5 to prevent overloading of components
+  Users can click on topics to access the topicboard
+*/
 const TopicTable = ({showTopicboard, category_id, community_id}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [topicsState, setTopicsState] = useState([])
-  const [sortBy, setSortBy] = useState('updated_at')
+  const [sortBy, setSortBy] = useState('created_at')
   const [topicCount, setTopicCount] = useState(0)
   const [offset, setOffset] = useState(0)
   const [topicLimit, setTopicLimit] = useState(0)
@@ -44,7 +47,7 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
     .then( resp => {
       setTopicLimit(resp.data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function fetchTopics() {
@@ -62,7 +65,7 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
       })
       setTopicsState(data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function reRenderTopics() {
@@ -106,7 +109,7 @@ const TopicTable = ({showTopicboard, category_id, community_id}) => {
       <label className="topic-count">{topicLimit} Topic(s)</label>
       <button className='show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
       <div className='topic_sort__options' style={{visibility: 'hidden'}}>
-        <button id='updated_at' className="sort-option--button" onClick={sortTopics}>Most Recent</button> 
+        <button id='created_at' className="sort-option--button" onClick={sortTopics}>Most Recent</button> 
         <button id='upvote' className="sort-option--button" onClick={sortTopics}>Most Upvoted</button>
         <button id='downvote' className="sort-option--button" onClick={sortTopics}>Most Downvoted</button>
       </div>

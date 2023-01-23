@@ -1,10 +1,13 @@
 import React, { useState,useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import {AccountStateContext} from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
+/*Form to create a comment in a topic
+*/
 const CommentForm = ({topic_id, reRenderComments}) => {
+	const [cookies, setCookie] = useCookies(['user'])
 	const [displayForm, setDisplayForm] = useState(false)
-	const [accountState, setAccountState] = useContext(AccountStateContext)
 
 	function showForm(e) {
 		setDisplayForm(true)
@@ -28,17 +31,17 @@ const CommentForm = ({topic_id, reRenderComments}) => {
 	}
 
 	function postCreateComment(form){
-		axios.post('/api/comment/' + accountState.id + '/create_comment', {
+		axios.post('/api/comment/0/create_comment', {
 	    	comment: form[0].value,
 	    	topic_id: topic_id,
-	    	account_id: accountState.id
+	    	token: cookies.Token
 	  	})
 	  	.then(resp => {
 	    	reRenderComments()
 	    	document.getElementsByClassName('form__comment')[0].focus()
 	    	document.getElementsByClassName('form__comment')[0].value = ''
 	  	})
-	  	.catch(resp => console.log(resp))
+	  	.catch(resp => errorMessage(resp.response.statusText))
 	}
 
 	return(

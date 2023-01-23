@@ -1,8 +1,10 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
 const Reply = ({reply_id, fetchComment, notification}) => {
+  const [cookies, setCookie] = useCookies(['user'])
   const [reply, setReply] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
@@ -10,51 +12,26 @@ const Reply = ({reply_id, fetchComment, notification}) => {
   const [displayEditor, setDisplayEditor] = useState(false)
   const [currentVote, setCurrentVote] = useState()
   const [owner, setOwner] = useState(false)
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [ownerName, setOwnerName] = useState()
   
   useEffect(() => {
     fetchReply()
-    checkVote()
   }, [])
 
   function fetchReply() {
-    axios.get('/api/reply/' + reply_id)
+    axios.get('/api/reply/' + reply_id, {
+      headers: {token: cookies.Token}
+    })
     .then( resp => {
-      if (resp.data.data == null) {
-        fetchComment()
-      }
-      else {
-        setReply(resp.data.data.attributes.reply)
-        setUpvote(resp.data.data.attributes.upvote)
-        setDownvote(resp.data.data.attributes.downvote)
-        setEdited(resp.data.data.attributes.edited)
-        checkOwner(resp.data.data.attributes.gossip_account_id)
-        if (resp.data.data.attributes.gossip_account_id == accountState.id) {
-          setOwner(true)
-        }
-      }
+      setReply(resp.data.data.data.attributes.reply)
+      setUpvote(resp.data.data.data.attributes.upvote)
+      setDownvote(resp.data.data.data.attributes.downvote)
+      setEdited(resp.data.data.data.attributes.edited)
+      setOwner(resp.data.isOwner)
+      setOwnerName(resp.data.ownerName)
+      setCurrentVote(resp.data.vote)
     })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkOwner(gossip_account_id) {
-    axios.get('/api/gossip_account/' + gossip_account_id)
-    .then(resp => {
-      setOwnerName(resp.data.data.attributes.account_name)
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkVote() {
-    axios.post('/api/reply_vote/0/check_vote', {
-      account_id: accountState.id,
-      reply_id: reply_id
-    })
-    .then(resp => {
-      setCurrentVote(resp.data)
-    })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   //Change this to update comment only if comment belongs to user
@@ -66,17 +43,16 @@ const Reply = ({reply_id, fetchComment, notification}) => {
       .then(resp => {
         fetchTask()
       })
-      .catch(resp => console.log(resp))
+      .catch(resp => errorMessage(resp.response.statusText))
     }
   }
 
   function deleteReply(e) {
     axios.delete('/api/reply/' + reply_id)
     .then(resp => {
-      sessionStorage.removeItem(`reply${reply_id}`)
       fetchComment()
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function toggleEditor(e) {
@@ -102,13 +78,14 @@ const Reply = ({reply_id, fetchComment, notification}) => {
 
     function submitEditReply(newReply) {
       axios.post('/api/reply/' + reply_id + '/edit_reply', {
+        token: cookies.Token,
         reply: newReply
       })
       .then(resp => {
         toggleEditor()
         fetchReply()
       })
-      .catch(resp => console.log(resp))
+      .catch(resp => errorMessage(resp.response.statusText))
     }
 
     return(
@@ -121,7 +98,7 @@ const Reply = ({reply_id, fetchComment, notification}) => {
 
   function upvoteReply(e) {
     axios.post('/api/reply/' + reply_id + '/upvote', {
-        account_id: accountState.id
+      token: cookies.Token
     })
     .then(resp => {
       fetchReply()
@@ -132,12 +109,12 @@ const Reply = ({reply_id, fetchComment, notification}) => {
         setCurrentVote(true)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function downvoteReply(e) {
     axios.post('/api/reply/' + reply_id + '/downvote', {
-        account_id: accountState.id
+      token: cookies.Token
     })
     .then(resp => {
       fetchReply()
@@ -148,7 +125,7 @@ const Reply = ({reply_id, fetchComment, notification}) => {
         setCurrentVote(false)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

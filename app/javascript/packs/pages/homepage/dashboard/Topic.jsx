@@ -1,14 +1,17 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
 import { PinnedTopicsContext } from '../context/PinnedTopicsContext'
+import {errorMessage} from '../functions/functions'
 
+/*Button within the TopicTable
+*/
 const Topic = ({topic, reRenderPage, showTopicboard}) => {
+  const [cookies, setCookie] = useCookies(['user'])
   const [name, setName] = useState()
   const [description, setDescription] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [pinnedTopics, setPinnedTopics] = useContext(PinnedTopicsContext)
   const [currentVote, setCurrentVote] = useState()
   const [currentSave, setCurrentSave] = useState()
@@ -17,64 +20,50 @@ const Topic = ({topic, reRenderPage, showTopicboard}) => {
   const [communityTag, setCommunityTag] = useState([])
 
   useEffect(() => {
-    checkVote()
-    checkSave()
-    checkOwner(topic.attributes.gossip_account_id)
     setName(topic.attributes.topic_name)
     setDescription(topic.attributes.topic_description)
     setUpvote(topic.attributes.upvote)
     setDownvote(topic.attributes.downvote)
     setCategoryTag(topic.relationships.categories.data)
     setCommunityTag(topic.relationships.communities.data)
+    fetchTopic(topic.attributes.id)
   }, [])
 
-  function checkOwner(gossip_account_id) {
-    axios.get('/api/gossip_account/' + gossip_account_id)
-    .then(resp => {
-      setOwnerName(resp.data.data.attributes.account_name)
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkVote() {
-    axios.post('/api/topic_vote/0/check_vote', {
-      account_id: accountState.id,
-      topic_id: topic.attributes.id
+  function fetchTopic(id) {
+    axios.get('/api/topic/' + id, {
+      headers: {token: cookies.Token}
     })
     .then(resp => {
-      setCurrentVote(resp.data)
+      setOwnerName(resp.data.ownerName)
+      setCurrentVote(resp.data.vote)
+      setCurrentSave(resp.data.saved)
     })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkSave() {
-    axios.post('/api/pinned_topic/' + accountState.id + '/check_save', {
-      topic_id: topic.attributes.id
-    })
-    .then(resp => {
-      setCurrentSave(resp.data)
-    })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function saveTopic(e) {
-    axios.post('/api/pinned_topic/' + accountState.id + '/save_topic', {
+    axios.post('/api/pinned_topic/0/save_topic', {
+        token: cookies.Token,
         topic_id: topic.attributes.id
     })
     .then(resp => {
       setPinnedTopics(resp.data.data)
-      checkSave()
+      if (currentSave == true) {
+        setCurrentSave(false)
+      } else {
+        setCurrentSave(true)
+      }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function upvoteTopic(e) {
     axios.post('/api/topic/' + topic.attributes.id + '/upvote', {
-        account_id: accountState.id
+        token: cookies.Token
     })
     .then(resp => {
-      setUpvote(resp.data.data.attributes.upvote)
-      setDownvote(resp.data.data.attributes.downvote)
+      setUpvote(resp.data.upvote)
+      setDownvote(resp.data.downvote)
       if (currentVote == true) {
         setCurrentVote(null)
       }
@@ -82,16 +71,16 @@ const Topic = ({topic, reRenderPage, showTopicboard}) => {
         setCurrentVote(true)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function downvoteTopic(e) {
     axios.post('/api/topic/' + topic.attributes.id + '/downvote', {
-        account_id: accountState.id
+        token: cookies.Token
     })
     .then(resp => {
-      setUpvote(resp.data.data.attributes.upvote)
-      setDownvote(resp.data.data.attributes.downvote)
+      setUpvote(resp.data.upvote)
+      setDownvote(resp.data.downvote)
       if (currentVote == false) {
         setCurrentVote(null)
       }
@@ -99,16 +88,10 @@ const Topic = ({topic, reRenderPage, showTopicboard}) => {
         setCurrentVote(false)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   const CategoryTag = ({category_id}) => {
-    /*const [category, setCategory] = useState()
-    axios.get('/api/category/' + category_id)
-    .then(resp => {
-      setCategory(resp.data.data.attributes.category_name)
-    })
-    .catch(resp => console.log(resp))*/
     let category = JSON.parse(sessionStorage.getItem(`category${category_id}`))
     return (
       <label className="category__tag">{category.attributes.category_name}</label>
@@ -117,11 +100,13 @@ const Topic = ({topic, reRenderPage, showTopicboard}) => {
 
   const CommunityTag = ({community_id}) => {
     const [community, setCommunity] = useState()
-    axios.get('/api/community/' + community_id)
-    .then(resp => {
-      setCommunity(resp.data.data.attributes.community_name)
+    axios.get('/api/community/' + community_id, {
+      headers: {token: cookies.Token}
     })
-    .catch(resp => console.log(resp))
+    .then(resp => {
+      setCommunity(resp.data.data.data.attributes.community_name)
+    })
+    .catch(resp => errorMessage(resp.response.statusText))
     return (
       <label className="community__tag">{community}</label>
     )

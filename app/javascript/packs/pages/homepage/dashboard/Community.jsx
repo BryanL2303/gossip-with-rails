@@ -1,15 +1,18 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
 import { PinnedCommunitiesContext } from '../context/PinnedCommunitiesContext'
+import {errorMessage} from '../functions/functions'
 
+/*Button within the CommunityTable
+*/
 const Community = ({community_id, reRenderPage, showCommunityboard}) => {
+  const [cookies, useCookie] = useCookies(['user'])
   const [community, setCommunity] = useState()
   const [description, setDescription] = useState()
   const [currentVote, setCurrentVote] = useState()
   const [upvote, setUpvote] = useState()
   const [downvote, setDownvote] = useState()
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [pinnedCommunities, setPinnedCommunities] = useContext(PinnedCommunitiesContext)
   const [currentSave, setCurrentSave] = useState()
   const [tag, setTag] = useState([])
@@ -17,75 +20,53 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
   
   useEffect(() => {
     fetchCommunity()
-    checkVote()
-    checkSave()
   }, [])
 
   function fetchCommunity() {
-    axios.get('/api/community/' + community_id)
+    axios.get('/api/community/' + community_id, {
+      headers: {token: cookies.Token}
+    })
     .then( resp => {
       if (resp.data.data == null) {
         reRenderPage()
       }
       else {
-        setCommunity(resp.data.data.attributes.community_name)
-        setDescription(resp.data.data.attributes.community_description)
-        setUpvote(resp.data.data.attributes.upvote)
-        setDownvote(resp.data.data.attributes.downvote)
-        setTag(resp.data.data.relationships.categories.data)
-        checkOwner(resp.data.data.attributes.gossip_account_id)
+        setCommunity(resp.data.data.data.attributes.community_name)
+        setDescription(resp.data.data.data.attributes.community_description)
+        setUpvote(resp.data.data.data.attributes.upvote)
+        setDownvote(resp.data.data.data.attributes.downvote)
+        setTag(resp.data.data.data.relationships.categories.data)
+        setOwnerName(resp.data.ownerName)
+        setCurrentVote(resp.data.vote)
+        setCurrentSave(resp.data.saved)
       }
     })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkOwner(gossip_account_id) {
-    axios.get('/api/gossip_account/' + gossip_account_id)
-    .then(resp => {
-      setOwnerName(resp.data.data.attributes.account_name)
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkVote() {
-    axios.post('/api/community_vote/0/check_vote', {
-      account_id: accountState.id,
-      community_id: community_id
-    })
-    .then(resp => {
-      setCurrentVote(resp.data)
-    })
-    .catch(resp => console.log(resp))
-  }
-
-  function checkSave() {
-    axios.post('/api/pinned_community/' + accountState.id + '/check_save', {
-      community_id: community_id
-    })
-    .then(resp => {
-      setCurrentSave(resp.data)
-    })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function pinCommunity(e) {
-    axios.post('/api/pinned_community/' + accountState.id + '/save_community', {
+    axios.post('/api/pinned_community/0/save_community', {
+        token: cookies.Token,
         community_id: community_id
     })
     .then(resp => {
       setPinnedCommunities(resp.data.data)
-      checkSave()
+      if (currentSave == true) {
+        setCurrentSave(false)
+      } else {
+        setCurrentSave(true)
+      }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function upvoteCommunity(e) {
     axios.post('/api/community/' + community_id + '/upvote', {
-        account_id: accountState.id
+        token: cookies.Token
     })
     .then(resp => {
-      setUpvote(resp.data.data.attributes.upvote)
-      setDownvote(resp.data.data.attributes.downvote)
+      setUpvote(resp.data.upvote)
+      setDownvote(resp.data.downvote)
       if (currentVote == true) {
         setCurrentVote(null)
       }
@@ -93,16 +74,16 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
         setCurrentVote(true)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function downvoteCommunity(e) {
     axios.post('/api/community/' + community_id + '/downvote', {
-        account_id: accountState.id
+        token: cookies.Token
     })
     .then(resp => {
-      setUpvote(resp.data.data.attributes.upvote)
-      setDownvote(resp.data.data.attributes.downvote)
+      setUpvote(resp.data.upvote)
+      setDownvote(resp.data.downvote)
       if (currentVote == false) {
         setCurrentVote(null)
       }
@@ -110,7 +91,7 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
         setCurrentVote(false)
       }
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   const CategoryTag = ({category_id}) => {
@@ -119,7 +100,7 @@ const Community = ({community_id, reRenderPage, showCommunityboard}) => {
     .then(resp => {
       setCategory(resp.data.data.attributes.category_name)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
     return (
       <label className="category__tag">{category}</label>
     )

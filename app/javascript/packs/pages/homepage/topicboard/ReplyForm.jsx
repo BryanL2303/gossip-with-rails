@@ -1,10 +1,13 @@
 import React, { useState,useEffect, useContext } from 'react'
+import {useCookies} from 'react-cookie'
 import axios from 'axios'
-import {AccountStateContext} from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
+/*Form to create a reply to a comment
+*/
 const ReplyForm = ({comment_id, fetchComment}) => {
+	const [cookies, setCookie] = useCookies(['user'])
 	const [displayForm, setDisplayForm] = useState(false)
-	const [accountState, setAccountState] = useContext(AccountStateContext)
 
 	function showForm(e) {
 		setDisplayForm(true)
@@ -28,36 +31,33 @@ const ReplyForm = ({comment_id, fetchComment}) => {
 	}
 
 	function postCreateReply(form){
-		axios.post('/api/reply/' + accountState.id + '/create_reply', {
+		axios.post('/api/reply/0/create_reply', {
 	    	reply: form[0].value,
 	    	comment_id: comment_id,
-	    	account_id: accountState.id
+	    	token: cookies.Token
 	  	})
 	  	.then(resp => {
 	    	fetchComment()
 	    	document.getElementsByClassName('reply-form__reply')[0].focus()
 	    	document.getElementsByClassName('reply-form__reply')[0].value = ''
 	  	})
-	  	.catch(resp => console.log(resp))
+	  	.catch(resp => errorMessage(resp.response.statusText))
 	}
-
-	
 
 	if (displayForm == true) {
 		return(
 	 	 	<form className='reply-form' onSubmit={submitForm} onBlur={hideForm}>
-			  	<input className='reply-form__reply' placeholder='Reply to the comment here'></input>
-		  		<button>Reply</button>
+			  <input className='reply-form__reply' placeholder='Reply to the comment here'></input>
+		  	<button>Reply</button>
 			</form>
 		)
-  	}
-  	else {
-    	return(
-      		<div onClick={ showForm }>
-          		Click to add a reply
-      		</div>
-    	)
-  	}
+  } else {
+    return(
+      <div onClick={ showForm }>
+         Click to add a reply
+      </div>
+    )
+  }
 }
 
 export {ReplyForm}

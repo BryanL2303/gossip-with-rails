@@ -1,15 +1,14 @@
-import React, { useRef, useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Popup from 'reactjs-popup';
 import axios from 'axios'
-import { AccountStateContext } from '../context/AccountStateContext'
-import {TopicButton} from './TopicButton'
-import {Comment} from '../topicboard/Comment'
-import {Reply} from '../topicboard/Reply'
+import { TopicButton } from './TopicButton'
+import { Comment } from '../topicboard/Comment'
+import { Reply } from '../topicboard/Reply'
 
-const Notification = ({notification, showTopicboard}) => {
+const Notification = ({notification, showTopicboard, fetchNotifications}) => {
   function deleteNotification(e) {
-    axios.delete('api/notification/' + notification.attributes.id)
-    console.log(e.target)
+    axios.delete('api/notification/' + notification.id)
+    fetchNotifications()
   }
 
   return(

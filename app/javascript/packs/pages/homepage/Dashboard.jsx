@@ -1,9 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react'
-import axios from 'axios'
+import React from 'react'
 import {CategoryBar} from './dashboard/CategoryBar'
 import {CommunityTable} from './dashboard/CommunityTable'
 import {TopicTable} from './dashboard/TopicTable'
 
+/*Dashboard which is the default display on the HomePage
+  Shows the categories on the website for user to filter
+  The communities on the website for the user to click on
+  The topics on the website for the user to click on
+*/
 const Dashboard = ({filterCategory, showCommunityboard, showTopicboard, category_id}) => {
   return(
     <div className='dashboard-container'>

@@ -1,13 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
+import { useCookies } from 'react-cookie';
 import axios from 'axios'
+import { errorMessage } from './homepage/functions/functions'
 
+//Log in page, the default page displayed to all users who are not logged in
+//Users can log in or access the AccountCreationPage
 const LogInPage = () => {
+  const [cookies, setCookie] = useCookies(['user'])
+
   //If there is an ongoing session go to home page
-  if (sessionStorage.getItem('id') != null) {
+  if (cookies.Token != null) {
     window.location.href = '/home'
   }
 
-  //Handle submit form event
+  //Handle submit form event to authenticate account with backend
   function submitForm(e) {
     e.preventDefault()
     axios.post('/api/gossip_account/0/authenticate_account', {
@@ -16,15 +22,16 @@ const LogInPage = () => {
     })
     .then(resp => {
       if (resp.data != false) {
-        sessionStorage.setItem('id', resp.data.id)
-        sessionStorage.setItem('name', resp.data.name)
+        //If account is authenticated save JWT in cookies
+        setCookie('Name', resp.data.name, { path: '/' });
+        setCookie('Token', resp.data.token, { path: '/' });
         window.location.href = '/home'
       }
       else {
         alert("Username or password is wrong, please double check input.")
       }
     })
-    .catch(resp => console.log(resp))    
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   return(

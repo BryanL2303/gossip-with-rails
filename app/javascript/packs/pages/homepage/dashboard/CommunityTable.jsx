@@ -2,12 +2,15 @@ import React, {useState, useEffect, useContext} from 'react'
 import axios from 'axios'
 import {NewCommunityForm} from './NewCommunityForm'
 import {Community} from './Community'
-import {AccountStateContext} from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
 
+/*Table which contains list of communities
+  Communities are listed in groups of 5 to prevent overloading of components
+  Users can click on communities to access the communityboard
+*/
 const CommunityTable = ({showCommunityboard, category_id}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
   const [communitiesState, setCommunitiesState] = useState([])
-  const [sortBy, setSortBy] = useState('updated_at')
+  const [sortBy, setSortBy] = useState('created_at')
   const [communityCount, setCommunityCount] = useState(0)
   const [offset, setOffset] = useState(0)
   const [communityLimit, setCommunityLimit] = useState(0)
@@ -37,7 +40,7 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
     .then( resp => {
       setCommunityLimit(resp.data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function fetchCommunities() {
@@ -54,7 +57,7 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
       })
       setCommunitiesState(data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function reRenderCommunities() {
@@ -98,7 +101,7 @@ const CommunityTable = ({showCommunityboard, category_id}) => {
       <label className="community-count">{communityLimit} Community(ies)</label>
       <button className='show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
       <div className='community_sort__options' style={{visibility: 'hidden'}}>
-        <button id='updated_at' className="sort-option--button" onClick={sortCommunities}>Most Recent</button> 
+        <button id='created_at' className="sort-option--button" onClick={sortCommunities}>Most Recent</button> 
         <button id='upvote' className="sort-option--button" onClick={sortCommunities}>Most Upvoted</button>
         <button id='downvote' className="sort-option--button" onClick={sortCommunities}>Most Downvoted</button>
       </div>

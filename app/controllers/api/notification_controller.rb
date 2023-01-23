@@ -3,7 +3,8 @@ module Api
 		protect_from_forgery with: :null_session
 
 		def fetchNotifications
-			notifications = Notification.where(gossip_account_id: params[:id])
+			user = authorised_user(params[:token])
+			notifications = Notification.where(gossip_account_id: user.id)
 
 			render json: NotificationSerializer.new(notifications).serialized_json
 		end
@@ -22,11 +23,6 @@ module Api
 			category = Category.find_by(id: params[:id])
 
 			render json: CategorySerializer.new(category).serialized_json
-		end
-
-		private
-		def notification_param
-			params.require(:notification).permit(:id, :gossip_account_id, :message)
 		end
 	end
 end

@@ -1,10 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react'
 import axios from 'axios'
 import {Category} from './Category'
-import {AccountStateContext} from '../context/AccountStateContext'
+import {errorMessage} from '../functions/functions'
+import {CategoryDictionaryContext} from '../context/CategoryDictionaryContext'
 
+/*The bar which contains the categories which the users
+    can use to filter the community and topic tables
+*/
 const CategoryBar = ({filterCategory, category_id}) => {
-  const [accountState, setAccountState] = useContext(AccountStateContext)
+  const [categories, setCategories] = useContext(CategoryDictionaryContext)
   const [categoriesState, setCategoriesState] = useState([])
   const [categoryCount, setCategoryCount] = useState(0)
   const [categoryLimit, setCategoryLimit] = useState(0)
@@ -15,9 +19,12 @@ const CategoryBar = ({filterCategory, category_id}) => {
 
   useEffect(() => {
     setCategoryLimit(categoriesState.length)
+    let data = []
     categoriesState.map((category) => {
       sessionStorage.setItem(`category${category.attributes.id}`, JSON.stringify(category))
+      data.push({value: category.attributes.id, label: category.attributes.category_name})
     })
+    setCategories(data)
   }, [categoriesState])
 
   useEffect(() => {
@@ -34,7 +41,7 @@ const CategoryBar = ({filterCategory, category_id}) => {
       sessionStorage.setItem('categoriesState', JSON.stringify(resp.data.data))
       setCategoriesState(resp.data.data)
     })
-    .catch(resp => console.log(resp))
+    .catch(resp => errorMessage(resp.response.statusText))
   }
 
   function showSortOptions(e) {
@@ -91,15 +98,6 @@ const CategoryBar = ({filterCategory, category_id}) => {
       </div>
     </div>
   )
-  /*
-  Add in to allow sorting of categories
-      <button className='categories__show-sort--button' onClick={showSortOptions}><img src="/packs/media/packs/pages/homepage/sort-6adf140c7b527d54d87dc57645c571f9.png"/> <label>Sort</label></button>
-        <div className='category_sort__options' style={{visibility: 'hidden'}}>
-          <button id='updated_at' className="sort-option--button" onClick={sortCategories}>Most Recent</button> 
-          <button id='upvote' className="sort-option--button" onClick={sortCategories}>Most Upvoted</button>
-          <button id='downvote' className="sort-option--button" onClick={sortCategories}>Most Downvoted</button>
-        </div>
-  */
 }
 
 export {CategoryBar}
