@@ -1,7 +1,5 @@
 # README
-Name: Bryan Lee Zhe Yin
-Matriculation No: A0253328E
-
+This was created for CVWO 2023 Winter Assignment
 Frontend: React 
 Backend: Ruby on Rails 
 Database: Postgresql
